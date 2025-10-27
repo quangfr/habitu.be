@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Routine Buddy · Prototype Material</title>
+<style>
+:root{
+  --bg:#0a0f14; --surface:#121b24; --surface2:#18232f; --text:#e8f0f7; --muted:#9fb0c0;
+  --accent:#00bfa5; --ok:#4caf50; --warn:#ffc107; --bad:#f44336;
+  --radius:16px; --shadow:0 2px 6px rgba(0,0,0,.4);
+  --cat-Nutrition:#FFB703; --cat-Hygiène:#8ECAE6; --cat-Exercice:#2A9D8F; --cat-Sommeil:#4A4E69; --cat-Social:#F4A261; --cat-Autre:#9B5DE5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Roboto,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100svh;display:flex;flex-direction:column;}
+header{position:sticky;top:0;z-index:10;background:var(--surface2);box-shadow:var(--shadow);}
+.head-wrap{display:flex;align-items:center;gap:12px;padding:12px 16px;}
+.h-title{font-weight:700;font-size:18px;letter-spacing:.3px;}
+.icon-btn{border:none;background:var(--surface2);color:var(--text);border-radius:12px;padding:8px 10px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.icon-btn:hover{background:var(--surface);}
+
+main{flex:1;padding:14px;display:flex;flex-direction:column;gap:14px;}
+.summary{background:var(--surface2);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow);}
+.progress{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(var(--accent) calc(var(--p)*1%), #243244 0);}
+.progress::after{content:"";position:absolute;inset:6px;background:var(--surface2);border-radius:50%;}
+.progress span{position:relative;font-weight:700;font-size:14px;}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.card{background:var(--surface2);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow);transition:.2s;cursor:pointer;}
+.card:hover{transform:translateY(-2px);}
+.card h3{margin:0;font-size:16px;display:flex;align-items:center;gap:6px;}
+.count{font-size:13px;color:var(--muted);}
+.emoji-row{display:flex;flex-wrap:wrap;gap:8px;}
+.emoji{font-size:24px;}
+.card[data-status="red"]{outline:2px solid var(--bad)}
+.card[data-status="yellow"]{outline:2px solid var(--warn)}
+.card[data-status="green"]{outline:2px solid var(--ok)}
+
+.view{display:none;}
+.view.active{display:block;}
+.cat-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.back{border:none;background:var(--surface2);color:var(--text);border-radius:12px;padding:8px 12px;box-shadow:var(--shadow);}
+.add{margin-left:auto;background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:12px;box-shadow:var(--shadow);}
+
+.task{background:var(--surface2);border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);margin-bottom:10px;transition:.2s;}
+.task.done{opacity:.6;text-decoration:line-through;}
+.checkbox{width:28px;height:28px;border-radius:50%;border:2px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:.2s;}
+.checkbox.checked{background:var(--accent);border-color:var(--accent);color:#fff;}
+.task .em{font-size:28px;}
+.task .title{font-weight:600;}
+.badge{font-size:11px;padding:4px 8px;border-radius:8px;background:var(--surface);color:var(--muted);}
+
+footer{position:sticky;bottom:0;background:var(--surface2);box-shadow:var(--shadow);}
+.nav{display:flex;gap:8px;padding:8px;}
+.nav button{flex:1;border:none;border-radius:12px;background:var(--surface);color:var(--text);padding:10px;font-weight:600;}
+</style>
+</head>
+<body>
+<header>
+  <div class="head-wrap">
+    <button class="icon-btn" id="backBtn">⬅️</button>
+    <div class="h-title">Routine Buddy</div>
+  </div>
+</header>
+<main>
+  <section id="home" class="view active">
+    <div class="summary">
+      <div class="progress" id="progress" style="--p:75"><span>75%</span></div>
+      <div>
+        <strong>Progression du jour</strong>
+        <div class="count">15/20 tâches faites</div>
+      </div>
+    </div>
+    <div class="grid" id="catGrid"></div>
+  </section>
+
+  <section id="category" class="view">
+    <div class="cat-head">
+      <button class="back" id="catBack">⬅️</button>
+      <h2 id="catTitle">Catégorie</h2>
+      <button class="add" id="addBtn">+ Ajouter</button>
+    </div>
+    <div id="taskList">
+      <div class="task"><div class="checkbox"></div><div class="em">🍳</div><div><div class="title">Petit-déj protéiné</div><div class="badge">*️⃣ Obligatoire</div></div></div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="nav">
+    <button>🏠 Accueil</button>
+    <button>📅 Historique</button>
+  </div>
+</footer>
+
+<script>
+// visuel Material pour checkbox
+const taskList=document.getElementById('taskList');
+taskList.addEventListener('click',e=>{
+  const box=e.target.closest('.checkbox');
+  if(box){
+    box.classList.toggle('checked');
+    const task=box.closest('.task');
+    task.classList.toggle('done');
+  }
+});
+</script>
+</body>
+</html>
