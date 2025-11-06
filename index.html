@@ -950,7 +950,7 @@ function refreshAll(){
 function updateWeekLabel(){
   if(!els.weekLabel) return
   const week = state.ui.selectedWeekStart
-  const label = week===currentWeekStart ? `This week · ${formatWeekRange(week)}` : `Week · ${formatWeekRange(week)}`
+  const label = `${formatWeekRange(week)}`
   els.weekLabel.textContent = label
   if(els.weekNext){
     const canGoNext = compareDate(week, currentWeekStart)<0
