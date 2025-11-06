@@ -1209,6 +1209,7 @@ function renderCategory(cat, week){
   save()
   const lang = currentLanguage()
   const strings = getStrings(lang)
+  const dayLabels = getWeekdayShortLabels(lang)
   const catEntry = categoryById(cat)
   if(els.catTitle){ els.catTitle.textContent = catEntry ? catEntry.name : categoryLabel(cat) }
   if(els.editCategoryBtn){
@@ -1926,7 +1927,14 @@ function CATS(){
   return state && Array.isArray(state.categories) ? state.categories.slice() : []
 }
 
-function save(){ if(!state) return; localStorage.setItem(STORE_KEY, JSON.stringify(state)) }
+function save(){
+  if(!state) return
+  try{
+    localStorage.setItem(STORE_KEY, JSON.stringify(state))
+  }catch(err){
+    console.warn('Unable to persist routines state', err)
+  }
+}
 function load(){
   try{
     const raw = localStorage.getItem(STORE_KEY)
@@ -1941,7 +1949,11 @@ function load(){
       const legacy = localStorage.getItem(key)
       if(legacy){
         const parsed = JSON.parse(legacy)
-        localStorage.setItem(STORE_KEY, legacy)
+        try{
+          localStorage.setItem(STORE_KEY, legacy)
+        }catch(err){
+          console.warn('Unable to persist migrated routines state', err)
+        }
         return parsed
       }
     }catch(err){ /* ignore legacy parse errors */ }
