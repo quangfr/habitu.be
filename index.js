@@ -6,6 +6,7 @@ const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 const supportsNotifications = typeof window!=='undefined' && typeof navigator!=='undefined' && 'Notification' in window && 'serviceWorker' in navigator
 const reminderTimers = new Map()
 const DEFAULT_REMINDER_TIME={hour:9, minute:0}
+let deferredInstallPrompt = null
 
 function pad2(value){
   const num = Number.isFinite(value) ? Math.trunc(value) : 0
@@ -274,8 +275,13 @@ const LANGUAGE_STRINGS={
     configTitle:'Configuration',
     configAddCategory:'Add category',
     configAddActivity:'Add habit',
+    configInstall:'Install on my smartphone',
     configImport:'Import backup (replace)',
     configExport:'Export backup',
+    configAbout:'About Habitu.be',
+    installBannerMessage:'Install Habitu.be on your smartphone',
+    installAction:'Install',
+    installDismiss:'Close',
     configNote:'Importing a backup will replace your current habits and progress.',
     reminderLabel:'Daily reminder',
     reminderNote:'Send a notification every day at your chosen time to stay on track.',
@@ -335,8 +341,13 @@ const LANGUAGE_STRINGS={
     configTitle:'Configuration',
     configAddCategory:'Ajouter une catégorie',
     configAddActivity:'Ajouter une habitude',
+    configInstall:'Installer sur mon smartphone',
     configImport:'Importer une sauvegarde (remplace)',
     configExport:'Exporter une sauvegarde',
+    configAbout:'À propos',
+    installBannerMessage:'Installer Habitu.be sur son smartphone',
+    installAction:'Installer',
+    installDismiss:'Fermer',
     configNote:'Importer une sauvegarde remplacera vos habitudes et progrès actuels.',
     reminderLabel:'Rappel quotidien',
     reminderNote:'Recevez une notification chaque jour à l’heure de votre choix pour rester motivé.',
@@ -530,6 +541,7 @@ function normalizeState(raw){
   next.ui.editTaskId = null
   next.ui.editCategoryId = null
   next.ui.language = lang
+  next.ui.installDismissed = Boolean(next.ui.installDismissed)
   delete next.ui.historyWeekStart
   delete next.ui.categorySource
 
@@ -691,11 +703,17 @@ const els={
   deleteCategory: document.getElementById('deleteCategory'),
   configAddActivity: document.getElementById('configAddActivity'),
   configAddCategory: document.getElementById('configAddCategory'),
+  configInstall: document.getElementById('configInstall'),
   configImport: document.getElementById('configImport'),
   configExport: document.getElementById('configExport'),
+  configAbout: document.getElementById('configAbout'),
   configImportInput: document.getElementById('configImportInput'),
   configTitle: document.querySelector('.config-head h2'),
   configNote: document.querySelector('.config-note'),
+  installBanner: document.getElementById('installBanner'),
+  installBannerMessage: document.getElementById('installBannerMessage'),
+  installBannerAction: document.getElementById('installBannerAction'),
+  installBannerDismiss: document.getElementById('installBannerDismiss'),
   languageDialog: document.getElementById('languageDialog'),
   languageDialogTitle: document.getElementById('languageDialogTitle'),
   languageDialogIntro: document.getElementById('languageDialogIntro'),
@@ -744,8 +762,10 @@ function bindEvents(){
   }
   if(els.configAddActivity){ els.configAddActivity.addEventListener('click', ()=> openTaskDialog('create')) }
   if(els.configAddCategory){ els.configAddCategory.addEventListener('click', ()=> openCategoryDialog('create')) }
+  if(els.configInstall){ els.configInstall.addEventListener('click', triggerInstallPrompt) }
   if(els.configExport){ els.configExport.addEventListener('click', exportBackup) }
   if(els.configImport){ els.configImport.addEventListener('click', ()=>{ if(els.configImportInput) els.configImportInput.click() }) }
+  if(els.configAbout){ els.configAbout.addEventListener('click', ()=>{ showLanguageDialog(currentLanguage()) }) }
   if(els.configImportInput){ els.configImportInput.addEventListener('change', handleImportFile) }
   if(els.editCategoryBtn){
     els.editCategoryBtn.addEventListener('click', ()=>{
@@ -754,6 +774,9 @@ function bindEvents(){
     })
   }
   if(els.closeDialog){ els.closeDialog.addEventListener('click', ()=> els.taskDialog.close()) }
+  if(els.installBannerAction){ els.installBannerAction.addEventListener('click', triggerInstallPrompt) }
+  if(els.installBannerDismiss){ els.installBannerDismiss.addEventListener('click', dismissInstallBanner) }
+  if(els.languageDialog){ els.languageDialog.addEventListener('close', ()=> maybeShowInstallBanner()) }
   if(els.closeCategoryDialog){ els.closeCategoryDialog.addEventListener('click', ()=> els.categoryDialog.close()) }
   if(els.f_recur){ els.f_recur.addEventListener('change', onRecurChange) }
   if(els.f_notifyDaily){ els.f_notifyDaily.addEventListener('change', handleReminderToggle) }
@@ -778,8 +801,10 @@ function initializeApp(){
   if(!state) return
   bindEvents()
   applyLanguage()
+  updateInstallUI()
   refreshAll()
   updateView(state.ui.currentView || 'home')
+  maybeShowInstallBanner()
 }
 
 function applyLanguage(){
@@ -797,10 +822,15 @@ function applyLanguage(){
   if(els.summaryScoreLabel){ els.summaryScoreLabel.textContent = strings.summaryScore || 'Score' }
   if(els.configAddCategory){ els.configAddCategory.textContent = strings.configAddCategory }
   if(els.configAddActivity){ els.configAddActivity.textContent = strings.configAddActivity }
+  if(els.configInstall){ els.configInstall.textContent = strings.configInstall || 'Install on my smartphone' }
   if(els.configImport){ els.configImport.textContent = strings.configImport }
   if(els.configExport){ els.configExport.textContent = strings.configExport }
+  if(els.configAbout){ els.configAbout.textContent = strings.configAbout }
   if(els.configTitle){ els.configTitle.textContent = strings.configTitle }
   if(els.configNote){ els.configNote.textContent = strings.configNote }
+  if(els.installBannerMessage){ els.installBannerMessage.textContent = strings.installBannerMessage || 'Install Habitu.be on your smartphone' }
+  if(els.installBannerAction){ els.installBannerAction.textContent = strings.installAction || 'Install' }
+  if(els.installBannerDismiss){ els.installBannerDismiss.setAttribute('aria-label', strings.installDismiss || strings.cancel || 'Close') }
   if(els.weeklyTimesLabel){ els.weeklyTimesLabel.textContent = strings.weeklyTimes }
   if(els.labelTitle){ els.labelTitle.textContent = strings.fieldName || 'Name' }
   if(els.labelCategory){ els.labelCategory.textContent = strings.fieldCategory || 'Category' }
@@ -862,6 +892,87 @@ function applyLanguage(){
   updateReminderVisibility()
 }
 
+function isInstallDismissed(){
+  return !!(state && state.ui && state.ui.installDismissed)
+}
+
+function showInstallBanner(){
+  if(!els.installBanner) return
+  els.installBanner.hidden = false
+  els.installBanner.classList.add('visible')
+}
+
+function hideInstallBanner(){
+  if(!els.installBanner) return
+  els.installBanner.classList.remove('visible')
+  els.installBanner.hidden = true
+}
+
+function updateInstallUI(){
+  const available = !!deferredInstallPrompt
+  if(els.configInstall){
+    if(available){
+      els.configInstall.hidden = false
+      els.configInstall.disabled = false
+    }else{
+      els.configInstall.hidden = true
+      els.configInstall.disabled = true
+    }
+  }
+  if(!available || isInstallDismissed()){
+    hideInstallBanner()
+  }
+}
+
+function maybeShowInstallBanner(){
+  if(!state) return
+  if(!deferredInstallPrompt) return
+  if(isInstallDismissed()) return
+  if(els.languageDialog && typeof els.languageDialog.open==='boolean' && els.languageDialog.open) return
+  showInstallBanner()
+}
+
+function dismissInstallBanner(){
+  if(state && state.ui){
+    state.ui.installDismissed = true
+    save()
+  }
+  hideInstallBanner()
+  updateInstallUI()
+}
+
+async function triggerInstallPrompt(){
+  if(!deferredInstallPrompt) return
+  const promptEvent = deferredInstallPrompt
+  deferredInstallPrompt = null
+  try{
+    if(typeof promptEvent.prompt==='function'){
+      promptEvent.prompt()
+      if(promptEvent.userChoice && typeof promptEvent.userChoice.then==='function'){
+        await promptEvent.userChoice
+      }
+    }
+  }catch(err){
+    console.warn('Install prompt failed', err)
+  }
+  if(state && state.ui){
+    state.ui.installDismissed = true
+    save()
+  }
+  hideInstallBanner()
+  updateInstallUI()
+}
+
+function setDeferredInstallPrompt(event){
+  deferredInstallPrompt = event
+  if(state && state.ui){
+    state.ui.installDismissed = false
+    save()
+  }
+  updateInstallUI()
+  maybeShowInstallBanner()
+}
+
 function refreshLanguageDialog(){
   const lang = sanitizeLanguage(pendingLanguage)
   const strings = getStrings(lang)
@@ -918,7 +1029,20 @@ function showLanguageDialog(prefLang){
 function chooseLanguage(lang){
   const selected = sanitizeLanguage(lang)
   pendingLanguage = selected
-  state = normalizeState(seed(selected))
+  if(state){
+    const previousView = state.ui?.currentView || 'home'
+    const baseState = {
+      ...state,
+      language:selected,
+      ui:{...(state.ui||{}), language:selected, currentView:previousView},
+    }
+    state = normalizeState(baseState)
+    if(previousView && state.ui){
+      state.ui.currentView = previousView
+    }
+  }else{
+    state = normalizeState(seed(selected))
+  }
   save()
   if(els.languageDialog && typeof els.languageDialog.close==='function'){
     try{ els.languageDialog.close() }catch(e){ /* dialog might not be open */ }
@@ -2025,8 +2149,24 @@ function seed(lang){
     tasks,
     done:{},
     categories: defaultCategories(language).map(c=>({...c})),
-    ui:{currentView:'home', selectedWeekStart:currentWeekStart, categoryWeekStart:currentWeekStart, currentCat:null, language, appStartWeek:currentWeekStart}
+    ui:{currentView:'home', selectedWeekStart:currentWeekStart, categoryWeekStart:currentWeekStart, currentCat:null, language, appStartWeek:currentWeekStart, installDismissed:false}
   }
+}
+
+if(typeof window!=='undefined'){
+  window.addEventListener('beforeinstallprompt', event=>{
+    event.preventDefault()
+    setDeferredInstallPrompt(event)
+  })
+  window.addEventListener('appinstalled', ()=>{
+    deferredInstallPrompt = null
+    hideInstallBanner()
+    if(state && state.ui){
+      state.ui.installDismissed = true
+      save()
+    }
+    updateInstallUI()
+  })
 }
 
 startApp()

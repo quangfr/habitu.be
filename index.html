@@ -12,19 +12,29 @@
 
 </head>
 <body>
-<div class="app" id="app">
-  <header>
-    <div class="head-wrap">
-      <button type="button" class="h-title" id="homeBtn"><img src="icon-192.png" alt="" class="h-logo" /><span class="h-title-text">Habitu.be</span></button>
-      <div class="h-grow"></div>
-      <button class="icon-btn icon-only" id="configBtn" aria-label="Open configuration">ℹ️</button>
-    </div>
-  </header>
+  <div class="app" id="app">
+    <header>
+      <div class="head-wrap">
+        <button type="button" class="h-title" id="homeBtn"><img src="icon-192.png" alt="" class="h-logo" /><span class="h-title-text">Habitu.be</span></button>
+        <div class="h-grow"></div>
+        <button class="icon-btn icon-only" id="configBtn" aria-label="Open configuration">ℹ️</button>
+      </div>
+    </header>
 
-  <div class="week-controls" id="weekControls">
-    <div class="week-nav">
-      <button class="icon-btn" id="weekPrev" aria-label="Previous week">←</button>
-      <div class="week-label" id="weekLabel"></div>
+    <div class="install-banner" id="installBanner" hidden role="region" aria-live="polite">
+      <div class="install-banner-inner">
+        <div class="install-banner-text" id="installBannerMessage">Install Habitu.be on your smartphone</div>
+        <div class="install-banner-actions">
+          <button type="button" class="icon-btn install-action" id="installBannerAction">Installer</button>
+          <button type="button" class="icon-btn icon-only install-dismiss" id="installBannerDismiss" aria-label="Close">⨉</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-controls" id="weekControls">
+      <div class="week-nav">
+        <button class="icon-btn" id="weekPrev" aria-label="Previous week">←</button>
+        <div class="week-label" id="weekLabel"></div>
       <button class="icon-btn" id="weekNext" aria-label="Next week">→</button>
       <button class="icon-btn" id="weekNow" aria-label="Go to current week">Now</button>
     </div>
@@ -73,8 +83,10 @@
         <div class="config-actions">
           <button class="icon-btn" id="configAddCategory">Add category</button>
           <button class="icon-btn" id="configAddActivity">Add habit</button>
+          <button class="icon-btn" id="configInstall" type="button" hidden>Install on my smartphone</button>
           <button class="icon-btn" id="configImport">Import backup (replace)</button>
           <button class="icon-btn" id="configExport">Export backup</button>
+          <button class="icon-btn" id="configAbout" type="button">About Habitu.be</button>
         </div>
         <p class="config-note">Importing a backup will replace your current habits and progress.</p>
       </div>
