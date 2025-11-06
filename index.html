@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#2563eb" />
+<meta name="theme-color" content="#1d9410" />
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="apple-touch-icon" href="icon-192.png" />
 <link rel="icon" href="icon-192.png" sizes="192x192" />
@@ -16,7 +16,7 @@
   --muted:#5b708b;
   --text:#1a2433;
   --border:#d9e2ef;
-  --accent:#2563eb;
+  --accent:#1d9410;
   --ok:#16a34a;
   --warn:#eab308;
   --bad:#dc2626;
@@ -205,9 +205,9 @@ dialog form{display:flex;flex-direction:column;height:100%;min-height:0}
         </div>
       </div>
       <div class="summary-status">
-        <span data-status="green"><span class="summary-count" id="pillGreen">0</span><span class="summary-label" id="labelGreen">On track</span></span>
-        <span data-status="yellow"><span class="summary-count" id="pillYellow">0</span><span class="summary-label" id="labelYellow">Look up</span></span>
-        <span data-status="red"><span class="summary-count" id="pillRed">0</span><span class="summary-label" id="labelRed">Catch up</span></span>
+        <span data-status="green"><span class="summary-count" id="pillGreen">0</span><span class="summary-label" id="labelGreen">Done</span></span>
+        <span data-status="yellow"><span class="summary-count" id="pillYellow">0</span><span class="summary-label" id="labelYellow">Should do</span></span>
+        <span data-status="red"><span class="summary-count" id="pillRed">0</span><span class="summary-label" id="labelRed">Must do</span></span>
       </div>
     </section>
 
@@ -629,8 +629,8 @@ const LANGUAGE_STRINGS={
     label:'English',
     weekPrefix:'W',
     locale:'en-US',
-    summary:{green:'On track',yellow:'Look up',red:'Catch up'},
-    summaryDistribution:counts=>`On track: ${counts.green}, Look up: ${counts.yellow}, Catch up: ${counts.red}`,
+    summary:{green:'Done',yellow:'Should do',red:'Must do'},
+    summaryDistribution:counts=>`Done: ${counts.green}, Should do: ${counts.yellow}, Must do: ${counts.red}`,
     progressLabel:(done,total)=>`${done} of ${total} completed`,
     emptyProgress:'No activities yet',
     noCategories:'Add a category to get started.',
@@ -647,7 +647,7 @@ const LANGUAGE_STRINGS={
     configExport:'Export backup',
     configNote:'Importing a backup will replace your current routines and progress.',
     reminderLabel:'Daily reminder',
-    reminderNote:'Send a notification every day at your chosen time to stay on track.',
+    reminderNote:'Send a notification every day at your chosen time to stay Done.',
     reminderPermission:'Enable notifications in your browser to receive reminders.',
     reminderUnsupported:'Daily reminders are not supported in this browser.',
     reminderTimeLabel:'Reminder time',
@@ -674,8 +674,8 @@ const LANGUAGE_STRINGS={
     label:'Français',
     weekPrefix:'S',
     locale:'fr-FR',
-    summary:{green:'À jour',yellow:'À voir',red:'À rattraper'},
-    summaryDistribution:counts=>`À jour : ${counts.green}, À voir : ${counts.yellow}, À rattraper : ${counts.red}`,
+    summary:{green:'Fait',yellow:'Recommandé',red:'À faire'},
+    summaryDistribution:counts=>`Fait : ${counts.green}, Recommandé : ${counts.yellow}, Obligatoire : ${counts.red}`,
     progressLabel:(done,total)=>`${done} sur ${total} réalisés`,
     emptyProgress:'Aucune activité',
     noCategories:'Ajoutez une catégorie pour commencer.',
@@ -1083,9 +1083,9 @@ function applyLanguage(){
     els.weekNow.textContent = strings.weekNow
     els.weekNow.setAttribute('aria-label', strings.weekNowAria || strings.weekNow)
   }
-  if(els.labelGreen){ els.labelGreen.textContent = strings.summary?.green || 'On track' }
-  if(els.labelYellow){ els.labelYellow.textContent = strings.summary?.yellow || 'Look up' }
-  if(els.labelRed){ els.labelRed.textContent = strings.summary?.red || 'Catch up' }
+  if(els.labelGreen){ els.labelGreen.textContent = strings.summary?.green || 'Done' }
+  if(els.labelYellow){ els.labelYellow.textContent = strings.summary?.yellow || 'Should do' }
+  if(els.labelRed){ els.labelRed.textContent = strings.summary?.red || 'Must do' }
   if(els.configAddCategory){ els.configAddCategory.textContent = strings.configAddCategory }
   if(els.configAddActivity){ els.configAddActivity.textContent = strings.configAddActivity }
   if(els.configImport){ els.configImport.textContent = strings.configImport }
