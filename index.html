@@ -7,7 +7,7 @@
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="apple-touch-icon" href="icon-192.png" />
 <link rel="icon" href="icon-192.png" sizes="192x192" />
-<title>Routine Buddy</title>
+<title>Routines</title>
 <style>
 :root{
   color-scheme:light;
@@ -137,6 +137,11 @@ dialog form{display:flex;flex-direction:column;height:100%;min-height:0}
 .toggle{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
 .toggle input{width:18px;height:18px}
 .modal-body input,.modal-body select,.modal-body textarea{background:var(--off);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:10px;font:inherit;font-size:14px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.reminder-time{display:grid;gap:6px;align-items:center;grid-template-columns:max-content 1fr}
+.reminder-time-label{font-weight:600;font-size:13px;color:#475569}
+.reminder-time-inputs{display:flex;align-items:center;gap:6px}
+.reminder-time-inputs select{width:88px}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;padding:12px 14px;border-top:1px solid var(--border)}
 .modal-actions button{padding:6px 14px;border-radius:10px;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-weight:600;font-size:14px}
 .modal-actions .primary{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -175,7 +180,7 @@ dialog form{display:flex;flex-direction:column;height:100%;min-height:0}
 <div class="app" id="app">
   <header>
     <div class="head-wrap">
-      <button type="button" class="h-title" id="homeBtn"><img src="icon-192.png" alt="" class="h-logo" /><span class="h-title-text">Routine Buddy</span></button>
+      <button type="button" class="h-title" id="homeBtn"><img src="icon-192.png" alt="" class="h-logo" /><span class="h-title-text">Routines</span></button>
       <div class="h-grow"></div>
       <button class="icon-btn icon-only" id="configBtn" aria-label="Open configuration">⚙️</button>
     </div>
@@ -258,14 +263,6 @@ dialog form{display:flex;flex-direction:column;height:100%;min-height:0}
         <input type="text" id="f_title" placeholder="Ex: Brush teeth" required />
       </div>
       <div class="field">
-        <label for="f_emoji">Emoji</label>
-        <input type="text" id="f_emoji" placeholder="Ex: 😁" maxlength="3" />
-        <div class="emoji-picker">
-          <input type="search" id="emojiSearch" placeholder="Search (fruit, workout, relax...)" />
-          <div class="emoji-results" id="emojiResults"></div>
-        </div>
-      </div>
-      <div class="field">
         <label for="f_cat">Category</label>
         <select id="f_cat"></select>
       </div>
@@ -304,7 +301,63 @@ dialog form{display:flex;flex-direction:column;height:100%;min-height:0}
           <input type="checkbox" id="f_notifyDaily" />
           <span id="reminderLabel">Daily reminder</span>
         </label>
-        <p class="field-note" id="reminderNote">Send a notification every morning at 9:00.</p>
+        <div class="reminder-time" id="reminderTimeWrap" role="group" aria-labelledby="reminderTimeLabel">
+          <span class="reminder-time-label" id="reminderTimeLabel">Reminder time</span>
+          <div class="reminder-time-inputs">
+            <label class="sr-only" for="f_reminderHour" id="reminderHourLabel">Hour</label>
+            <select id="f_reminderHour" aria-labelledby="reminderHourLabel">
+              <option value="00">00</option>
+              <option value="01">01</option>
+              <option value="02">02</option>
+              <option value="03">03</option>
+              <option value="04">04</option>
+              <option value="05">05</option>
+              <option value="06">06</option>
+              <option value="07">07</option>
+              <option value="08">08</option>
+              <option value="09" selected>09</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+            </select>
+            <span aria-hidden="true">:</span>
+            <label class="sr-only" for="f_reminderMinute" id="reminderMinuteLabel">Minute</label>
+            <select id="f_reminderMinute" aria-labelledby="reminderMinuteLabel">
+              <option value="00">00</option>
+              <option value="05">05</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+              <option value="25">25</option>
+              <option value="30">30</option>
+              <option value="35">35</option>
+              <option value="40">40</option>
+              <option value="45">45</option>
+              <option value="50">50</option>
+              <option value="55">55</option>
+            </select>
+          </div>
+        </div>
+        <p class="field-note" id="reminderNote">Send a notification every day at your chosen time.</p>
+      </div>
+      <div class="field">
+        <label for="f_emoji">Emoji</label>
+        <input type="text" id="f_emoji" placeholder="Ex: 😁" maxlength="3" />
+        <div class="emoji-picker">
+          <input type="search" id="emojiSearch" placeholder="Search (fruit, workout, relax...)" />
+          <div class="emoji-results" id="emojiResults"></div>
+        </div>
       </div>
     </div>
     <div class="modal-actions">
@@ -340,6 +393,12 @@ const uid = ()=> Math.random().toString(36).slice(2,9)
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 const supportsNotifications = typeof window!=='undefined' && typeof navigator!=='undefined' && 'Notification' in window && 'serviceWorker' in navigator
 const reminderTimers = new Map()
+const DEFAULT_REMINDER_TIME={hour:9, minute:0}
+
+function pad2(value){
+  const num = Number.isFinite(value) ? Math.trunc(value) : 0
+  return num.toString().padStart(2,'0')
+}
 const WEEKDAY_SHORT = ['Mo','Tu','We','Th','Fr','Sa','Su']
 const WEEKDAY_SHORT_LABELS = {
   en: WEEKDAY_SHORT,
@@ -353,7 +412,8 @@ const MOOD_CHOICES = [
   {value:'😥', label:'Tired'},
   {value:'😴', label:'Sleepy'},
 ]
-const STORE_KEY='ROUTINE_BUDDY_V3'
+const STORE_KEY='ROUTINES_V1'
+const LEGACY_STORE_KEYS=['ROUTINE_BUDDY_V3']
 const currentWeekStart = weekStart(todayISO())
 const EMOJIS=[
   {char:'🍎', tags:['apple','fruit','nutrition','vitamin']},
@@ -587,9 +647,12 @@ const LANGUAGE_STRINGS={
     configExport:'Export backup',
     configNote:'Importing a backup will replace your current routines and progress.',
     reminderLabel:'Daily reminder',
-    reminderNote:'Send a notification every morning at 9:00 to stay on track.',
+    reminderNote:'Send a notification every day at your chosen time to stay on track.',
     reminderPermission:'Enable notifications in your browser to receive reminders.',
     reminderUnsupported:'Daily reminders are not supported in this browser.',
+    reminderTimeLabel:'Reminder time',
+    reminderHour:'Hour',
+    reminderMinute:'Minute',
     reminderNotificationTitle:name=>`Daily reminder: ${name}`,
     reminderNotificationBody:name=>`Take a moment for “${name}” today.`,
     dialogNewActivity:'New activity',
@@ -629,9 +692,12 @@ const LANGUAGE_STRINGS={
     configExport:'Exporter une sauvegarde',
     configNote:'Importer une sauvegarde remplacera vos routines et progrès actuels.',
     reminderLabel:'Rappel quotidien',
-    reminderNote:'Envoyer une notification chaque matin à 9h pour rester sur la bonne voie.',
+    reminderNote:'Recevez une notification chaque jour à l’heure de votre choix pour rester sur la bonne voie.',
     reminderPermission:'Activez les notifications du navigateur pour recevoir les rappels.',
     reminderUnsupported:'Les rappels quotidiens ne sont pas disponibles sur ce navigateur.',
+    reminderTimeLabel:"Heure du rappel",
+    reminderHour:'Heure',
+    reminderMinute:'Minute',
     reminderNotificationTitle:name=>`Rappel quotidien : ${name}`,
     reminderNotificationBody:name=>`Prenez un instant pour « ${name} » aujourd’hui.`,
     dialogNewActivity:'Nouvelle activité',
@@ -748,6 +814,18 @@ function reminderEligible(recur){
   return type==='daily' || type==='weekly'
 }
 
+function normalizeReminderTime(value){
+  const base = value && typeof value==='object' ? value : {}
+  let hour = Number(base.hour)
+  if(!Number.isInteger(hour)){ hour = DEFAULT_REMINDER_TIME.hour }
+  hour = Math.min(23, Math.max(0, hour))
+  let minute = Number(base.minute)
+  if(!Number.isInteger(minute)){ minute = DEFAULT_REMINDER_TIME.minute }
+  minute = Math.round(minute / 5) * 5
+  minute = Math.min(55, Math.max(0, minute))
+  return {hour, minute}
+}
+
 function normalizeState(raw){
   const base = raw && typeof raw==='object' ? raw : {}
   const allowedViews=new Set(['home','category','config'])
@@ -832,6 +910,7 @@ function normalizeState(raw){
       copy.cat = next.categories[0]?.id || defaultsList[0]?.id || 'General'
     }
     copy.notifyDaily = !!copy.notifyDaily && reminderEligible(copy.recur) && supportsNotifications
+    copy.reminderTime = normalizeReminderTime(copy.reminderTime)
     return copy
   })
 
@@ -894,7 +973,13 @@ const els={
   reminderField: document.getElementById('reminderField'),
   reminderLabel: document.getElementById('reminderLabel'),
   reminderNote: document.getElementById('reminderNote'),
+  reminderTimeWrap: document.getElementById('reminderTimeWrap'),
+  reminderTimeLabel: document.getElementById('reminderTimeLabel'),
+  reminderHourLabel: document.getElementById('reminderHourLabel'),
+  reminderMinuteLabel: document.getElementById('reminderMinuteLabel'),
   f_notifyDaily: document.getElementById('f_notifyDaily'),
+  f_reminderHour: document.getElementById('f_reminderHour'),
+  f_reminderMinute: document.getElementById('f_reminderMinute'),
   emojiSearch: document.getElementById('emojiSearch'),
   emojiResults: document.getElementById('emojiResults'),
   saveTask: document.getElementById('saveTask'),
@@ -1011,6 +1096,9 @@ function applyLanguage(){
   if(els.languageDialogTitle){ els.languageDialogTitle.textContent = strings.languageTitle }
   if(els.languageDialogIntro){ els.languageDialogIntro.textContent = strings.languageIntro }
   if(els.reminderLabel){ els.reminderLabel.textContent = strings.reminderLabel || 'Daily reminder' }
+  if(els.reminderTimeLabel){ els.reminderTimeLabel.textContent = strings.reminderTimeLabel || 'Reminder time' }
+  if(els.reminderHourLabel){ els.reminderHourLabel.textContent = strings.reminderHour || 'Hour' }
+  if(els.reminderMinuteLabel){ els.reminderMinuteLabel.textContent = strings.reminderMinute || 'Minute' }
   if(els.reminderNote){
     const note = supportsNotifications ? strings.reminderNote : strings.reminderUnsupported
     els.reminderNote.textContent = note || ''
@@ -1488,12 +1576,16 @@ function updateReminderVisibility(){
   if(!els.reminderField){ return }
   if(!supportsNotifications){
     els.reminderField.style.display='none'
+    if(els.reminderTimeWrap){ els.reminderTimeWrap.style.display='none' }
     if(els.f_notifyDaily){ els.f_notifyDaily.checked=false }
     return
   }
   const type = els.f_recur ? els.f_recur.value : ''
   const eligible = type==='daily' || type==='weekly'
   els.reminderField.style.display = eligible ? 'grid' : 'none'
+  if(els.reminderTimeWrap){
+    els.reminderTimeWrap.style.display = eligible ? 'grid' : 'none'
+  }
   if(els.f_notifyDaily){
     els.f_notifyDaily.disabled = !eligible
     if(!eligible){ els.f_notifyDaily.checked=false }
@@ -1506,6 +1598,10 @@ function updateReminderVisibility(){
       els.reminderNote.textContent = strings.reminderNote || ''
     }
   }
+  const deny = Notification.permission==='denied'
+  const disableTime = !eligible || deny
+  if(els.f_reminderHour){ els.f_reminderHour.disabled = disableTime }
+  if(els.f_reminderMinute){ els.f_reminderMinute.disabled = disableTime }
 }
 
 async function ensureNotificationPermission(){
@@ -1544,19 +1640,20 @@ function clearAllReminders(){
   reminderTimers.clear()
 }
 
-function nextReminderDelay(){
+function nextReminderDelay(time){
   const now = new Date()
   const target = new Date()
-  target.setHours(9,0,0,0)
+  const reminderTime = normalizeReminderTime(time)
+  target.setHours(reminderTime.hour, reminderTime.minute, 0, 0)
   if(target<=now){
     target.setDate(target.getDate()+1)
   }
   return target.getTime() - now.getTime()
 }
 
-function scheduleReminder(taskId){
+function scheduleReminder(taskId, time){
   if(!supportsNotifications || Notification.permission!=='granted') return
-  const delay = nextReminderDelay()
+  const delay = nextReminderDelay(time)
   if(!(delay>0)) return
   const handle = setTimeout(()=> triggerReminder(taskId), delay)
   reminderTimers.set(taskId, handle)
@@ -1571,10 +1668,10 @@ function triggerReminder(taskId){
     return
   }
   const strings = getStrings(currentLanguage())
-  const title = typeof strings.reminderNotificationTitle==='function' ? strings.reminderNotificationTitle(task.title) : "Routine reminder"
+  const title = typeof strings.reminderNotificationTitle==='function' ? strings.reminderNotificationTitle(task.title) : "Routines reminder"
   const body = typeof strings.reminderNotificationBody==='function' ? strings.reminderNotificationBody(task.title) : task.title
   const tag = `task-${taskId}-daily-reminder`
-  const finalize = ()=> scheduleReminder(taskId)
+  const finalize = ()=> scheduleReminder(taskId, task.reminderTime)
   navigator.serviceWorker.ready.then(reg=> reg.showNotification(title,{body, icon:'icon-192.png', tag})).catch(()=>{
     if('Notification' in window && Notification.permission==='granted'){
       try{ new Notification(title,{body, icon:'icon-192.png', tag}) }catch(err){ /* ignore */ }
@@ -1594,7 +1691,7 @@ function updateReminders(){
   clearAllReminders()
   state.tasks.forEach(task=>{
     if(task.notifyDaily && reminderEligible(task.recur)){
-      scheduleReminder(task.id)
+      scheduleReminder(task.id, task.reminderTime)
     }
   })
 }
@@ -1665,6 +1762,12 @@ function openCategoryDialog(mode, catId){
   ;(window.requestAnimationFrame || window.setTimeout)(focusField, 0)
 }
 
+function getFormReminderTime(){
+  const hour = els.f_reminderHour ? parseInt(els.f_reminderHour.value, 10) : DEFAULT_REMINDER_TIME.hour
+  const minute = els.f_reminderMinute ? parseInt(els.f_reminderMinute.value, 10) : DEFAULT_REMINDER_TIME.minute
+  return normalizeReminderTime({hour, minute})
+}
+
 function openTaskDialog(mode, task){
   els.taskDialog.returnValue=''
   els.taskDialog.showModal()
@@ -1689,6 +1792,9 @@ function openTaskDialog(mode, task){
     els.f_weeklyTimes.value = task.recur.type==='weekly' ? task.recur.times || 1 : 1
     onRecurChange()
     if(els.f_notifyDaily){ els.f_notifyDaily.checked = !!task.notifyDaily }
+    const reminderTime = normalizeReminderTime(task.reminderTime)
+    if(els.f_reminderHour){ els.f_reminderHour.value = pad2(reminderTime.hour) }
+    if(els.f_reminderMinute){ els.f_reminderMinute.value = pad2(reminderTime.minute) }
     const boxes=[...els.specificDays.querySelectorAll('input')]
     boxes.forEach(box=>{ box.checked = task.recur.type==='specific' ? task.recur.days.includes(+box.value) : false })
   }else{
@@ -1700,6 +1806,8 @@ function openTaskDialog(mode, task){
     els.f_weeklyTimes.value=1
     onRecurChange()
     if(els.f_notifyDaily){ els.f_notifyDaily.checked=false }
+    if(els.f_reminderHour){ els.f_reminderHour.value = pad2(DEFAULT_REMINDER_TIME.hour) }
+    if(els.f_reminderMinute){ els.f_reminderMinute.value = pad2(DEFAULT_REMINDER_TIME.minute) }
     els.specificDays.querySelectorAll('input').forEach(input=> input.checked=false)
   }
   updateEmojiResults()
@@ -1714,7 +1822,7 @@ function submitTask(e){
   const importance = els.f_importance.value
   const freq = els.f_recur.value
   if(!cat){ alert('Pick a category'); return }
-  let recur
+  let recur = {type:'daily'}
   if(freq==='daily') recur = {type:'daily'}
   if(freq==='specific'){
     const days = [...els.specificDays.querySelectorAll('input:checked')].map(i=> +i.value)
@@ -1728,8 +1836,9 @@ function submitTask(e){
     els.f_weeklyTimes.value = times
     recur = {type:'weekly', times}
   }
+  const reminderTime = getFormReminderTime()
   const nowWeek = todayISO()
-  const canRemind = reminderEligible({type:freq})
+  const canRemind = reminderEligible(recur)
   const wantsReminder = !!(els.f_notifyDaily && els.f_notifyDaily.checked)
   const notifyDaily = canRemind && wantsReminder && supportsNotifications && Notification.permission==='granted'
   if(state.ui.editTaskId){
@@ -1741,9 +1850,10 @@ function submitTask(e){
       task.importance=importance
       task.recur=recur
       task.notifyDaily = notifyDaily
+      task.reminderTime = reminderTime
     }
   }else{
-    state.tasks.push({id:uid(), cat, title, emoji, importance, recur, createdAt:nowWeek, notifyDaily})
+    state.tasks.push({id:uid(), cat, title, emoji, importance, recur, createdAt:nowWeek, notifyDaily, reminderTime})
   }
   save()
   els.taskDialog.close()
@@ -1970,7 +2080,27 @@ function CATS(){
 }
 
 function save(){ if(!state) return; localStorage.setItem(STORE_KEY, JSON.stringify(state)) }
-function load(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)) }catch(e){return null}}
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY)
+    if(raw){
+      return JSON.parse(raw)
+    }
+  }catch(e){
+    return null
+  }
+  for(const key of LEGACY_STORE_KEYS){
+    try{
+      const legacy = localStorage.getItem(key)
+      if(legacy){
+        const parsed = JSON.parse(legacy)
+        localStorage.setItem(STORE_KEY, legacy)
+        return parsed
+      }
+    }catch(err){ /* ignore legacy parse errors */ }
+  }
+  return null
+}
 
 function exportBackup(){
   if(!state) return
@@ -2007,7 +2137,7 @@ function handleImportFile(event){
       initializeApp()
     }catch(err){
       console.error('Import failed', err)
-      alert('Could not import backup. Make sure the file is a valid Routine Buddy export.')
+      alert('Could not import backup. Make sure the file is a valid Routines export.')
     }finally{
       input.value=''
     }

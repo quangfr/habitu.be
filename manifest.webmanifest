@@ -1,6 +1,6 @@
 {
-  "name": "Routine Buddy",
-  "short_name": "RoutineBuddy",
+  "name": "Routines",
+  "short_name": "Routines",
   "description": "Track and reflect on routines across categories.",
   "start_url": ".",
   "display": "standalone",

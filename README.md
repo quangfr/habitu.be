@@ -1,6 +1,6 @@
-# Routine Buddy (prototype)
+# Routines (prototype)
 
-Routine Buddy is a single-page prototype that helps track recurring routines on a weekly cadence. The app runs entirely in the browser and persists data locally, so it can be installed like a lightweight PWA and used offline.
+Routines is a single-page prototype that helps track recurring routines on a weekly cadence. The app runs entirely in the browser and persists data locally, so it can be installed like a lightweight PWA and used offline.
 
 ## Interface tour
 
@@ -34,8 +34,9 @@ Routine Buddy is a single-page prototype that helps track recurring routines on 
   - **Specific day(s)** – due only on the checked weekdays.
   - **Weekly target** – choose how many times the activity should occur during the week.
 - Activity dialogs allow editing, deleting, and picking emoji via a searchable helper.
+- Daily reminders can be enabled for daily or weekly targets, with configurable hour and minute.
 
 ## Data & persistence
-- All information is saved to `localStorage` under the key `ROUTINE_BUDDY_V3`.
+- All information is saved to `localStorage` under the key `ROUTINES_V1` (existing `ROUTINE_BUDDY_V3` data is migrated automatically on load).
 - The prototype does not rely on external services; everything runs locally in the browser.
 - A service worker is registered on load so the app can be installed and revisited offline.
