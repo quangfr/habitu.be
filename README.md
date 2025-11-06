@@ -5,11 +5,11 @@ Routine Buddy is a single-page prototype that helps track recurring routines on 
 ## Interface tour
 
 ### Weekly overview
-- The top summary displays the count of routines that are **On track**, need you to **Keep Up**, or require you to **Catch Up** in a single status line: `🟩X On track 🟨X Keep Up 🟥X Catch Up`.
+- The top summary displays the count of routines labeled **Good**, **Careful**, and **Bad**, paired with a linear progress bar that visualises their distribution.
 - Week navigation controls allow browsing past weeks while preventing travel beyond the current week. The active range is shown beside the navigation buttons.
 - The home grid lists every category. Each card shows:
   - The category name.
-  - A compact counter such as `3/5` indicating how many scheduled occurrences have been completed for the selected week (or "No activities" when empty).
+  - A circular progress indicator summarising completions versus the weekly target for the selected week (or an empty state when nothing is scheduled).
   - A dedicated catch-up row beneath the title with emoji reminders for overdue **must-do** routines.
   - Seven day cells (Monday → Sunday) coloured according to aggregate progress for that day (green, yellow, red, future, or off).
 

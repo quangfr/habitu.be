@@ -31,7 +31,10 @@ button{font:inherit;color:inherit}
 .app{min-height:100svh;display:flex;flex-direction:column;}
 header{position:sticky;top:0;z-index:4;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
 .head-wrap{display:flex;align-items:center;gap:10px;padding:8px 14px;max-width:960px;margin:0 auto;width:100%}
-.h-title{font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.h-title{font-weight:700;font-size:17px;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;background:none;border:1px solid transparent;padding:4px 6px;border-radius:8px;color:inherit;cursor:pointer;transition:all .15s ease}
+.h-title:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.h-title:hover{background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.2)}
+.h-title:active{transform:translateY(1px)}
 .h-logo{width:22px;height:22px;border-radius:6px;box-shadow:0 2px 6px rgba(15,23,42,.15)}
 .h-grow{flex:1}
 .icon-btn{background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:6px 10px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;transition:all .15s ease;font-size:14px;line-height:1}
@@ -46,10 +49,20 @@ header{position:sticky;top:0;z-index:4;background:rgba(255,255,255,.92);backdrop
 
 main{flex:1;display:flex;flex-direction:column;gap:12px;padding:12px}
 main>section{max-width:960px;width:100%;margin:0 auto}
-.summary{border:1px solid var(--border);border-radius:var(--radius);padding:12px;background:var(--panel);box-shadow:0 8px 18px rgba(15,23,42,.06)}
-.summary-status{display:flex;flex-wrap:wrap;gap:4px;font-size:13px;font-weight:600;align-items:center}
-.summary-status span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
-.summary-status span span{font-weight:700}
+.summary{border:1px solid var(--border);border-radius:var(--radius);padding:12px;background:var(--panel);box-shadow:0 8px 18px rgba(15,23,42,.06);display:grid;gap:10px}
+.summary-progress{width:100%;display:block}
+.summary-bar{width:100%;height:12px;border-radius:999px;background:var(--off);overflow:hidden;display:flex}
+.summary-segment{height:100%;display:block;width:0;transition:width .2s ease}
+.summary-segment[data-status="green"]{background:rgba(22,163,74,.85)}
+.summary-segment[data-status="yellow"]{background:rgba(234,179,8,.9)}
+.summary-segment[data-status="red"]{background:rgba(220,38,38,.85)}
+.summary-status{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;font-weight:600;align-items:center;justify-content:space-between}
+.summary-status span{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.summary-count{font-size:14px;font-weight:700}
+.summary-label{color:var(--muted);font-weight:600}
+.summary-status span[data-status="green"] .summary-label{color:#047857}
+.summary-status span[data-status="yellow"] .summary-label{color:#92400e}
+.summary-status span[data-status="red"] .summary-label{color:#b91c1c}
 .week-cell{width:34px;height:34px;border-radius:12px;border:1px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:600;gap:2px;cursor:default}
 .week-cell.status-green{background:rgba(22,163,74,.12);color:#047857;border-color:rgba(22,163,74,.25)}
 .week-cell.status-yellow{background:rgba(234,179,8,.18);color:#92400e;border-color:rgba(234,179,8,.28)}
@@ -67,6 +80,12 @@ main>section{max-width:960px;width:100%;margin:0 auto}
 .catchup-line{display:flex;gap:6px;font-size:16px}
 .catchup-line[aria-hidden="true"]{display:none}
 .count{font-size:12px;color:var(--muted);font-weight:600;text-align:right}
+.circle-progress{--progress:0;position:relative;width:46px;height:46px;border-radius:50%;background:conic-gradient(var(--accent) 0deg calc(360deg * var(--progress)),rgba(148,163,184,.35) calc(360deg * var(--progress)) 360deg);display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--text);transition:background .3s ease}
+.circle-progress::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--panel)}
+.circle-progress>span{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;line-height:1}
+.circle-progress>span small{font-size:11px;color:var(--muted);font-weight:600}
+.circle-progress[data-empty="true"]{background:var(--off);color:var(--muted)}
+.circle-progress[data-empty="true"]::after{background:var(--panel)}
 .cell-row{display:flex;gap:3px}
 .cell-row .week-cell{flex:1;min-width:0;cursor:default;height:28px;font-size:10px}
 
@@ -77,7 +96,6 @@ main>section{max-width:960px;width:100%;margin:0 auto}
 .cat-head h2{margin:0;font-size:18px;flex:1}
 .cat-mood{display:flex;align-items:center;gap:10px;margin:0 0 12px}
 .cat-mood[hidden]{display:none}
-.cat-mood-label{font-weight:600;font-size:13px;color:#475569}
 .cat-mood-options{display:flex;gap:6px;flex-wrap:wrap}
 .cat-mood-options button{padding:6px 10px;border-radius:10px;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;width:40px;height:36px;transition:all .15s ease}
 .cat-mood-options button:hover{border-color:var(--accent)}
@@ -91,7 +109,8 @@ main>section{max-width:960px;width:100%;margin:0 auto}
 .task .em{font-size:22px}
 .task-info{flex:1;min-width:0}
 .task .title{font-weight:600;font-size:15px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.task .title .freq{font-size:16px}
+.task .title .freq{font-size:12px;color:var(--muted);font-weight:600;display:inline-flex;align-items:center;gap:4px;line-height:1}
+.task .title .freq .freq-value{font-size:13px;font-weight:700}
 .task-actions{display:flex;gap:6px;align-items:center;margin-left:auto}
 .task-actions button{padding:4px 6px;border-radius:8px;border:1px solid var(--border);background:var(--off);cursor:pointer;font-size:14px;line-height:1}
 .week-grid{display:flex;gap:6px;flex-wrap:wrap}
@@ -134,6 +153,10 @@ dialog form{display:flex;flex-direction:column;height:100%;min-height:0}
 .config-actions .icon-btn{width:100%;justify-content:center;padding:10px}
 .config-note{color:var(--muted);font-size:13px}
 
+.language-body{gap:16px}
+.language-options{display:grid;gap:10px}
+.language-options button{justify-content:center}
+
 @media (max-width:520px){
   .summary{padding:10px}
   .summary-status{gap:4px}
@@ -148,7 +171,7 @@ dialog form{display:flex;flex-direction:column;height:100%;min-height:0}
 <div class="app" id="app">
   <header>
     <div class="head-wrap">
-      <div class="h-title"><img src="icon-192.png" alt="" class="h-logo" />Routine Buddy</div>
+      <button type="button" class="h-title" id="homeBtn"><img src="icon-192.png" alt="" class="h-logo" /><span class="h-title-text">Routine Buddy</span></button>
       <div class="h-grow"></div>
       <button class="icon-btn icon-only" id="configBtn" aria-label="Open configuration">⚙️</button>
     </div>
@@ -165,10 +188,17 @@ dialog form{display:flex;flex-direction:column;height:100%;min-height:0}
 
   <main>
     <section class="summary" id="summary">
+      <div class="summary-progress" role="img" aria-label="">
+        <div class="summary-bar">
+          <span class="summary-segment" data-status="green" id="summaryBarGreen"></span>
+          <span class="summary-segment" data-status="yellow" id="summaryBarYellow"></span>
+          <span class="summary-segment" data-status="red" id="summaryBarRed"></span>
+        </div>
+      </div>
       <div class="summary-status">
-        <span class="status-green">🟩</span><span id="pillGreen">0</span> On track •
-        <span class="status-yellow">🟨</span><span id="pillYellow">0</span> Keep up •
-       <span class="status-red">🟥</span> <span id="pillRed">0</span> Catch up
+        <span data-status="green"><span class="summary-count" id="pillGreen">0</span><span class="summary-label" id="labelGreen">Good</span></span>
+        <span data-status="yellow"><span class="summary-count" id="pillYellow">0</span><span class="summary-label" id="labelYellow">Careful</span></span>
+        <span data-status="red"><span class="summary-count" id="pillRed">0</span><span class="summary-label" id="labelRed">Bad</span></span>
       </div>
     </section>
 
@@ -202,6 +232,17 @@ dialog form{display:flex;flex-direction:column;height:100%;min-height:0}
     </section>
   </main>
 </div>
+
+<dialog id="languageDialog">
+  <div class="modal-head"><span id="languageDialogTitle">Choose your language</span></div>
+  <div class="modal-body language-body">
+    <p id="languageDialogIntro">Select your preferred language to personalize the experience.</p>
+    <div class="language-options">
+      <button type="button" class="icon-btn" data-lang="en">English</button>
+      <button type="button" class="icon-btn" data-lang="fr">Français</button>
+    </div>
+  </div>
+</dialog>
 
 <dialog id="taskDialog">
   <form method="dialog" id="taskForm">
@@ -239,8 +280,15 @@ dialog form{display:flex;flex-direction:column;height:100%;min-height:0}
         </select>
       </div>
       <div class="field" id="weeklyWrap" style="display:none">
-        <label for="f_weeklyTimes">Times per week</label>
-        <input type="number" id="f_weeklyTimes" min="1" max="6" value="1" />
+        <label for="f_weeklyTimes" id="weeklyTimesLabel">Times per week</label>
+        <select id="f_weeklyTimes">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
       </div>
       <div class="field" id="specificWrap" style="display:none">
         <label>Days of the week</label>
@@ -496,14 +544,146 @@ const EMOJIS=[
   {char:'🏌️‍♀️', tags:['golf','outdoor','sport']},
 ]
 
-const DEFAULT_CATEGORIES=[
-  {id:'Fitness', name:'Fitness'},
-  {id:'Nutrition', name:'Nutrition'},
-  {id:'Rest', name:'Rest'},
-  {id:'Connection', name:'Connection'},
-  {id:'Learning', name:'Learning'},
-  {id:'Leisure', name:'Leisure'},
+const LANGUAGE_STRINGS={
+  en:{
+    label:'English',
+    weekPrefix:'W',
+    locale:'en-US',
+    summary:{green:'Good',yellow:'Careful',red:'Bad'},
+    summaryDistribution:counts=>`Good: ${counts.green}, Careful: ${counts.yellow}, Bad: ${counts.red}`,
+    progressLabel:(done,total)=>`${done} of ${total} completed`,
+    emptyProgress:'No activities yet',
+    noCategories:'Add a category to get started.',
+    noActivities:'No activities in this category yet.',
+    weekNow:'Now',
+    weekNowAria:'Go to current week',
+    weeklyTimes:'Times per week',
+    languageTitle:'Choose your language',
+    languageIntro:'Select your preferred language to personalize the experience.',
+    configTitle:'Configuration',
+    configAddCategory:'Add category',
+    configAddActivity:'Add activity',
+    configImport:'Import backup (replace)',
+    configExport:'Export backup',
+    configNote:'Importing a backup will replace your current routines and progress.',
+    dialogNewActivity:'New activity',
+    dialogEditActivity:'Edit activity',
+    dialogNewCategory:'New category',
+    dialogEditCategory:'Edit category',
+    cancel:'Cancel',
+    delete:'Delete',
+    save:'Save',
+    goBack:'Go back',
+    homeTitle:'Return to home',
+    openConfig:'Open configuration',
+    closeConfig:'Close configuration',
+    moodPicker:'Select mood',
+  },
+  fr:{
+    label:'Français',
+    weekPrefix:'S',
+    locale:'fr-FR',
+    summary:{green:'Bon',yellow:'Attention',red:'Mauvais'},
+    summaryDistribution:counts=>`Bon : ${counts.green}, Attention : ${counts.yellow}, Mauvais : ${counts.red}`,
+    progressLabel:(done,total)=>`${done} sur ${total} réalisés`,
+    emptyProgress:'Aucune activité',
+    noCategories:'Ajoutez une catégorie pour commencer.',
+    noActivities:'Aucune activité dans cette catégorie pour le moment.',
+    weekNow:'Cette semaine',
+    weekNowAria:'Revenir à cette semaine',
+    weeklyTimes:'Nombre de fois par semaine',
+    languageTitle:'Choisissez votre langue',
+    languageIntro:"Sélectionnez votre langue préférée pour personnaliser l’expérience.",
+    configTitle:'Configuration',
+    configAddCategory:'Ajouter une catégorie',
+    configAddActivity:'Ajouter une activité',
+    configImport:'Importer une sauvegarde (remplace)',
+    configExport:'Exporter une sauvegarde',
+    configNote:'Importer une sauvegarde remplacera vos routines et progrès actuels.',
+    dialogNewActivity:'Nouvelle activité',
+    dialogEditActivity:"Modifier l’activité",
+    dialogNewCategory:'Nouvelle catégorie',
+    dialogEditCategory:'Modifier la catégorie',
+    cancel:'Annuler',
+    delete:'Supprimer',
+    save:'Enregistrer',
+    goBack:'Retour',
+    homeTitle:"Revenir à l’accueil",
+    openConfig:'Ouvrir la configuration',
+    closeConfig:'Fermer la configuration',
+    moodPicker:'Choisir une ambiance',
+  }
+}
+
+const CATEGORY_DEFS=[
+  {id:'Fitness', name:{en:'Fitness',fr:'Forme'}},
+  {id:'Nutrition', name:{en:'Nutrition',fr:'Nutrition'}},
+  {id:'Rest', name:{en:'Rest',fr:'Repos'}},
+  {id:'Connection', name:{en:'Connection',fr:'Lien social'}},
+  {id:'Learning', name:{en:'Learning',fr:'Apprentissages'}},
+  {id:'Leisure', name:{en:'Leisure',fr:'Loisirs'}},
 ]
+
+const SAMPLE_TASKS=[
+  {cat:'Fitness',emoji:'🤸',importance:'should',recur:{type:'daily'},title:{en:'5 min warm-up',fr:'Échauffement 5 min'}},
+  {cat:'Fitness',emoji:'🏃',importance:'must',recur:{type:'specific',days:[1,3,5]},title:{en:'20 min cardio',fr:'Cardio 20 min'}},
+  {cat:'Fitness',emoji:'💪',importance:'must',recur:{type:'specific',days:[2,4]},title:{en:'15 min strength',fr:'Renforcement 15 min'}},
+  {cat:'Fitness',emoji:'🧘',importance:'should',recur:{type:'daily'},title:{en:'Post-session stretches',fr:'Étirements après séance'}},
+  {cat:'Fitness',emoji:'🚲',importance:'should',recur:{type:'specific',days:[6]},title:{en:'Bike ride',fr:'Sortie vélo'}},
+
+  {cat:'Nutrition',emoji:'🍳',importance:'must',recur:{type:'daily'},title:{en:'Protein breakfast',fr:'Petit-déj protéiné'}},
+  {cat:'Nutrition',emoji:'🍎',importance:'should',recur:{type:'daily'},title:{en:'2 fresh fruits',fr:'2 fruits frais'}},
+  {cat:'Nutrition',emoji:'💧',importance:'must',recur:{type:'daily'},title:{en:'Drink 1.5L water',fr:"Boire 1,5 L d'eau"}},
+  {cat:'Nutrition',emoji:'🥗',importance:'should',recur:{type:'specific',days:[1,4]},title:{en:'Veggie meal',fr:'Repas végétarien'}},
+  {cat:'Nutrition',emoji:'🐟',importance:'should',recur:{type:'specific',days:[5]},title:{en:'Fish meal',fr:'Repas de poisson'}},
+
+  {cat:'Rest',emoji:'🛏️',importance:'must',recur:{type:'daily'},title:{en:'In bed before 11pm',fr:'Au lit avant 23h'}},
+  {cat:'Rest',emoji:'📵',importance:'should',recur:{type:'daily'},title:{en:'Screen off 1h before bed',fr:'Écran éteint 1h avant'}},
+  {cat:'Rest',emoji:'😴',importance:'should',recur:{type:'specific',days:[1,4]},title:{en:'20 min nap',fr:'Sieste 20 min'}},
+  {cat:'Rest',emoji:'🌬️',importance:'should',recur:{type:'specific',days:[2,5]},title:{en:'Calm breathing',fr:'Respiration calme'}},
+  {cat:'Rest',emoji:'🪟',importance:'should',recur:{type:'daily'},title:{en:'Air out bedroom',fr:'Aérer la chambre'}},
+
+  {cat:'Connection',emoji:'💬',importance:'should',recur:{type:'specific',days:[2,4]},title:{en:'Message a loved one',fr:'Message à un proche'}},
+  {cat:'Connection',emoji:'📞',importance:'must',recur:{type:'weekly',times:1},title:{en:'Call family',fr:'Appeler la famille'}},
+  {cat:'Connection',emoji:'🍽️',importance:'should',recur:{type:'specific',days:[3]},title:{en:'Shared lunch',fr:'Déjeuner partagé'}},
+  {cat:'Connection',emoji:'🤝',importance:'should',recur:{type:'daily'},title:{en:'Give a sincere compliment',fr:'Faire un compliment sincère'}},
+  {cat:'Connection',emoji:'🕺',importance:'must',recur:{type:'specific',days:[5]},title:{en:'Social outing',fr:'Sortie sociale'}},
+
+  {cat:'Learning',emoji:'📚',importance:'should',recur:{type:'daily'},title:{en:'Read for 15 min',fr:'Lire 15 min'}},
+  {cat:'Learning',emoji:'💻',importance:'must',recur:{type:'specific',days:[1,3]},title:{en:'Online course',fr:'Cours en ligne'}},
+  {cat:'Learning',emoji:'🗂️',importance:'should',recur:{type:'specific',days:[2,5]},title:{en:'Review vocabulary',fr:'Réviser le vocabulaire'}},
+  {cat:'Learning',emoji:'🗣️',importance:'should',recur:{type:'specific',days:[4]},title:{en:'Practice language',fr:'Pratiquer la langue'}},
+  {cat:'Learning',emoji:'📝',importance:'should',recur:{type:'weekly',times:1},title:{en:'Learning journal',fr:"Journal d'apprentissage"}},
+
+  {cat:'Leisure',emoji:'🎨',importance:'should',recur:{type:'specific',days:[6]},title:{en:'Drawing session',fr:'Session dessin'}},
+  {cat:'Leisure',emoji:'🎸',importance:'should',recur:{type:'specific',days:[2,5]},title:{en:'Play music',fr:'Jouer de la musique'}},
+  {cat:'Leisure',emoji:'🎲',importance:'should',recur:{type:'specific',days:[5]},title:{en:'Game night',fr:'Soirée jeux'}},
+  {cat:'Leisure',emoji:'🌳',importance:'should',recur:{type:'specific',days:[6]},title:{en:'Nature outing',fr:'Sortie nature'}},
+  {cat:'Leisure',emoji:'📺',importance:'should',recur:{type:'daily'},title:{en:'Watch a show',fr:'Regarder une série'}},
+]
+
+function sanitizeLanguage(lang){ return lang==='fr' ? 'fr' : 'en' }
+function getStrings(lang){ return LANGUAGE_STRINGS[sanitizeLanguage(lang)] || LANGUAGE_STRINGS.en }
+function cloneRecur(recur){
+  if(!recur || typeof recur!=='object'){ return {type:'daily'} }
+  if(recur.type==='weekly'){ return {type:'weekly', times:recur.times} }
+  if(recur.type==='specific'){ return {type:'specific', days:Array.isArray(recur.days) ? [...recur.days] : []} }
+  return {...recur}
+}
+function defaultCategories(lang){
+  const safe = sanitizeLanguage(lang)
+  return CATEGORY_DEFS.map(def=>({id:def.id, name:def.name[safe] || def.name.en}))
+}
+function sampleTasks(lang){
+  const safe = sanitizeLanguage(lang)
+  return SAMPLE_TASKS.map(task=>({
+    cat:task.cat,
+    emoji:task.emoji,
+    importance:task.importance,
+    recur:cloneRecur(task.recur),
+    title:task.title[safe] || task.title.en,
+  }))
+}
 
 function cloneDoneMap(source){
   const out={}
@@ -526,19 +706,22 @@ function normalizeState(raw){
     categories:Array.isArray(base.categories) ? base.categories.map(cat=>({...cat})) : [],
     ui: base.ui && typeof base.ui==='object' ? {...base.ui} : {},
   }
+  const lang = sanitizeLanguage(next.ui.language || base.language)
   next.ui.selectedWeekStart = next.ui.selectedWeekStart || next.ui.historyWeekStart || currentWeekStart
   next.ui.currentView = allowedViews.has(next.ui.currentView) ? next.ui.currentView : 'home'
   next.ui.currentCat = next.ui.currentCat || null
   next.ui.categoryWeekStart = next.ui.categoryWeekStart || next.ui.selectedWeekStart
   next.ui.editTaskId = null
   next.ui.editCategoryId = null
+  next.ui.language = lang
   delete next.ui.historyWeekStart
   delete next.ui.categorySource
 
+  const defaultsList = defaultCategories(lang)
   if(next.categories.length===0){
-    next.categories = DEFAULT_CATEGORIES.map(c=>({...c}))
+    next.categories = defaultsList.map(c=>({...c}))
   }else{
-    const defaults = Object.fromEntries(DEFAULT_CATEGORIES.map(c=>[c.id,c]))
+    const defaults = Object.fromEntries(defaultsList.map(c=>[c.id,c]))
     next.categories = next.categories.map(cat=>{
       const baseCat = defaults[cat.id] || {}
       const id = cat.id || ('cat-'+uid())
@@ -552,7 +735,7 @@ function normalizeState(raw){
       if(mood){ normalized.mood = mood }
       return normalized
     })
-    for(const def of DEFAULT_CATEGORIES){
+    for(const def of defaultsList){
       if(!next.categories.some(c=>c.id===def.id)){
         next.categories.push({...def})
       }
@@ -576,7 +759,7 @@ function normalizeState(raw){
       copy.recur.days = copy.recur.days.map(d=> Number(d)).filter(d=> Number.isInteger(d))
     }
     if(!copy.cat){
-      copy.cat = next.categories[0]?.id || DEFAULT_CATEGORIES[0]?.id || 'General'
+      copy.cat = next.categories[0]?.id || defaultsList[0]?.id || 'General'
     }
     return copy
   })
@@ -591,14 +774,24 @@ function normalizeState(raw){
   return next
 }
 
-let state = normalizeState(load() || seed())
-save()
+let state = null
+let eventsBound = false
+let languageEventsBound = false
+
+function currentLanguage(){ return state ? sanitizeLanguage(state.ui?.language) : 'en' }
 
 const els={
   summary: document.getElementById('summary'),
+  summaryProgress: document.querySelector('.summary-progress'),
   pillGreen: document.getElementById('pillGreen'),
   pillYellow: document.getElementById('pillYellow'),
   pillRed: document.getElementById('pillRed'),
+  summaryBarGreen: document.getElementById('summaryBarGreen'),
+  summaryBarYellow: document.getElementById('summaryBarYellow'),
+  summaryBarRed: document.getElementById('summaryBarRed'),
+  labelGreen: document.getElementById('labelGreen'),
+  labelYellow: document.getElementById('labelYellow'),
+  labelRed: document.getElementById('labelRed'),
   catGrid: document.getElementById('catGrid'),
   home: document.getElementById('home'),
   category: document.getElementById('category'),
@@ -609,6 +802,7 @@ const els={
   weekNext: document.getElementById('weekNext'),
   weekNow: document.getElementById('weekNow'),
   configBtn: document.getElementById('configBtn'),
+  homeBtn: document.getElementById('homeBtn'),
   backBtn: document.getElementById('backBtn'),
   catTitle: document.getElementById('catTitle'),
   catMood: document.getElementById('catMood'),
@@ -640,49 +834,158 @@ const els={
   configImport: document.getElementById('configImport'),
   configExport: document.getElementById('configExport'),
   configImportInput: document.getElementById('configImportInput'),
+  configTitle: document.querySelector('.config-head h2'),
+  configNote: document.querySelector('.config-note'),
+  languageDialog: document.getElementById('languageDialog'),
+  languageDialogTitle: document.getElementById('languageDialogTitle'),
+  languageDialogIntro: document.getElementById('languageDialogIntro'),
+  weeklyTimesLabel: document.getElementById('weeklyTimesLabel'),
 }
 
-renderSummary()
-renderHome()
-if(state.ui.currentView==='category' && state.ui.currentCat){ renderCategory(state.ui.currentCat, state.ui.categoryWeekStart) }
-updateWeekLabel()
-updateView(state.ui.currentView)
+els.languageOptions = els.languageDialog ? els.languageDialog.querySelectorAll('[data-lang]') : []
 
-els.backBtn.addEventListener('click', ()=>{
-  state.ui.currentCat=null
-  updateView('home')
-})
-if(els.configBtn){
-  els.configBtn.addEventListener('click', ()=>{
-    if(state.ui.currentView==='config'){
-      updateView('home')
-    }else{
+function bindEvents(){
+  if(eventsBound) return
+  eventsBound = true
+  if(els.backBtn){
+    els.backBtn.addEventListener('click', ()=>{
+      if(!state) return
       state.ui.currentCat=null
-      updateView('config')
-    }
-  })
+      updateView('home')
+    })
+  }
+  if(els.configBtn){
+    els.configBtn.addEventListener('click', ()=>{
+      if(!state) return
+      if(state.ui.currentView==='config'){
+        updateView('home')
+      }else{
+        state.ui.currentCat=null
+        updateView('config')
+      }
+    })
+  }
+  if(els.homeBtn){
+    els.homeBtn.addEventListener('click', ()=>{
+      if(!state) return
+      state.ui.currentCat=null
+      updateView('home')
+    })
+  }
+  if(els.configAddActivity){ els.configAddActivity.addEventListener('click', ()=> openTaskDialog('create')) }
+  if(els.configAddCategory){ els.configAddCategory.addEventListener('click', ()=> openCategoryDialog('create')) }
+  if(els.configExport){ els.configExport.addEventListener('click', exportBackup) }
+  if(els.configImport){ els.configImport.addEventListener('click', ()=>{ if(els.configImportInput) els.configImportInput.click() }) }
+  if(els.configImportInput){ els.configImportInput.addEventListener('change', handleImportFile) }
+  if(els.closeDialog){ els.closeDialog.addEventListener('click', ()=> els.taskDialog.close()) }
+  if(els.closeCategoryDialog){ els.closeCategoryDialog.addEventListener('click', ()=> els.categoryDialog.close()) }
+  if(els.f_recur){ els.f_recur.addEventListener('change', onRecurChange) }
+  if(els.weekPrev){ els.weekPrev.addEventListener('click', ()=>{ changeSelectedWeek(-1) }) }
+  if(els.weekNext){ els.weekNext.addEventListener('click', ()=>{ changeSelectedWeek(1) }) }
+  if(els.weekNow){ els.weekNow.addEventListener('click', goToCurrentWeek) }
+  if(els.emojiSearch){ els.emojiSearch.addEventListener('input', updateEmojiResults) }
+  if(els.saveTask){ els.saveTask.addEventListener('click', submitTask) }
+  if(els.deleteTask){ els.deleteTask.addEventListener('click', deleteCurrentTask) }
+  if(els.saveCategory){ els.saveCategory.addEventListener('click', submitCategory) }
+  if(els.categoryForm){ els.categoryForm.addEventListener('submit', e=>{ e.preventDefault(); submitCategory() }) }
+  if(els.categoryDialog){ els.categoryDialog.addEventListener('close', ()=>{ if(state){ state.ui.editCategoryId=null } }) }
 }
-if(els.configAddActivity){ els.configAddActivity.addEventListener('click', ()=> openTaskDialog('create')) }
-if(els.configAddCategory){ els.configAddCategory.addEventListener('click', ()=> openCategoryDialog('create')) }
-if(els.configExport){ els.configExport.addEventListener('click', exportBackup) }
-if(els.configImport){ els.configImport.addEventListener('click', ()=>{ if(els.configImportInput) els.configImportInput.click() }) }
-if(els.configImportInput){ els.configImportInput.addEventListener('change', handleImportFile) }
-els.closeDialog.addEventListener('click', ()=> els.taskDialog.close())
-els.closeCategoryDialog.addEventListener('click', ()=> els.categoryDialog.close())
-els.f_recur.addEventListener('change', onRecurChange)
-els.weekPrev.addEventListener('click', ()=>{ changeSelectedWeek(-1) })
-els.weekNext.addEventListener('click', ()=>{ changeSelectedWeek(1) })
-if(els.weekNow){ els.weekNow.addEventListener('click', goToCurrentWeek) }
-els.emojiSearch.addEventListener('input', updateEmojiResults)
-els.saveTask.addEventListener('click', submitTask)
-els.deleteTask.addEventListener('click', deleteCurrentTask)
-els.saveCategory.addEventListener('click', submitCategory)
-if(els.categoryForm){ els.categoryForm.addEventListener('submit', e=>{ e.preventDefault(); submitCategory() }) }
-if(els.categoryDialog){ els.categoryDialog.addEventListener('close', ()=>{ state.ui.editCategoryId=null }) }
 
 updateEmojiResults()
 initSpecificDayPicker()
 onRecurChange()
+
+function initializeApp(){
+  if(!state) return
+  bindEvents()
+  applyLanguage()
+  refreshAll()
+  updateView(state.ui.currentView || 'home')
+}
+
+function applyLanguage(){
+  if(!state) return
+  const lang = currentLanguage()
+  const strings = getStrings(lang)
+  document.documentElement.lang = lang
+  if(els.weekNow){
+    els.weekNow.textContent = strings.weekNow
+    els.weekNow.setAttribute('aria-label', strings.weekNowAria || strings.weekNow)
+  }
+  if(els.labelGreen){ els.labelGreen.textContent = strings.summary?.green || 'Good' }
+  if(els.labelYellow){ els.labelYellow.textContent = strings.summary?.yellow || 'Careful' }
+  if(els.labelRed){ els.labelRed.textContent = strings.summary?.red || 'Bad' }
+  if(els.configAddCategory){ els.configAddCategory.textContent = strings.configAddCategory }
+  if(els.configAddActivity){ els.configAddActivity.textContent = strings.configAddActivity }
+  if(els.configImport){ els.configImport.textContent = strings.configImport }
+  if(els.configExport){ els.configExport.textContent = strings.configExport }
+  if(els.configTitle){ els.configTitle.textContent = strings.configTitle }
+  if(els.configNote){ els.configNote.textContent = strings.configNote }
+  if(els.weeklyTimesLabel){ els.weeklyTimesLabel.textContent = strings.weeklyTimes }
+  if(els.languageDialogTitle){ els.languageDialogTitle.textContent = strings.languageTitle }
+  if(els.languageDialogIntro){ els.languageDialogIntro.textContent = strings.languageIntro }
+  const taskCancel = els.taskDialog ? els.taskDialog.querySelector('button[value="cancel"]') : null
+  if(taskCancel){ taskCancel.textContent = strings.cancel }
+  if(els.saveTask){ els.saveTask.textContent = strings.save }
+  if(els.deleteTask){ els.deleteTask.textContent = strings.delete }
+  const categoryCancel = els.categoryDialog ? els.categoryDialog.querySelector('button[value="cancel"]') : null
+  if(categoryCancel){ categoryCancel.textContent = strings.cancel }
+  if(els.saveCategory){ els.saveCategory.textContent = strings.save }
+  if(els.homeBtn){ els.homeBtn.setAttribute('aria-label', strings.homeTitle || strings.weekNow) }
+  if(els.backBtn){ els.backBtn.setAttribute('aria-label', strings.goBack || 'Go back') }
+  updateConfigButton(state.ui.currentView || 'home')
+  updateWeekLabel()
+}
+
+function bindLanguageOptions(){
+  if(languageEventsBound || !els.languageOptions) return
+  Array.from(els.languageOptions).forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const choice = sanitizeLanguage(btn.dataset.lang)
+      chooseLanguage(choice)
+    })
+  })
+  languageEventsBound = true
+}
+
+function detectDefaultLanguage(){
+  if(typeof navigator==='undefined' || !navigator.language) return 'en'
+  return navigator.language.toLowerCase().startsWith('fr') ? 'fr' : 'en'
+}
+
+function showLanguageDialog(prefLang){
+  const lang = sanitizeLanguage(prefLang || detectDefaultLanguage())
+  const strings = getStrings(lang)
+  if(els.languageDialogTitle){ els.languageDialogTitle.textContent = strings.languageTitle }
+  if(els.languageDialogIntro){ els.languageDialogIntro.textContent = strings.languageIntro }
+  if(els.languageDialog){
+    els.languageDialog.showModal()
+  }else{
+    chooseLanguage(lang)
+  }
+}
+
+function chooseLanguage(lang){
+  const selected = sanitizeLanguage(lang)
+  state = normalizeState(seed(selected))
+  save()
+  if(els.languageDialog && typeof els.languageDialog.close==='function'){
+    try{ els.languageDialog.close() }catch(e){ /* dialog might not be open */ }
+  }
+  initializeApp()
+}
+
+function startApp(){
+  bindLanguageOptions()
+  const stored = load()
+  if(stored){
+    state = normalizeState(stored)
+    save()
+    initializeApp()
+  }else{
+    showLanguageDialog()
+  }
+}
 
 function updateView(view){
   state.ui.currentView=view
@@ -713,7 +1016,8 @@ function updateView(view){
 function updateConfigButton(view){
   if(!els.configBtn) return
   const isConfig = view==='config'
-  els.configBtn.setAttribute('aria-label', isConfig ? 'Close configuration' : 'Open configuration')
+  const strings = getStrings(currentLanguage())
+  els.configBtn.setAttribute('aria-label', isConfig ? strings.closeConfig : strings.openConfig)
   els.configBtn.setAttribute('aria-pressed', isConfig ? 'true' : 'false')
   els.configBtn.classList.toggle('active', isConfig)
 }
@@ -732,12 +1036,35 @@ function addDays(ymd, days){
 function weekDays(weekStart){
   return Array.from({length:7}, (_,i)=> addDays(weekStart,i))
 }
-function formatWeekRange(weekStart){
+function formatWeekRange(weekStart, lang){
   const start = new Date(weekStart+'T00:00:00')
   const end = new Date(start)
   end.setDate(start.getDate()+6)
-  const opts={day:'numeric',month:'short'}
-  return `${start.toLocaleDateString('en-US',opts)} – ${end.toLocaleDateString('en-US',opts)}`
+  const strings = getStrings(lang)
+  const locale = strings.locale || (lang==='fr' ? 'fr-FR' : 'en-US')
+  const monthFmt = new Intl.DateTimeFormat(locale,{month:'short'})
+  const dayFmt = new Intl.DateTimeFormat(locale,{day:'numeric'})
+  const startMonth = monthFmt.format(start)
+  const endMonth = monthFmt.format(end)
+  const startDay = dayFmt.format(start)
+  const endDay = dayFmt.format(end)
+  if(lang==='fr'){
+    if(startMonth===endMonth){
+      return `${startDay} - ${endDay} ${endMonth}`
+    }
+    return `${startDay} ${startMonth} - ${endDay} ${endMonth}`
+  }
+  if(startMonth===endMonth){
+    return `${startMonth} ${startDay} - ${endDay}`
+  }
+  return `${startMonth} ${startDay} - ${endMonth} ${endDay}`
+}
+
+function weekIndexFor(weekStart){
+  const current = new Date(currentWeekStart+'T00:00:00')
+  const target = new Date(weekStart+'T00:00:00')
+  const diff = Math.floor((current - target)/604800000)
+  return (diff>=0 ? diff : 0) + 1
 }
 function compareDate(a,b){ return a.localeCompare(b) }
 function limitDateForWeek(weekStart){
@@ -749,6 +1076,7 @@ function limitDateForWeek(weekStart){
 function isFuture(day, limit){ return compareDate(day, limit)>0 }
 
 function renderSummary(){
+  if(!state) return
   const week = state.ui.selectedWeekStart
   const days = weekDays(week)
   const limit = limitDateForWeek(week)
@@ -762,23 +1090,45 @@ function renderSummary(){
   els.pillGreen.textContent=counts.green
   els.pillYellow.textContent=counts.yellow
   els.pillRed.textContent=counts.red
+  updateSummarySegments(counts)
+  const strings = getStrings(currentLanguage())
+  if(els.summaryProgress){ els.summaryProgress.setAttribute('aria-label', strings.summaryDistribution(counts)) }
+}
+
+function updateSummarySegments(counts){
+  const total = counts.green + counts.yellow + counts.red
+  const segments=[
+    {el:els.summaryBarGreen, count:counts.green},
+    {el:els.summaryBarYellow, count:counts.yellow},
+    {el:els.summaryBarRed, count:counts.red},
+  ]
+  segments.forEach(({el,count})=>{
+    if(!el) return
+    el.style.flexBasis='0%'
+    el.style.flexGrow = total===0 ? 0 : count
+    el.style.opacity = total===0 ? 0 : (count>0 ? 1 : 0)
+  })
+  if(els.summaryProgress){ els.summaryProgress.classList.toggle('is-empty', total===0) }
 }
 
 function renderHome(){
+  if(!state) return
   const week = state.ui.selectedWeekStart
   state.ui.categoryWeekStart = week
   const days = weekDays(week)
   const limit = limitDateForWeek(week)
+  const strings = getStrings(currentLanguage())
   els.catGrid.innerHTML=''
   const categories = CATS()
   if(categories.length===0){
-    els.catGrid.innerHTML='<p class="count">Add a category to get started.</p>'
+    els.catGrid.innerHTML=`<p class="count">${escapeHtml(strings.noCategories)}</p>`
     return
   }
   for(const c of categories){
     const tasks = state.tasks.filter(t=>t.cat===c.id)
     const statuses = tasks.length>0 ? days.map(day=> dayStatus(day, tasks, limit)) : days.map(()=> 'off')
-    const countText = tasks.length>0 ? countsForCategory(tasks, days, limit) : 'No activities'
+    const progress = tasks.length>0 ? categoryProgress(tasks, days, limit) : null
+    const progressHtml = renderCategoryProgress(progress)
     const catchup = tasks.length>0 ? catchupEmojis(tasks, days, limit) : []
     const catchupAttr = catchup.length ? '' : ' aria-hidden="true"'
     const catchupHtml = catchup.map(em=> escapeHtml(em||'❗')).join(' ')
@@ -790,7 +1140,7 @@ function renderHome(){
     card.innerHTML=`
       <div class="card-head">
         <div class="card-title">${titleHtml}</div>
-        <span class="count">${countText}</span>
+        ${progressHtml}
       </div>
       <div class="cell-row">${statuses.map((s,idx)=>`<div class="week-cell status-${s}"><span>${WEEKDAY_SHORT[idx]}</span></div>`).join('')}</div>
         <div class="catchup-line"${catchupAttr}>${catchupHtml}</div>
@@ -811,7 +1161,7 @@ function catchupEmojis(tasks, days, limit){
   return [...set]
 }
 
-function countsForCategory(tasks, days, limit){
+function categoryProgress(tasks, days, limit){
   const relevantDays = days.filter(day=> !isFuture(day, limit))
   let totalOcc=0
   let doneOcc=0
@@ -831,11 +1181,29 @@ function countsForCategory(tasks, days, limit){
       }
     }
   }
-  if(totalOcc===0) return '—'
-  return `${doneOcc}/${totalOcc}`
+  return {done:doneOcc,total:totalOcc}
+}
+
+function renderCategoryProgress(progress){
+  const strings = getStrings(currentLanguage())
+  if(!progress || !progress.total){
+    const aria = strings.emptyProgress
+    return `<div class="circle-progress" data-empty="true" role="img" aria-label="${escapeHtml(aria)}" title="${escapeHtml(aria)}"><span>—</span></div>`
+  }
+  const safeTotal = Math.max(0, progress.total)
+  const safeDone = Math.max(0, Math.min(progress.done, safeTotal))
+  const ratio = safeTotal===0 ? 0 : Math.min(1, safeDone/safeTotal)
+  const aria = categoryProgressLabel(safeDone, safeTotal)
+  return `<div class="circle-progress" style="--progress:${ratio}" role="img" aria-label="${escapeHtml(aria)}" title="${escapeHtml(aria)}"><span><span class="summary-count">${safeDone}</span><small>${safeTotal}</small></span></div>`
+}
+
+function categoryProgressLabel(done,total){
+  const strings = getStrings(currentLanguage())
+  return strings.progressLabel ? strings.progressLabel(done,total) : `${done}/${total}`
 }
 
 function renderCategory(cat, week){
+  if(!state) return
   state.ui.currentCat = cat
   const targetWeek = week || state.ui.selectedWeekStart
   state.ui.categoryWeekStart = targetWeek
@@ -848,7 +1216,8 @@ function renderCategory(cat, week){
   const limit = limitDateForWeek(targetWeek)
   els.taskList.innerHTML=''
   if(tasks.length===0){
-    els.taskList.innerHTML='<p class="count">No activities in this category yet.</p>'
+    const strings = getStrings(currentLanguage())
+    els.taskList.innerHTML=`<p class="count">${escapeHtml(strings.noActivities)}</p>`
     return
   }
   tasks.sort((a,b)=> (a.importance>b.importance?1:-1) || a.title.localeCompare(b.title))
@@ -856,12 +1225,12 @@ function renderCategory(cat, week){
     const row=document.createElement('div')
     row.className='task'
     row.dataset.importance = task.importance
-    const freqMark = frequencyEmoji(task.recur)
+    const freqMark = frequencyCount(task.recur)
     row.innerHTML=`
       <div class="task-header">
         <span class="em">${escapeHtml(task.emoji||'🎯')}</span>
         <div class="task-info">
-          <div class="title">${escapeHtml(task.title)}${freqMark?` <span class="freq" aria-hidden="true">${freqMark}x</span>`:''}</div>
+          <div class="title">${escapeHtml(task.title)}${freqMark?` <span class="freq"><span class="freq-value">${freqMark}</span>×</span>`:''}</div>
         </div>
         <div class="task-actions">
           <button type="button" data-act="edit" aria-label="Edit activity">✏️</button>
@@ -897,17 +1266,14 @@ function renderMoodSelector(cat){
   els.catMood.innerHTML=''
   if(!cat || !cat.id){
     els.catMood.hidden = true
+    els.catMood.removeAttribute('aria-label')
     return
   }
   els.catMood.hidden = false
-  const label=document.createElement('span')
-  label.className='cat-mood-label'
-  label.textContent='Mood'
-  label.id='catMoodLabel'
-  els.catMood.appendChild(label)
+  const strings = getStrings(currentLanguage())
+  els.catMood.setAttribute('aria-label', strings.moodPicker)
   const options=document.createElement('div')
   options.className='cat-mood-options'
-  options.setAttribute('aria-labelledby', 'catMoodLabel')
   const current = typeof cat.mood==='string' ? cat.mood : ''
   MOOD_CHOICES.forEach(choice=>{
     const btn=document.createElement('button')
@@ -941,6 +1307,7 @@ function setCategoryMood(catId, mood){
 }
 
 function refreshAll(){
+  if(!state) return
   renderSummary()
   renderHome()
   if(state.ui.currentView==='category' && state.ui.currentCat){ renderCategory(state.ui.currentCat, state.ui.categoryWeekStart) }
@@ -948,9 +1315,12 @@ function refreshAll(){
 }
 
 function updateWeekLabel(){
-  if(!els.weekLabel) return
+  if(!els.weekLabel || !state) return
   const week = state.ui.selectedWeekStart
-  const label = `${formatWeekRange(week)}`
+  const lang = currentLanguage()
+  const strings = getStrings(lang)
+  const prefix = strings.weekPrefix || (lang==='fr' ? 'S' : 'W')
+  const label = `${prefix}${weekIndexFor(week)} • ${formatWeekRange(week, lang)}`
   els.weekLabel.textContent = label
   if(els.weekNext){
     const canGoNext = compareDate(week, currentWeekStart)<0
@@ -962,6 +1332,7 @@ function updateWeekLabel(){
 }
 
 function changeSelectedWeek(delta){
+  if(!state) return
   const current = state.ui.selectedWeekStart
   const newWeek = addDays(current, delta*7)
   if(delta>0 && compareDate(newWeek, currentWeekStart)>0) return
@@ -972,6 +1343,7 @@ function changeSelectedWeek(delta){
 }
 
 function goToCurrentWeek(){
+  if(!state) return
   if(state.ui.selectedWeekStart===currentWeekStart) return
   state.ui.selectedWeekStart = currentWeekStart
   state.ui.categoryWeekStart = currentWeekStart
@@ -1023,6 +1395,7 @@ function populateCategorySelect(selected){
 }
 
 function openCategory(cat, week){
+  if(!state) return
   state.ui.categoryWeekStart = week || state.ui.selectedWeekStart
   state.ui.currentCat = cat
   save()
@@ -1035,7 +1408,8 @@ function openCategoryDialog(mode, catId){
   const cat = isEdit ? state.categories.find(c=>c.id===catId) : null
   const editing = !!cat
   state.ui.editCategoryId = editing ? cat.id : null
-  els.catDialogTitle.textContent = editing ? 'Edit category' : 'New category'
+  const strings = getStrings(currentLanguage())
+  els.catDialogTitle.textContent = editing ? strings.dialogEditCategory : strings.dialogNewCategory
   if(editing){
     els.c_name.value = cat.name
   }else{
@@ -1050,7 +1424,8 @@ function openTaskDialog(mode, task){
   els.taskDialog.returnValue=''
   els.taskDialog.showModal()
   els.deleteTask.style.display = mode==='edit' ? 'inline-flex' : 'none'
-  els.dialogTitle.textContent = mode==='edit' ? 'Edit activity' : 'New activity'
+  const strings = getStrings(currentLanguage())
+  els.dialogTitle.textContent = mode==='edit' ? strings.dialogEditActivity : strings.dialogNewActivity
   state.ui.editTaskId = mode==='edit' ? task.id : null
   const cats = CATS()
   let selectedCat = mode==='edit' && task ? task.cat : state.ui.currentCat
@@ -1219,10 +1594,10 @@ function dayStatusForTask(task, day, limit){
   return task.importance==='must' ? 'red':'yellow'
 }
 
-function frequencyEmoji(recur){
-  const map={1:'1️⃣',2:'2️⃣',3:'3️⃣',4:'4️⃣',5:'5️⃣',6:'6️⃣',7:'7️⃣'}
+function frequencyCount(recur){
+  const map={1:'1',2:'2',3:'3',4:'4',5:'5',6:'6',7:'7'}
   if(!recur) return ''
-  if(recur.type==='daily') return '7️⃣'
+  if(recur.type==='daily') return '7'
   if(recur.type==='weekly'){
     const times = Math.min(7, Math.max(1, recur.times||1))
     return map[times] || ''
@@ -1278,7 +1653,7 @@ function toggleDone(task, ymd){
   save()
 }
 
-function categoryById(id){ return state.categories.find(c=>c.id===id) || null }
+function categoryById(id){ return state && Array.isArray(state.categories) ? state.categories.find(c=>c.id===id) || null : null }
 function categoryLabel(id){
   const cat = categoryById(id)
   return cat ? cat.name : id
@@ -1286,13 +1661,14 @@ function categoryLabel(id){
 function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])) }
 
 function CATS(){
-  return state.categories.slice()
+  return state && Array.isArray(state.categories) ? state.categories.slice() : []
 }
 
-function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)) }
+function save(){ if(!state) return; localStorage.setItem(STORE_KEY, JSON.stringify(state)) }
 function load(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)) }catch(e){return null}}
 
 function exportBackup(){
+  if(!state) return
   try{
     const data = JSON.stringify(state, null, 2)
     const blob = new Blob([data], {type:'application/json'})
@@ -1319,14 +1695,11 @@ function handleImportFile(event){
       const text = typeof e.target?.result==='string' ? e.target.result : ''
       const parsed = JSON.parse(text)
       if(!confirm('Importing this backup will replace your current data. Continue?')) return
-      const previousView = state.ui?.currentView || 'home'
+      const previousView = state?.ui?.currentView || 'home'
       state = normalizeState(parsed)
       if(previousView==='config'){ state.ui.currentView='config' }
       save()
-      renderSummary()
-      renderHome()
-      updateWeekLabel()
-      updateView(state.ui.currentView)
+      initializeApp()
     }catch(err){
       console.error('Import failed', err)
       alert('Could not import backup. Make sure the file is a valid Routine Buddy export.')
@@ -1341,53 +1714,27 @@ function handleImportFile(event){
   reader.readAsText(file)
 }
 
-function seed(){
+function seed(lang){
   const today = todayISO()
-  const mk=(cat,title,emoji,importance,recur)=>({id:uid(),cat,title,emoji,importance,recur,createdAt:today})
-  const S=[]
-  S.push(mk('Fitness','5 min warm-up','🤸','should',{type:'daily'}))
-  S.push(mk('Fitness','20 min cardio','🏃','must',{type:'specific',days:[1,3,5]}))
-  S.push(mk('Fitness','15 min strength','💪','must',{type:'specific',days:[2,4]}))
-  S.push(mk('Fitness','Post-session stretches','🧘','should',{type:'daily'}))
-  S.push(mk('Fitness','Bike ride','🚲','should',{type:'specific',days:[6]}))
-
-  S.push(mk('Nutrition','Protein breakfast','🍳','must',{type:'daily'}))
-  S.push(mk('Nutrition','2 fresh fruits','🍎','should',{type:'daily'}))
-  S.push(mk('Nutrition','Drink 1.5L water','💧','must',{type:'daily'}))
-  S.push(mk('Nutrition','Veggie meal','🥗','should',{type:'specific',days:[1,4]}))
-  S.push(mk('Nutrition','Fish meal','🐟','should',{type:'specific',days:[5]}))
-
-  S.push(mk('Rest','In bed before 11pm','🛏️','must',{type:'daily'}))
-  S.push(mk('Rest','Screen off 1h before bed','📵','should',{type:'daily'}))
-  S.push(mk('Rest','20 min nap','😴','should',{type:'specific',days:[1,4]}))
-  S.push(mk('Rest','Calm breathing','🌬️','should',{type:'specific',days:[2,5]}))
-  S.push(mk('Rest','Air out bedroom','🪟','should',{type:'daily'}))
-
-  S.push(mk('Connection','Message a loved one','💬','should',{type:'specific',days:[2,4]}))
-  S.push(mk('Connection','Call family','📞','must',{type:'weekly',times:1}))
-  S.push(mk('Connection','Shared lunch','🍽️','should',{type:'specific',days:[3]}))
-  S.push(mk('Connection','Give a sincere compliment','🤝','should',{type:'daily'}))
-  S.push(mk('Connection','Social outing','🕺','must',{type:'specific',days:[5]}))
-
-  S.push(mk('Learning','Read for 15 min','📚','should',{type:'daily'}))
-  S.push(mk('Learning','Online course','💻','must',{type:'specific',days:[1,3]}))
-  S.push(mk('Learning','Review vocabulary','🗂️','should',{type:'specific',days:[2,5]}))
-  S.push(mk('Learning','Practice language','🗣️','should',{type:'specific',days:[4]}))
-  S.push(mk('Learning','Learning journal','📝','should',{type:'weekly',times:1}))
-
-  S.push(mk('Leisure','Drawing session','🎨','should',{type:'specific',days:[6]}))
-  S.push(mk('Leisure','Play music','🎸','should',{type:'specific',days:[2,5]}))
-  S.push(mk('Leisure','Game night','🎲','should',{type:'specific',days:[5]}))
-  S.push(mk('Leisure','Nature outing','🌳','should',{type:'specific',days:[6]}))
-  S.push(mk('Leisure','Watch a show','📺','should',{type:'daily'}))
-
+  const language = sanitizeLanguage(lang)
+  const tasks = sampleTasks(language).map(task=>({
+    id:uid(),
+    cat:task.cat,
+    title:task.title,
+    emoji:task.emoji,
+    importance:task.importance,
+    recur:cloneRecur(task.recur),
+    createdAt:today,
+  }))
   return {
-    tasks:S,
+    tasks,
     done:{},
-    categories: DEFAULT_CATEGORIES.map(c=>({...c})),
-    ui:{currentView:'home', selectedWeekStart:currentWeekStart, categoryWeekStart:currentWeekStart, currentCat:null}
+    categories: defaultCategories(language).map(c=>({...c})),
+    ui:{currentView:'home', selectedWeekStart:currentWeekStart, categoryWeekStart:currentWeekStart, currentCat:null, language}
   }
 }
+
+startApp()
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
