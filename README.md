@@ -1,35 +1,40 @@
 # Routine Buddy (prototype)
 
-Routine Buddy est une mini application monopage qui aide à suivre les rituels du quotidien sur une base hebdomadaire.
+Routine Buddy is a single-page prototype that helps track recurring routines on a weekly cadence. The app runs entirely in the browser and persists data locally, so it can be installed like a lightweight PWA and used offline.
 
-## Vue d'ensemble
+## Interface tour
 
-- **Accueil** : la semaine courante (lundi → dimanche) est résumée dans une carte de progression.
-  - Les pastilles 🟩, 🟨 et 🟥 indiquent combien d'activités sont parfaitement suivies, en retard conseillé ou en retard obligatoire.
-  - La rangée de sept cases colore chaque jour de la semaine selon l'état global :
-    - 🟩 toutes les activités dues ont été réalisées ce jour-là ;
-    - 🟨 seules des activités conseillées manquent ;
-    - 🟥 au moins une activité obligatoire manque ;
-    - ⬜ jour à venir ;
-    - Les jours sans activité due sont affichés en gris.
-- **Rubriques** : chaque catégorie présente les mêmes sept cases pour visualiser l'avancement par jour et permet d'ouvrir la liste détaillée des activités.
-- **Historique** : on peut remonter semaine par semaine (jusqu'à la semaine courante) pour revoir les indicateurs de chaque catégorie. La période affichée est précisée sous forme d'intervalle jour/mois.
+### Weekly overview
+- The top summary displays the count of routines that are **On track**, need you to **Keep Up**, or require you to **Catch Up** in a single status line: `🟩X On track 🟨X Keep Up 🟥X Catch Up`.
+- Week navigation controls allow browsing past weeks while preventing travel beyond the current week. The active range is shown beside the navigation buttons.
+- The home grid lists every category. Each card shows:
+  - The category name.
+  - A compact counter such as `3/5` indicating how many scheduled occurrences have been completed for the selected week (or "No activities" when empty).
+  - A dedicated catch-up row beneath the title with emoji reminders for overdue **must-do** routines.
+  - Seven day cells (Monday → Sunday) coloured according to aggregate progress for that day (green, yellow, red, future, or off).
 
-## Gestion des activités
+### Category detail
+- Selecting a category opens a focused view with a back arrow (`←`) to return home.
+- The header simply repeats the category name—categories no longer carry emoji or accent colours.
+- The summary strip from the home view is hidden here, keeping the focus on the category’s activities.
+- Every activity appears as a card showing its emoji, title, priority stripe (red for must, yellow for should), and a row of seven day cells for the chosen week.
+- Clicking a due day cell toggles completion. Cells representing future dates are disabled.
+- When a category has no activities, a neutral hint clarifies that the list is empty.
 
-- Une activité possède : un nom, un émoji, une priorité (obligatoire ou conseillée) et une fréquence.
-- Les fréquences disponibles sont :
-  - **Quotidien** : activité due chaque jour.
-  - **Jour(s) spécifique(s)** : activité due uniquement les jours cochés (possibilité d'en choisir plusieurs).
-  - **Hebdomadaire** : activité à réaliser une fois par semaine, sur le jour préféré sélectionné.
-- Depuis la vue d'une rubrique, chaque activité affiche une ligne de sept cases pour la semaine sélectionnée. Cliquer sur une case due bascule l'état du jour (fait / non fait).
-- Le bouton **✏️ Modifier** ouvre la fenêtre d'édition permettant d'ajuster tous les champs ou de supprimer l'activité.
-- L'émoji peut être saisi directement ou choisi via le sélecteur enrichi : tape un mot-clé (sport, fruit, détente…) pour filtrer la liste puis clique sur l'émoji souhaité.
+### Configuration panel
+- The gear button in the header opens the configuration view.
+- From there you can add categories, add activities, and manage backups via import/export.
+- The configuration dialog for categories only asks for a name; activities keep the richer set of fields described below.
 
-## Navigation
+## Activities
+- An activity stores a **name**, an optional **emoji** (used as the activity icon), a **priority** (`must` or `should`), and a **recurrence** rule.
+- Supported recurrence types:
+  - **Daily** – due every day of the selected week.
+  - **Specific day(s)** – due only on the checked weekdays.
+  - **Weekly target** – choose how many times the activity should occur during the week.
+- Activity dialogs allow editing, deleting, and picking emoji via a searchable helper.
 
-- Les boutons de la barre inférieure permettent d'alterner entre **Accueil** et **Historique**.
-- Dans l'historique, les boutons « Semaine précédente » et « Semaine suivante » déplacent la fenêtre hebdomadaire.
-- Depuis une carte de rubrique (accueil ou historique), un clic ouvre la vue détaillée correspondante. Le bouton « ← Accueil » ramène à la page d'accueil.
-
-Les données sont stockées dans le `localStorage` du navigateur (clé `ROUTINE_BUDDY_V2`). Le prototype est autonome : aucune dépendance externe n'est requise.
+## Data & persistence
+- All information is saved to `localStorage` under the key `ROUTINE_BUDDY_V3`.
+- The prototype does not rely on external services; everything runs locally in the browser.
+- A service worker is registered on load so the app can be installed and revisited offline.
