@@ -23,12 +23,6 @@
   --future:#e5edf9;
   --off:#f1f5f9;
   --radius:14px;
-  --cat-Fitness:#34d399;
-  --cat-Nutrition:#f97316;
-  --cat-Rest:#a855f7;
-  --cat-Connection:#f59e0b;
-  --cat-Learning:#38bdf8;
-  --cat-Leisure:#f472b6;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -53,15 +47,9 @@ header{position:sticky;top:0;z-index:4;background:rgba(255,255,255,.92);backdrop
 main{flex:1;display:flex;flex-direction:column;gap:12px;padding:12px}
 main>section{max-width:960px;width:100%;margin:0 auto}
 .summary{border:1px solid var(--border);border-radius:var(--radius);padding:12px;background:var(--panel);box-shadow:0 8px 18px rgba(15,23,42,.06)}
-.summary-line{display:flex;flex-wrap:nowrap;gap:8px;justify-content:flex-start;overflow-x:auto;padding-bottom:2px}
-.summary-line::-webkit-scrollbar{height:6px}
-.summary-line::-webkit-scrollbar-thumb{background:rgba(148,163,184,.5);border-radius:999px}
-.summary-metric{display:flex;flex-direction:column;gap:4px;padding:6px 10px;border-radius:10px;border:1px solid var(--border);background:var(--off);min-width:96px;flex:0 0 auto}
-.summary-metric.status-green{border-color:rgba(22,163,74,.24);background:rgba(22,163,74,.08)}
-.summary-metric.status-yellow{border-color:rgba(234,179,8,.26);background:rgba(234,179,8,.12)}
-.summary-metric.status-red{border-color:rgba(220,38,38,.28);background:rgba(220,38,38,.12)}
-.summary-count{font-size:20px;font-weight:700}
-.summary-label{font-size:13px;font-weight:600;color:var(--muted)}
+.summary-status{display:flex;flex-wrap:wrap;gap:12px;font-size:14px;font-weight:600;align-items:center}
+.summary-status span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.summary-status span span{font-weight:700}
 .week-cell{width:34px;height:34px;border-radius:12px;border:1px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:600;gap:2px;cursor:default}
 .week-cell.status-green{background:rgba(22,163,74,.12);color:#047857;border-color:rgba(22,163,74,.25)}
 .week-cell.status-yellow{background:rgba(234,179,8,.18);color:#92400e;border-color:rgba(234,179,8,.28)}
@@ -70,25 +58,31 @@ main>section{max-width:960px;width:100%;margin:0 auto}
 .week-cell.status-off{background:var(--off);color:#94a3b8;border:1px dashed rgba(148,163,184,.35)}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;max-width:960px;margin:0 auto;width:100%;align-content:start}
-.card{--card-color:var(--accent);background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:8px;display:flex;flex-direction:column;gap:6px;min-height:0;box-shadow:0 6px 14px rgba(15,23,42,.05);cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;border-top:4px solid var(--card-color)}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:8px;display:flex;flex-direction:column;gap:8px;min-height:0;box-shadow:0 6px 14px rgba(15,23,42,.05);cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;border-top:4px solid var(--border)}
 .card:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(15,23,42,.08)}
-.card-head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px}
-.card-title{display:flex;align-items:center;gap:6px;font-weight:700;font-size:15px}
-.card-title .cat-symbol{font-size:18px}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.card-title{font-weight:700;font-size:15px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.card-title .card-mood{font-size:18px;line-height:1}
 .card h3{margin:0;font-size:15px;font-weight:700}
-.catchup{display:flex;gap:4px;font-size:18px;min-height:24px;min-width:24px}
+.catchup-line{display:flex;gap:6px;font-size:16px}
+.catchup-line[aria-hidden="true"]{display:none}
 .count{font-size:12px;color:var(--muted);font-weight:600;text-align:right}
 .cell-row{display:flex;gap:3px}
 .cell-row .week-cell{flex:1;min-width:0;cursor:default;height:28px;font-size:10px}
 
 .view{display:none}
 .view.active{display:block}
-.cat-head{display:flex;align-items:center;gap:10px;margin:4px 0 10px;flex-wrap:wrap}
+.cat-head{display:flex;align-items:center;gap:10px;margin:4px 0 4px}
 .back{padding:6px 10px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--text);cursor:pointer;font-size:14px}
-.add{margin-left:auto}
-.cat-head h2{margin:0;font-size:18px;display:flex;align-items:center;gap:8px}
-.cat-week{margin-left:auto;font-weight:600;color:var(--muted);font-size:13px}
-.edit-cat{order:4}
+.cat-head h2{margin:0;font-size:18px;flex:1}
+.cat-mood{display:flex;align-items:center;gap:10px;margin:0 0 12px}
+.cat-mood[hidden]{display:none}
+.cat-mood-label{font-weight:600;font-size:13px;color:#475569}
+.cat-mood-options{display:flex;gap:6px;flex-wrap:wrap}
+.cat-mood-options button{padding:6px 10px;border-radius:10px;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;width:40px;height:36px;transition:all .15s ease}
+.cat-mood-options button:hover{border-color:var(--accent)}
+.cat-mood-options button.active{border-color:var(--accent);background:rgba(37,99,235,.08);box-shadow:0 0 0 2px rgba(37,99,235,.15)}
+.cat-mood-options button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .task{position:relative;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 10px 10px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 8px 18px rgba(15,23,42,.04);border-left:3px solid transparent}
 .task[data-importance="must"]{border-left-color:var(--bad)}
 .task[data-importance="should"]{border-left-color:var(--warn)}
@@ -108,7 +102,6 @@ main>section{max-width:960px;width:100%;margin:0 auto}
 .task-week .week-cell.clickable:focus-visible{outline:2px solid var(--accent)}
 .task-week .week-cell.disabled{opacity:.45;cursor:not-allowed}
 
-.edit-cat{margin-left:0}
 
 dialog{border:1px solid #cbd5e1;border-radius:18px;padding:0;background:var(--panel);color:var(--text);width:min(440px,calc(100vw - 32px));max-width:440px;max-height:calc(100vh - 32px);display:flex;flex-direction:column;overflow:hidden}
 dialog:not([open]){display:none}
@@ -142,8 +135,7 @@ dialog::backdrop{background:rgba(15,23,42,.45)}
 
 @media (max-width:520px){
   .summary{padding:10px}
-  .summary-line{gap:6px}
-  .summary-metric{min-width:110px;flex:0 0 auto}
+  .summary-status{gap:8px}
   .grid{gap:6px}
   .card{padding:8px}
   .task-week .week-cell{height:34px}
@@ -171,19 +163,10 @@ dialog::backdrop{background:rgba(15,23,42,.45)}
 
   <main>
     <section class="summary" id="summary">
-      <div class="summary-line">
-        <div class="summary-metric status-green">
-          <span class="summary-count" id="pillGreen">0</span>
-          <span class="summary-label">On track</span>
-        </div>
-        <div class="summary-metric status-yellow">
-          <span class="summary-count" id="pillYellow">0</span>
-          <span class="summary-label">Keep up</span>
-        </div>
-        <div class="summary-metric status-red">
-          <span class="summary-count" id="pillRed">0</span>
-          <span class="summary-label">Catch up</span>
-        </div>
+      <div class="summary-status">
+        <span class="status-green">🟩<span id="pillGreen">0</span> On track</span>
+        <span class="status-yellow">🟨<span id="pillYellow">0</span> Keep Up</span>
+        <span class="status-red">🟥<span id="pillRed">0</span> Catch Up</span>
       </div>
     </section>
 
@@ -193,12 +176,10 @@ dialog::backdrop{background:rgba(15,23,42,.45)}
 
     <section id="category" class="view">
       <div class="cat-head">
-        <button class="back" id="backBtn">← Home</button>
+        <button class="back" id="backBtn" aria-label="Go back">←</button>
         <h2 id="catTitle"></h2>
-        <div class="cat-week" id="catWeek"></div>
-        <button class="icon-btn icon-only edit-cat" id="editCategory" aria-label="Edit category">✏️</button>
-        <button class="icon-btn icon-only add" id="addBtn" aria-label="Add activity">➕</button>
       </div>
+      <div class="cat-mood" id="catMood" role="group" aria-label="Select mood"></div>
       <div id="taskList"></div>
     </section>
 
@@ -280,14 +261,6 @@ dialog::backdrop{background:rgba(15,23,42,.45)}
         <label for="c_name">Name</label>
         <input type="text" id="c_name" placeholder="Ex: Mindfulness" required />
       </div>
-      <div class="field">
-        <label for="c_emoji">Emoji</label>
-        <input type="text" id="c_emoji" placeholder="Ex: 🧘" maxlength="3" />
-      </div>
-      <div class="field">
-        <label for="c_color">Accent color</label>
-        <input type="color" id="c_color" value="#2563eb" />
-      </div>
     </div>
     <div class="modal-actions">
       <button class="icon-btn" value="cancel">Cancel</button>
@@ -303,6 +276,13 @@ const todayISO = ()=> fmtDate(Date.now())
 const uid = ()=> Math.random().toString(36).slice(2,9)
 const WEEKDAY_SHORT = ['Mo','Tu','We','Th','Fr','Sa','Su']
 const WEEKDAY_ORDER = [1,2,3,4,5,6,0]
+const MOOD_CHOICES = [
+  {value:'😊', label:'Upbeat'},
+  {value:'😮‍💨', label:'Calm'},
+  {value:'😤', label:'Driven'},
+  {value:'😥', label:'Tired'},
+  {value:'😣', label:'Strained'},
+]
 const STORE_KEY='ROUTINE_BUDDY_V3'
 const currentWeekStart = weekStart(todayISO())
 const EMOJIS=[
@@ -515,12 +495,12 @@ const EMOJIS=[
 ]
 
 const DEFAULT_CATEGORIES=[
-  {id:'Fitness', name:'Fitness', emoji:'💪', color:'#34d399'},
-  {id:'Nutrition', name:'Nutrition', emoji:'🥗', color:'#f97316'},
-  {id:'Rest', name:'Rest', emoji:'😴', color:'#a855f7'},
-  {id:'Connection', name:'Connection', emoji:'🤝', color:'#f59e0b'},
-  {id:'Learning', name:'Learning', emoji:'📘', color:'#38bdf8'},
-  {id:'Leisure', name:'Leisure', emoji:'🎉', color:'#f472b6'},
+  {id:'Fitness', name:'Fitness'},
+  {id:'Nutrition', name:'Nutrition'},
+  {id:'Rest', name:'Rest'},
+  {id:'Connection', name:'Connection'},
+  {id:'Learning', name:'Learning'},
+  {id:'Leisure', name:'Leisure'},
 ]
 
 function cloneDoneMap(source){
@@ -560,12 +540,15 @@ function normalizeState(raw){
     next.categories = next.categories.map(cat=>{
       const baseCat = defaults[cat.id] || {}
       const id = cat.id || ('cat-'+uid())
-      return {
-        id,
-        name:cat.name || cat.label || baseCat.name || id,
-        emoji:cat.emoji || baseCat.emoji || '📌',
-        color:cat.color || baseCat.color || '#2563eb',
-      }
+      const name = cat.name || cat.label || baseCat.name || id
+      const normalized={id, name}
+      const emoji = typeof cat.emoji==='string' && cat.emoji.trim() ? cat.emoji.trim() : (typeof baseCat.emoji==='string' && baseCat.emoji.trim() ? baseCat.emoji.trim() : '')
+      const color = typeof cat.color==='string' && cat.color.trim() ? cat.color.trim() : (typeof baseCat.color==='string' && baseCat.color.trim() ? baseCat.color.trim() : '')
+      const mood = typeof cat.mood==='string' && cat.mood.trim() ? cat.mood.trim() : ''
+      if(emoji){ normalized.emoji = emoji }
+      if(color){ normalized.color = color }
+      if(mood){ normalized.mood = mood }
+      return normalized
     })
     for(const def of DEFAULT_CATEGORIES){
       if(!next.categories.some(c=>c.id===def.id)){
@@ -598,7 +581,8 @@ function normalizeState(raw){
 
   for(const task of next.tasks){
     if(!next.categories.some(c=>c.id===task.cat)){
-      next.categories.push({id:task.cat, name:task.cat, emoji:task.emoji || '📌', color:'#2563eb'})
+      const name = task.cat || 'Category'
+      next.categories.push({id:task.cat, name})
     }
   }
 
@@ -624,9 +608,7 @@ const els={
   configBtn: document.getElementById('configBtn'),
   backBtn: document.getElementById('backBtn'),
   catTitle: document.getElementById('catTitle'),
-  catWeek: document.getElementById('catWeek'),
-  editCategory: document.getElementById('editCategory'),
-  addBtn: document.getElementById('addBtn'),
+  catMood: document.getElementById('catMood'),
   taskList: document.getElementById('taskList'),
   taskDialog: document.getElementById('taskDialog'),
   closeDialog: document.getElementById('closeDialog'),
@@ -649,8 +631,6 @@ const els={
   catDialogTitle: document.getElementById('catDialogTitle'),
   closeCategoryDialog: document.getElementById('closeCategoryDialog'),
   c_name: document.getElementById('c_name'),
-  c_emoji: document.getElementById('c_emoji'),
-  c_color: document.getElementById('c_color'),
   saveCategory: document.getElementById('saveCategory'),
   configAddActivity: document.getElementById('configAddActivity'),
   configAddCategory: document.getElementById('configAddCategory'),
@@ -669,7 +649,6 @@ els.backBtn.addEventListener('click', ()=>{
   state.ui.currentCat=null
   updateView('home')
 })
-els.addBtn.addEventListener('click', ()=> openTaskDialog('create'))
 if(els.configBtn){
   els.configBtn.addEventListener('click', ()=>{
     if(state.ui.currentView==='config'){
@@ -685,9 +664,6 @@ if(els.configAddCategory){ els.configAddCategory.addEventListener('click', ()=> 
 if(els.configExport){ els.configExport.addEventListener('click', exportBackup) }
 if(els.configImport){ els.configImport.addEventListener('click', ()=>{ if(els.configImportInput) els.configImportInput.click() }) }
 if(els.configImportInput){ els.configImportInput.addEventListener('change', handleImportFile) }
-els.editCategory.addEventListener('click', ()=>{
-  if(state.ui.currentCat){ openCategoryDialog('edit', state.ui.currentCat) }
-})
 els.closeDialog.addEventListener('click', ()=> els.taskDialog.close())
 els.closeCategoryDialog.addEventListener('click', ()=> els.categoryDialog.close())
 els.f_recur.addEventListener('change', onRecurChange)
@@ -720,11 +696,7 @@ function updateView(view){
   els.category.classList.toggle('active', isCategory)
   if(els.config){ els.config.classList.toggle('active', isConfig) }
   if(els.weekControls){ els.weekControls.style.display = isConfig ? 'none' : '' }
-  if(els.summary){ els.summary.style.display = isConfig ? 'none' : '' }
-  if(els.editCategory){
-    els.editCategory.style.display = isCategory ? 'inline-flex' : 'none'
-    els.editCategory.disabled = !isCategory
-  }
+  if(els.summary){ els.summary.style.display = isHome ? '' : 'none' }
   if(isCategory && state.ui.currentCat){
     renderCategory(state.ui.currentCat, state.ui.categoryWeekStart)
   }else if(isHome){
@@ -802,20 +774,21 @@ function renderHome(){
   for(const c of categories){
     const tasks = state.tasks.filter(t=>t.cat===c.id)
     const statuses = tasks.length>0 ? days.map(day=> dayStatus(day, tasks, limit)) : days.map(()=> 'off')
-    const countText = tasks.length>0 ? countsForCategory(tasks, days, limit) : 'Add activity'
+    const countText = tasks.length>0 ? countsForCategory(tasks, days, limit) : 'No activities'
     const catchup = tasks.length>0 ? catchupEmojis(tasks, days, limit) : []
     const catchupAttr = catchup.length ? '' : ' aria-hidden="true"'
-    const catchupHtml = catchup.map(em=> escapeHtml(em||'❗')).join('')
+    const catchupHtml = catchup.map(em=> escapeHtml(em||'❗')).join(' ')
+    const mood = typeof c.mood==='string' && c.mood.trim() ? c.mood.trim() : ''
+    const titleHtml = `${mood ? `<span class="card-mood">${escapeHtml(mood)}</span>` : ''}<span>${escapeHtml(categoryLabel(c.id))}</span>`
     const card=document.createElement('div')
     card.className='card'
     card.dataset.cat=c.id
-    card.style.setProperty('--card-color', categoryColor(c.id))
     card.innerHTML=`
       <div class="card-head">
-        <div class="catchup"${catchupAttr}>${catchupHtml}</div>
-        <div class="card-title"><span class="cat-symbol">${escapeHtml(c.emoji || categoryEmoji(c.id))}</span><span>${escapeHtml(categoryLabel(c.id))}</span></div>
+        <div class="card-title">${titleHtml}</div>
         <span class="count">${countText}</span>
       </div>
+      <div class="catchup-line"${catchupAttr}>${catchupHtml}</div>
       <div class="cell-row">${statuses.map((s,idx)=>`<div class="week-cell status-${s}"><span>${WEEKDAY_SHORT[idx]}</span></div>`).join('')}</div>
     `
     card.addEventListener('click', ()=> openCategory(c.id, week))
@@ -863,15 +836,15 @@ function renderCategory(cat, week){
   const targetWeek = week || state.ui.selectedWeekStart
   state.ui.categoryWeekStart = targetWeek
   save()
+  const catEntry = categoryById(cat)
+  if(els.catTitle){ els.catTitle.textContent = catEntry ? catEntry.name : categoryLabel(cat) }
+  renderMoodSelector(catEntry)
   const tasks = state.tasks.filter(t=>t.cat===cat)
-  els.catTitle.textContent = `${categoryEmoji(cat)} ${categoryLabel(cat)}`
-  const weekLabel = targetWeek===currentWeekStart ? `This week · ${formatWeekRange(targetWeek)}` : `Week · ${formatWeekRange(targetWeek)}`
-  els.catWeek.textContent = weekLabel
   const days = weekDays(targetWeek)
   const limit = limitDateForWeek(targetWeek)
   els.taskList.innerHTML=''
   if(tasks.length===0){
-    els.taskList.innerHTML='<p class="count">Add an activity to this category.</p>'
+    els.taskList.innerHTML='<p class="count">No activities in this category yet.</p>'
     return
   }
   tasks.sort((a,b)=> (a.importance>b.importance?1:-1) || a.title.localeCompare(b.title))
@@ -912,6 +885,54 @@ function renderCategory(cat, week){
     })
     row.querySelector('[data-act=edit]').addEventListener('click', ()=> openTaskDialog('edit', task))
     els.taskList.appendChild(row)
+  }
+}
+
+function renderMoodSelector(cat){
+  if(!els.catMood) return
+  els.catMood.innerHTML=''
+  if(!cat || !cat.id){
+    els.catMood.hidden = true
+    return
+  }
+  els.catMood.hidden = false
+  const label=document.createElement('span')
+  label.className='cat-mood-label'
+  label.textContent='Mood'
+  label.id='catMoodLabel'
+  els.catMood.appendChild(label)
+  const options=document.createElement('div')
+  options.className='cat-mood-options'
+  options.setAttribute('aria-labelledby', 'catMoodLabel')
+  const current = typeof cat.mood==='string' ? cat.mood : ''
+  MOOD_CHOICES.forEach(choice=>{
+    const btn=document.createElement('button')
+    btn.type='button'
+    btn.textContent=choice.value
+    btn.title=choice.label
+    btn.setAttribute('aria-label', choice.label)
+    const isActive = current===choice.value
+    btn.classList.toggle('active', isActive)
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false')
+    btn.addEventListener('click', ()=> setCategoryMood(cat.id, choice.value))
+    options.appendChild(btn)
+  })
+  els.catMood.appendChild(options)
+}
+
+function setCategoryMood(catId, mood){
+  const cat = categoryById(catId)
+  if(!cat) return
+  const nextMood = cat.mood===mood ? '' : mood
+  if(nextMood){
+    cat.mood = nextMood
+  }else{
+    delete cat.mood
+  }
+  save()
+  renderHome()
+  if(state.ui.currentView==='category' && state.ui.currentCat===catId){
+    renderCategory(catId, state.ui.categoryWeekStart)
   }
 }
 
@@ -975,7 +996,7 @@ function updateEmojiResults(){
 function populateCategorySelect(selected){
   if(!els.f_cat) return
   const cats = CATS()
-  els.f_cat.innerHTML = cats.map(c=>`<option value="${c.id}">${escapeHtml((c.emoji||categoryEmoji(c.id))+' '+categoryLabel(c.id))}</option>`).join('')
+  els.f_cat.innerHTML = cats.map(c=>`<option value="${c.id}">${escapeHtml(categoryLabel(c.id))}</option>`).join('')
   if(selected && !cats.some(c=>c.id===selected)){
     const opt=document.createElement('option')
     opt.value=selected
@@ -1002,12 +1023,8 @@ function openCategoryDialog(mode, catId){
   els.catDialogTitle.textContent = editing ? 'Edit category' : 'New category'
   if(editing){
     els.c_name.value = cat.name
-    els.c_emoji.value = cat.emoji || ''
-    els.c_color.value = cat.color || '#2563eb'
   }else{
     els.c_name.value=''
-    els.c_emoji.value=''
-    els.c_color.value='#2563eb'
   }
   els.categoryDialog.showModal()
   const focusField = ()=> els.c_name.focus()
@@ -1097,25 +1114,14 @@ function submitCategory(e){
   if(!els.categoryDialog) return
   const name = els.c_name.value.trim()
   if(!name){ els.c_name.focus(); return }
-  let emoji = els.c_emoji.value.trim()
-  if(!emoji){ emoji='📌' }
-  let color = (els.c_color.value || '#2563eb').trim()
-  const hex = color.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i)
-  if(!hex){
-    color='#2563eb'
-  }else if(hex[1].length===3){
-    color = '#' + hex[1].split('').map(ch=>ch+ch).join('')
-  }
   if(state.ui.editCategoryId){
     const cat = state.categories.find(c=>c.id===state.ui.editCategoryId)
     if(cat){
       cat.name = name
-      cat.emoji = emoji
-      cat.color = color
     }
   }else{
     const id = 'cat-'+uid()
-    state.categories.push({id, name, emoji, color})
+    state.categories.push({id, name})
     state.ui.currentCat = id
   }
   state.ui.editCategoryId = null
@@ -1261,14 +1267,6 @@ function categoryById(id){ return state.categories.find(c=>c.id===id) || null }
 function categoryLabel(id){
   const cat = categoryById(id)
   return cat ? cat.name : id
-}
-function categoryEmoji(id){
-  const cat = categoryById(id)
-  return cat ? (cat.emoji || '📌') : '📌'
-}
-function categoryColor(id){
-  const cat = categoryById(id)
-  return cat ? (cat.color || '#2563eb') : '#2563eb'
 }
 function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])) }
 
