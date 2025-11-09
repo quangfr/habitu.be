@@ -13,13 +13,13 @@ button,.select,.tab,.stab,.btn,.btnToggle,.navbtn,.calBtn,.backMini{font:600 13p
 .rightBtns{display:flex;flex-direction:row;gap:6px;align-items:flex-end}
 .dateLabel,.todayCount{font-weight:700;padding:0;border:none;background:transparent}
 .list{padding:var(--gap);display:grid;grid-template-columns:1fr;gap:var(--gap);position:relative;z-index:1}
-.card{border:1px solid var(--border);background:var(--bg);border-radius:var(--r);display:grid;grid-template-columns:1fr 64px;overflow:hidden}
+.card{border:1px solid var(--border);background:var(--bg);border-radius:var(--r);display:grid;grid-template-columns:64px 1fr;overflow:hidden}
 .card.done{border:2px solid var(--green)}
 .content{padding:4px;display:flex;flex-direction:column;gap:4px}
-.title{font-weight:700;display:flex;align-items:center;gap:4px;font-size:14px;min-height:22px;justify-content:left}
+.title{font-weight:700;display:flex;align-items:center;gap:4px;font-size:14px;min-height:22px;justify-content:space-between}
 .title .left{display:flex;align-items:center;gap:4px}
 .title .hint{color:#5b5b56;font-weight:500}
-.editPen{background-color:transparent;border-color:var(--border);padding:4px;cursor:pointer}
+.editPen{background-color:transparent;border-color:var(--border);padding:4px;}
 .desc{font-size:11px;color:#8f8f8c;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:default}
 .desc.open{-webkit-line-clamp:unset;display:block;white-space:pre-line;overflow:visible}
 .friends{margin-top:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
@@ -37,8 +37,8 @@ button,.select,.tab,.stab,.btn,.btnToggle,.navbtn,.calBtn,.backMini{font:600 13p
 .rank{display:grid;gap:8px;margin-top:8px}
 .row{display:flex;justify-content:space-between;align-items:center;padding:6px;border:1px solid var(--border);background:var(--bg);border-radius:var(--r)}
 .leftRank{display:flex;align-items:center;gap:8px}
-.scoreEmoji{font-size:26px;font-weight:900;margin-left:4px;white-space:pre-line}
 .likeBtn{min-width:74px;text-align:center}
+.scoreEmoji{font-size:18px;font-weight:900;margin-left:4px;white-space:pre-line}
 .calendarWrap{padding:0 var(--gap) var(--gap)}
 .calTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px}
 .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
@@ -56,6 +56,9 @@ button,.select,.tab,.stab,.btn,.btnToggle,.navbtn,.calBtn,.backMini{font:600 13p
 .opt .emoji{font-size:20px}
 .field{display:grid;gap:4px}
 input[type="text"],textarea{padding:10px;border:1px solid var(--border);border-radius:var(--r);background:#fffdf8;font-size:13px}
+.inputEmoji{position:relative;display:flex;align-items:center}
+.inputEmoji .emojiPrefix{position:absolute;left:10px;font-size:20px;pointer-events:none;line-height:1}
+.inputEmoji input{width:100%;padding-left:42px}
 textarea.readonly{background:#f7f3ea;border:1px dashed var(--border);pointer-events:auto}
 textarea.editing{background:#fff;border:1px solid var(--border)}
 .stabs{display:flex;gap:6px;padding:6px;position:sticky;top:52px;background:var(--bg);border-bottom:1px solid var(--border);z-index:2}
@@ -143,6 +146,13 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
       <div class="view" id="tab-settings">
         <div class="grid">
           <div class="field">
+            <label><b>Nom personnalisé</b></label>
+            <div class="inputEmoji">
+              <span class="emojiPrefix" id="habitTitleEmoji">🌱</span>
+              <input id="habitTitleInput" type="text" placeholder="Nom de l'habitude"/>
+            </div>
+          </div>
+          <div class="field">
             <label><b>Description</b></label>
             <textarea id="habitDesc" placeholder="Décris ton habitude (objectif, contexte, tips). Clique pour éditer."></textarea>
           </div>
@@ -166,6 +176,8 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
     <div class="detailHead">
       <button class="backMini" id="backFromSpace">←</button>
       <div class="detailTitle" id="spaceHeaderTitle"></div>
+      <div class="spacer"></div>
+      <button class="btn" id="spaceAccountBtn">👤 Mon compte</button>
     </div>
     <div class="tabs">
       <button class="tab active" data-stab="sprofile">👨‍🌾 Jardiniers</button>
@@ -213,7 +225,7 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
           <div class="field"><label><b>Nom du jardin</b></label><input id="paramSpaceLabel" type="text"/></div>
           <div class="field"><label><b>Accès</b></label><select class="select"><option>Public</option><option>Sur invitation</option></select></div>
           <div class="field"><label><b>Droits d'édition</b></label><select class="select"><option>Admin</option><option>Tous</option></select></div>
-          <div style="margin-top:12px"><button class="btn danger" id="quitSpaceBtn">Quitter</button></div>
+          <div style="margin-top:12px"><button class="btn danger" id="quitSpaceBtn">Quitter le jardin</button></div>
         </div>
       </div>
     </div>
@@ -311,7 +323,7 @@ function buildDesc(){return shuffle([...GENERIC_TIPS]).slice(0,7).join('\n')}
 function oneLiner(s){return (s||'').replace(/\s*\n\s*/g,' · ')}
 let period='30', spaceId='D0PWE3', userName='Moi', dayOff=0;
 const SPACES={'D0PWE3':{emoji:'👤',label:'👤 Individu',type:'private',ch:CHALLENGES,desc:'Jardin personnel.'},'E8D3FS':{emoji:'🏠',label:'🏠 Colocation',type:'group',ch:GROUP_CHALLENGES,desc:'Jardin partagé à la maison.'},'AS50CI':{emoji:'🏛️',label:'🏛️ Association',type:'group',ch:ASSOCIATION_CHALLENGES,desc:'Rituels d’équipe pour une asso.'},'WS32D7':{emoji:'🌞',label:'🌞 Famille',type:'group',ch:FAMILY_CHALLENGES,desc:'Routines familiales au quotidien.'},'SR3S0D':{emoji:'🏫',label:'🏫 Classe',type:'group',ch:CLASS_CHALLENGES,desc:'Vie de classe et rituels pédagogiques.'},'PD03XZ':{emoji:'🏢',label:'🏢 Bureau',type:'group',ch:OFFICE_CHALLENGES,desc:'Rituels simples pour mieux travailler.'}};
-const HABIT_DESC={}, SPACE_DESC_TXT={};
+const HABIT_DESC={}, HABIT_TITLE_CUSTOM={}, SPACE_DESC_TXT={};
 const claps={};(()=>{const all=[...CHALLENGES,...GROUP_CHALLENGES,...FAMILY_CHALLENGES,...CLASS_CHALLENGES,...OFFICE_CHALLENGES,...ASSOCIATION_CHALLENGES];all.forEach(c=>{claps[c.id]={};[...new Set([...c.amis,'Moi'])].forEach(n=>claps[c.id][n]=Math.floor(Math.random()*101));});})();
 const FREQ={};function defaultFreqFor(h){return h.type==='group'?(Math.random()<0.6?1:2):(Math.random()<0.4?1:rint(2,5))}
 ;[...CHALLENGES,...GROUP_CHALLENGES,...FAMILY_CHALLENGES,...CLASS_CHALLENGES,...OFFICE_CHALLENGES,...ASSOCIATION_CHALLENGES].forEach(h=>{FREQ[h.id]=FREQ[h.id]||defaultFreqFor(h)});
@@ -326,6 +338,8 @@ function isVisibleToday(hid,d){const serial=daySerial(d);const f=FREQ[hid]||1;co
 function getSpace(){return SPACES[spaceId]||SPACES['D0PWE3'];}
 function listChallenges(){return getSpace().ch;}
 function findAny(id){return [...CHALLENGES,...GROUP_CHALLENGES,...FAMILY_CHALLENGES,...CLASS_CHALLENGES,...OFFICE_CHALLENGES,...ASSOCIATION_CHALLENGES].find(c=>c.id===id);}
+function habitLabel(it){const custom=HABIT_TITLE_CUSTOM[it.id];return custom&&custom.trim()?custom.trim():it.titre;}
+function habitLabelById(id){const it=findAny(id);return it?habitLabel(it):'';}
 
 /* === Durée jour: 0 -> base -> base+15 -> base+30 -> 0 === */
 function minutesFromState(base,st){
@@ -382,7 +396,7 @@ function openDetail(id,btnRef){
   activeId=id;refBtn=btnRef;hideAll();$("#detail").classList.add('active');$("#daysWrap").classList.add('hide');
   $$('.tab').forEach(t=>t.classList.remove('active'));document.querySelector('[data-tab="members"]').classList.add('active');
   $$('#detail .view').forEach(v=>v.classList.remove('active'));$('#tab-members').classList.add('active');
-  const it=findAny(id);$("#detailTitle").textContent=`${it.emoji} ${it.titre}`;
+  const it=findAny(id);const label=habitLabel(it);$("#detailTitle").textContent=`${it.emoji} ${label}`;
   renderRank();populateCalWho();renderCalendar();renderHabitSettings();
 }
 function selectDetailTab(key){
@@ -404,7 +418,8 @@ function renderCards(){
     const cont=document.createElement('div');cont.className='content';
     const title=document.createElement('div');title.className='title';
     const left=document.createElement('div');left.className='left';
-    left.innerHTML=`<span style="font-size:24px">${it.emoji}</span><span class="base">${it.titre}</span><span class="hint" id="h-${it.id}"></span>`;
+    const displayTitle=habitLabel(it);
+    left.innerHTML=`<span style="font-size:24px">${it.emoji}</span><span class="base">${displayTitle}</span><span class="hint" id="h-${it.id}"></span>`;
     title.append(left);
     const desc=document.createElement('div');desc.className='desc';setupDesc(desc,it.id);
     const friends=document.createElement('div');friends.className='friends';
@@ -461,7 +476,7 @@ function renderCards(){
     };
     col.onclick=cycle;
 
-    col.append(btn);card.append(cont,col);root.appendChild(card);
+    col.append(btn);card.append(col,cont);root.appendChild(card);
     if(!firstCard) firstCard=card;
   });
   renderDateBar();
@@ -505,7 +520,42 @@ function renderRank(){
 }
 function updPeriodBtns(){$$('#btnP7,#btnP30,#btnPAll').forEach(b=>b.classList.toggle('active',b.dataset.period===period))}
 $('#btnP7').onclick=()=>{period='7';updPeriodBtns();renderRank()};$('#btnP30').onclick=()=>{period='30';updPeriodBtns();renderRank()};$('#btnPAll').onclick=()=>{period='all';updPeriodBtns();renderRank()};
-function renderHabitSettings(){const sel=$("#freqSelect");if(!activeId||!sel)return;sel.value=String(FREQ[activeId]||1);sel.onchange=()=>{FREQ[activeId]=parseInt(sel.value||'1',10)}}
+function renderHabitSettings(){
+  if(!activeId)return;
+  ensureHabit(activeId);
+  const it=findAny(activeId);
+  const sel=$("#freqSelect");
+  if(sel){
+    sel.value=String(FREQ[activeId]||1);
+    sel.onchange=()=>{FREQ[activeId]=parseInt(sel.value||'1',10)};
+  }
+  const titleInput=$("#habitTitleInput"), emojiEl=$("#habitTitleEmoji");
+  if(it&&titleInput&&emojiEl){
+    emojiEl.textContent=it.emoji;
+    if(document.activeElement!==titleInput) titleInput.value=habitLabel(it);
+    if(!titleInput.dataset.bound){
+      titleInput.addEventListener('input',()=>{
+        const raw=titleInput.value;
+        if(raw.trim()){HABIT_TITLE_CUSTOM[activeId]=raw;}else{delete HABIT_TITLE_CUSTOM[activeId];}
+        const updated=habitLabel(it);
+        $("#detailTitle").textContent=`${it.emoji} ${updated}`;
+        renderCards();
+      });
+      titleInput.dataset.bound='1';
+    }
+  }
+  const desc=$("#habitDesc");
+  if(desc){
+    desc.value=HABIT_DESC[activeId]||'';
+    if(!desc.dataset.bound){
+      desc.addEventListener('input',()=>{
+        HABIT_DESC[activeId]=desc.value;
+        renderCards();
+      });
+      desc.dataset.bound='1';
+    }
+  }
+}
 
 function openSpacePage(){hideAll();$("#space").classList.add('active');$("#daysWrap").classList.add('hide');updSpaceHeader();renderSpaceRank();setupSpaceInfo();populateSpaceWho();renderSpaceCalendar();}
 function updSpaceHeader(){const sp=getSpace();$("#spaceHeaderTitle").textContent=sp.label;$("#paramSpaceLabel").value=sp.label;$("#paramName").value=userName||'Moi'}
