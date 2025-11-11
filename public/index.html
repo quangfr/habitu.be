@@ -1,9 +1,8 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><title>Habitu.be — Prototype (ultra-léger)</title>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><title>Habitu.be — Prototype (simplifié)</title>
 <style>
 :root{--bg:#f7f3ea;--card:#fffdf8;--text:#1e1f1a;--green:#2a7a57;--border:#c6beae;--r:4px;--gap:8px;--fs:13px}
 *{box-sizing:border-box}html,body{height:100%}body{margin:0;font:400 var(--fs)/1.35 system-ui,-apple-system,Roboto,sans-serif;color:var(--text);background:var(--bg)}
 #app{max-width:480px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;position:relative}
-.heat{position:fixed;left:0;right:0;bottom:0;height:0;background:linear-gradient(0deg,#8ec5a8,transparent);opacity:.35;pointer-events:none;z-index:0}
 button,.select,.tab,.stab,.btn,.btnToggle,.navbtn,.calBtn,.backMini{font:600 13px/1.2 system-ui,-apple-system,Roboto,sans-serif;padding:6px 10px;border-radius:var(--r);cursor:pointer;border:1px solid var(--border);background:var(--card)}
 .btn.primary{background:var(--green);color:#fff;border-color:transparent}.btn.danger{border-color:#d99;color:#600;background:#fff5f5}
 .btnToggle.active,.tab.active,.stab.active{outline:2px solid var(--green)}.select{appearance:none}
@@ -18,16 +17,18 @@ button,.select,.tab,.stab,.btn,.btnToggle,.navbtn,.calBtn,.backMini{font:600 13p
 .content{padding:4px;display:flex;flex-direction:column;gap:4px}
 .title{font-weight:700;display:flex;align-items:center;gap:4px;font-size:14px;min-height:22px;justify-content:space-between}
 .title .left{display:flex;align-items:center;gap:4px}
-.title .hint{color:#5b5b56;font-weight:500}
+.title .hint{font-size:10px;color:#8f8f8c;font-weight:600}
+.title .base.strike{text-decoration:line-through;opacity:.75}
 .editPen{background-color:transparent;border-color:var(--border);padding:4px;}
 .desc{font-size:11px;color:#8f8f8c;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:default}
 .desc.open{-webkit-line-clamp:unset;display:block;white-space:pre-line;overflow:visible}
+.desc.hidden{display:none}
 .friends{margin-top:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.badge{display:flex;align-items:center;gap:6px;padding:4px 6px;border:1px solid var(--border);border-radius:var(--r);background:#fff;font-size:11px;line-height:1.2;cursor:pointer}
+.badge{display:flex;align-items:center;gap:6px;padding:4px 6px;border:1px solid var(--border);border-radius:var(--r);background:#fff;font-size:11px;line-height:1.2}
 .levelCol{padding:0 6px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .levelBtn{width:100%;height:60px;border-radius:var(--r);border:1px solid var(--border);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none;line-height:1.05;position:relative}
 .levelBtn .big{position:absolute;top:4px;left:0;right:0;text-align:center;font-size:22px;font-weight:800}
-.levelBtn .scoreText{position:absolute;bottom:2px;left:4px;right:4px;text-align:center;font-size:16px;font-weight:800;line-height:1}
+.levelBtn .scoreText{position:absolute;bottom:2px;left:4px;right:4px;text-align:center;font-size:12px;font-weight:800;line-height:1}
 .section{padding:var(--gap)}
 .detailHead{display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:5;background:var(--bg);padding:6px var(--gap);border-bottom:1px solid var(--border)}
 .detailTitle{font-weight:800;font-size:16px}
@@ -55,11 +56,10 @@ button,.select,.tab,.stab,.btn,.btnToggle,.navbtn,.calBtn,.backMini{font:600 13p
 .opt{border:1px solid var(--border);background:var(--card);border-radius:var(--r);padding:12px;display:flex;gap:8px;align-items:center;cursor:pointer}
 .opt .emoji{font-size:20px}
 .field{display:grid;gap:4px}
-input[type="text"],textarea{padding:10px;border:1px solid var(--border);border-radius:var(--r);background:#fffdf8;font-size:13px}
+input[type="text"],textarea,select{padding:10px;border:1px solid var(--border);border-radius:var(--r);background:#fffdf8;font-size:13px}
 .inputEmoji{position:relative;display:flex;align-items:center}
 .inputEmoji .emojiPrefix{position:absolute;left:10px;font-size:20px;pointer-events:none;line-height:1}
 .inputEmoji input{width:100%;padding-left:42px}
-textarea.readonly{background:#f7f3ea;border:1px dashed var(--border);pointer-events:auto}
 textarea.editing{background:#fff;border:1px solid var(--border)}
 .stabs{display:flex;gap:6px;padding:6px;position:sticky;top:52px;background:var(--bg);border-bottom:1px solid var(--border);z-index:2}
 .stab{flex:1;text-align:center}
@@ -67,19 +67,7 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
 .rowInline{display:flex;gap:8px;align-items:center}.rowInline input{flex:1}.rowInline .btn.copyOnly{padding:6px 10px}
 .miniInfo{font-size:12px;color:#555}
 .hide{display:none}
-
-/* === Guided tour === */
-.tour{position:fixed;inset:0;z-index:999;display:none}
-.tour.on{display:block}
-.tourFocus{position:fixed;border-radius:10px;box-shadow:0 0 0 9999px rgba(0,0,0,.55);outline:2px solid var(--green);transition:all .2s ease;pointer-events:none}
-.tourTip{position:fixed;max-width:300px;background:#fffdf8;border:1px solid var(--border);border-radius:10px;padding:10px;box-shadow:0 1px 0 rgba(0,0,0,.03);font-size:13px}
-.tourTip b{display:block;margin-bottom:6px}
-.tourActions{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
-.tourBtn{border:1px solid var(--border);background:#fff;padding:6px 10px;border-radius:8px;cursor:pointer}
-.tourNext{background:var(--green);color:#fff;border-color:transparent}
-.tourSkip{background:#fff}
 </style></head><body>
-<div class="heat" id="heat"></div>
 <div id="app">
   <div class="top">
     <div class="brand" id="brand"><span class="logo">🌱</span>Habitu.be</div>
@@ -143,6 +131,7 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
           <div class="calendar" id="cal"></div>
         </div>
       </div>
+
       <div class="view" id="tab-settings">
         <div class="grid">
           <div class="field">
@@ -152,21 +141,55 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
               <input id="habitTitleInput" type="text" placeholder="Nom de l'habitude"/>
             </div>
           </div>
+
           <div class="field">
             <label><b>Description</b></label>
             <textarea id="habitDesc" placeholder="Décris ton habitude (objectif, contexte, tips). Clique pour éditer."></textarea>
           </div>
+
           <div class="field">
             <label><b>Fréquence</b></label>
-            <select id="freqSelect" class="select">
-              <option value="1">Quotidien</option><option value="2">Tous les 2 jours</option>
-              <option value="3">Tous les 3 jours</option><option value="4">Tous les 4 jours</option>
-              <option value="5">Tous les 5 jours</option><option value="6">Tous les 6 jours</option>
-              <option value="7">Hebdomadaire</option>
-            </select>
+            <div class="grid" style="gap:6px">
+              <select id="freqType" class="select">
+                <option value="quotidien">Quotidien</option>
+                <option value="tousx">Tous les X jours</option>
+                <option value="hebdo">Hebdomadaire</option>
+                <option value="ponctuelle">Ponctuelle</option>
+                <option value="jours">Jour(s) de la semaine</option>
+              </select>
+              <div id="freqSubTousx" class="rowInline"><span>X=</span><select id="freqX" class="select"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
+              <div id="freqSubPonctuelle" class="rowInline hide"><span>Date</span><input id="freqDate" type="text" placeholder="JJ/MM/AAAA"/></div>
+              <div id="freqSubJours" class="hide" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+                <label><input type="checkbox" value="1">Lu</label>
+                <label><input type="checkbox" value="2">Ma</label>
+                <label><input type="checkbox" value="3">Me</label>
+                <label><input type="checkbox" value="4">Je</label>
+                <label><input type="checkbox" value="5">Ve</label>
+                <label><input type="checkbox" value="6">Sa</label>
+                <label><input type="checkbox" value="0">Di</label>
+              </div>
+            </div>
           </div>
+
           <div class="field"><label><b>Durée par défaut</b></label><select id="mockDefaultDur" class="select"><option>15 min</option><option>30 min</option><option>45 min</option><option>60 min</option></select></div>
+
+          <div class="field">
+            <label><b>Mode de réalisation</b></label>
+            <div class="rowInline">
+              <select id="modeSelect" class="select">
+                <option value="libre">Libre</option>
+                <option value="commun">Commun</option>
+              </select>
+              <select id="modeN" class="select hide" title="Nombre requis"> <!-- masqué (plus de Partagé) -->
+                <option value="2">×2</option><option value="3">×3</option><option value="4">×4</option>
+              </select>
+            </div>
+            <div class="miniInfo">Libre (toi) · Commun (1 personne). Le mode “Partagé” est retiré.</div>
+          </div>
+
           <div class="field"><label><b>Rappel (mock)</b></label><select class="select"><option>Aucun</option><option>9:00</option><option>12:30</option><option>20:00</option></select></div>
+
+          <div style="margin-top:14px"><button class="btn danger" id="deleteHabitBtn">Supprimer</button></div>
         </div>
       </div>
     </div>
@@ -185,20 +208,20 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
       <button class="tab" data-stab="sparams">✏️ Édition</button>
     </div>
     <div class="section">
-   <div class="view active" id="sprofile">
-  <div class="rankHeader">
-    <b>Durée</b>
-    <div style="font-size:12px;display:flex;gap:8px;align-items:center">
-      Période:
-      <div style="display:flex;gap:8px">
-        <button class="btnToggle" data-speriod="7" id="sBtnP7">7 jours</button>
-        <button class="btnToggle active" data-speriod="30" id="sBtnP30">30 jours</button>
-        <button class="btnToggle" data-speriod="all" id="sBtnPAll">Total</button>
+      <div class="view active" id="sprofile">
+        <div class="rankHeader">
+          <b>Durée</b>
+          <div style="font-size:12px;display:flex;gap:8px;align-items:center">
+            Période:
+            <div style="display:flex;gap:8px">
+              <button class="btnToggle" data-speriod="7" id="sBtnP7">7 jours</button>
+              <button class="btnToggle active" data-speriod="30" id="sBtnP30">30 jours</button>
+              <button class="btnToggle" data-speriod="all" id="sBtnPAll">Total</button>
+            </div>
+          </div>
+        </div>
+        <div class="rank" id="spaceRank"></div>
       </div>
-    </div>
-  </div>
-  <div class="rank" id="spaceRank"></div>
-</div>
       <div class="view" id="shistory">
         <div class="calendarWrap">
           <div class="calTop">
@@ -231,12 +254,14 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
     </div>
   </section>
 
+  <!-- Ajouter -->
   <div class="modal" id="modalAdd">
     <div class="sheet">
       <div class="sheetHeader"><div id="modalTitle">Ajouter</div><button class="closeX" id="closeAdd">⨉</button></div>
       <div class="sheetBody">
         <div class="grid">
           <div class="opt" id="addHabit"><div class="emoji">🌱</div><div><b>Nouvelle habitude</b><div class="subtitle">Rejoindre un défi</div></div></div>
+          <div class="opt hide" id="addPrivateHabit"><div class="emoji">✨</div><div><b>Nouvelle habitude privée</b><div class="subtitle">Entièrement personnalisable</div></div></div>
           <div class="opt" id="inviteFriend"><div class="emoji">🌞</div><div><b>Inviter un jardinier</b><div class="subtitle">Lien à partager</div></div></div>
           <div class="opt" id="joinSpace"><div class="emoji">🤝</div><div><b>Rejoindre un jardin</b><div class="subtitle">Entrer un code</div></div></div>
         </div>
@@ -244,6 +269,7 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
     </div>
   </div>
 
+  <!-- Inviter -->
   <div class="modal" id="modalInvite">
     <div class="sheet">
       <div class="sheetHeader"><div>Inviter</div><button class="closeX" id="closeInvite">⨉</button></div>
@@ -259,6 +285,7 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
     </div>
   </div>
 
+  <!-- Habitude (wizard mini) -->
   <div class="modal" id="modalHabit">
     <div class="sheet">
       <div class="sheetHeader"><div id="habitTitle">Nouvelle habitude</div><button class="closeX" id="closeHabit">⨉</button></div>
@@ -266,6 +293,7 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
     </div>
   </div>
 
+  <!-- Espace -->
   <div class="modal" id="modalSpace">
     <div class="sheet">
       <div class="sheetHeader"><div>Créer / Rejoindre un jardin</div><button class="closeX" id="closeSpace">⨉</button></div>
@@ -285,6 +313,7 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
     </div>
   </div>
 
+  <!-- Wizard profil -->
   <div class="modal" id="modalWizard">
     <div class="sheet">
       <div class="sheetHeader"><div id="wizTitle">Type de profil</div><button class="closeX" id="closeWizard">⨉</button></div>
@@ -293,21 +322,114 @@ textarea.editing{background:#fff;border:1px solid var(--border)}
   </div>
 </div>
 
-<!-- Guided tour nodes -->
-<div class="tour" id="tour">
-  <div class="tourFocus" id="tourFocus" aria-hidden="true"></div>
-  <div class="tourTip" id="tourTip" role="dialog" aria-live="polite" aria-modal="true"></div>
-</div>
-
 <script>
-const CATS=[{id:'sante',emoji:'🩺',nom:'Santé'},{id:'relations',emoji:'🤝',nom:'Relations'},{id:'esprit',emoji:'🧠',nom:'Esprit'},{id:'corps',emoji:'💪',nom:'Corps'},{id:'vie',emoji:'🧺',nom:'Vie'},{id:'loisirs',emoji:'🎨',nom:'Loisirs'},{id:'repos',emoji:'😌',nom:'Repos'}];
-const CHALLENGES=[{type:'private',id:'screenoff',cat:'sante',emoji:'🛌',titre:'Sans écran avant le coucher',amis:['Anna','Ben','Chloé','Nicolas','Marie']},{type:'private',id:'repas',cat:'sante',emoji:'🥗',titre:'Repas sain fait maison',amis:['Ben','Duc']},{type:'private',id:'lire',cat:'esprit',emoji:'📖',titre:'Lire un livre ou un roman',amis:['Chloé']},{type:'private',id:'etire',cat:'corps',emoji:'🤸',titre:'Étirements corporels',amis:['Anna','Nicolas']},{type:'private',id:'ranger',cat:'vie',emoji:'🧽',titre:'Rangement ou ménage',amis:['Chloé']},{type:'private',id:'creer',cat:'loisirs',emoji:'🎸',titre:'Créer ou jouer',amis:['Ben','Pauline']},{type:'private',id:'respirer',cat:'repos',emoji:'🌬️',titre:'Respiration cohérence cardiaque',amis:['Anna','Marie']}];
-const GROUP_CHALLENGES=[{type:'group',id:'silence_matin',cat:'coloc',emoji:'🤫',titre:'Silence matinal',amis:['Anna','Ben','Chloé','Nicolas','Marie']},{type:'group',id:'poubelles',cat:'coloc',emoji:'🗑️',titre:'Descendre les poubelles',amis:['Anna','Ben','Chloé','Nicolas','Marie']},{type:'group',id:'cuisine',cat:'coloc',emoji:'🧽',titre:'Nettoyer la cuisine',amis:['Anna','Ben','Chloé','Nicolas','Marie']},{type:'group',id:'communs',cat:'coloc',emoji:'🧺',titre:'Ranger les communs',amis:['Anna','Ben','Chloé','Nicolas','Marie']},{type:'group',id:'apero_coloc',cat:'coloc',emoji:'🍝',titre:'Repas partagé',amis:['Anna','Ben','Chloé','Nicolas','Marie']},{type:'group',id:'energie',cat:'coloc',emoji:'⚡',titre:'Économie d’énergie',amis:['Anna','Ben','Chloé','Nicolas','Marie']},{type:'group',id:'wc_sdb',cat:'coloc',emoji:'🚽',titre:'Nettoyer WC & SDB',amis:['Anna','Ben','Chloé','Nicolas','Marie']},{type:'group',id:'silence_nuit',cat:'coloc',emoji:'🌙',titre:'Silence nocturne',amis:['Anna','Ben','Chloé','Nicolas','Marie']}];
-const ASSOCIATION_CHALLENGES=[{type:'group',id:'accueil_benevoles',cat:'asso',emoji:'🤝',titre:'Accueil des bénévoles',amis:['Alice','Bruno','Camille','Dina']},{type:'group',id:'com_reseaux',cat:'asso',emoji:'📣',titre:'Com réseaux mise à jour',amis:['Alice','Bruno','Camille','Dina']},{type:'group',id:'planning_evenements',cat:'asso',emoji:'🗓️',titre:'Planning événements à jour',amis:['Alice','Bruno','Camille','Dina']},{type:'group',id:'collecte_fonds',cat:'asso',emoji:'💶',titre:'Collecte de fonds traitée',amis:['Alice','Bruno','Camille','Dina']},{type:'group',id:'stock_materiel',cat:'asso',emoji:'📦',titre:'Stock matériel vérifié',amis:['Alice','Bruno','Camille','Dina']},{type:'group',id:'compte_rendu',cat:'asso',emoji:'📝',titre:'Compte rendu publié',amis:['Alice','Bruno','Camille','Dina']},{type:'group',id:'partenariats',cat:'asso',emoji:'🤝',titre:'Partenariats contactés',amis:['Alice','Bruno','Camille','Dina']},{type:'group',id:'formation',cat:'asso',emoji:'🎓',titre:'Formation interne réalisée',amis:['Alice','Bruno','Camille','Dina']}];
-const FAMILY_CHALLENGES=[{type:'group',id:'planning_semaine',cat:'famille',emoji:'📅',titre:'Planning familial mis à jour',amis:['Maman','Papa','David','Jonas']},{type:'group',id:'courses_pretes',cat:'famille',emoji:'🛒',titre:'Liste de courses faite ensemble',amis:['Maman','Papa','David','Jonas']},{type:'group',id:'linge_plié',cat:'famille',emoji:'👕',titre:'Linge lavé, plié, rangé',amis:['Maman','Papa','David','Jonas']},{type:'group',id:'repas_prevu',cat:'famille',emoji:'🍲',titre:'Menus de la semaine planifiés',amis:['Maman','Papa','David','Jonas']},{type:'group',id:'rdv_prepares',cat:'famille',emoji:'📋',titre:'Rendez-vous & trajets anticipés',amis:['Maman','Papa','David','Jonas']},{type:'group',id:'chambres_rangees',cat:'famille',emoji:'🧺',titre:'Pièces communes et chambres rangées',amis:['Maman','Papa','David','Jonas']},{type:'group',id:'tri_recyclage',cat:'famille',emoji:'♻️',titre:'Tri sélectif & poubelles sorties',amis:['Maman','Papa','David','Jonas']},{type:'group',id:'check_dimanche',cat:'famille',emoji:'🕒',titre:'Préparation de la semaine le dimanche',amis:['Maman','Papa','David','Jonas']}];
-const CLASS_CHALLENGES=[{type:'group',id:'materiel_commun',cat:'classe',emoji:'📦',titre:'Matériel collectif en ordre',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},{type:'group',id:'tableaux_prop',cat:'classe',emoji:'🧽',titre:'Tableau nettoyé en fin de cours',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},{type:'group',id:'affiches',cat:'classe',emoji:'📜',titre:'Affichage clair et à jour',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},{type:'group',id:'projets_planifies',cat:'classe',emoji:'🗂️',titre:'Projets ou exposés planifiés',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},{type:'group',id:'materiel_partage',cat:'classe',emoji:'✏️',titre:'Outils partagés bien rangés',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},{type:'group',id:'retard_groupe',cat:'classe',emoji:'⏰',titre:'Tous à l’heure au début du cours',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},{type:'group',id:'bilan_vendredi',cat:'classe',emoji:'📊',titre:'Bilan collectif du vendredi fait',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},{type:'group',id:'gestion_roles',cat:'classe',emoji:'🪑',titre:'Rôles (président, secrétaire...) répartis',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']}];
-const OFFICE_CHALLENGES=[{type:'group',id:'planning_equipe',cat:'bureau',emoji:'📅',titre:'Planning d’équipe synchronisé',amis:['Alice','Bob','Carla','Dan']},{type:'group',id:'reunion_prete',cat:'bureau',emoji:'🗓️',titre:'Réunion préparée & documentée',amis:['Alice','Bob','Carla','Dan']},{type:'group',id:'projets_suivis',cat:'bureau',emoji:'📋',titre:'Suivi des projets mis à jour',amis:['Alice','Bob','Carla','Dan']},{type:'group',id:'stock_rangé',cat:'bureau',emoji:'📦',titre:'Matériel ou fournitures en ordre',amis:['Alice','Bob','Carla','Dan']},{type:'group',id:'postes_propres',cat:'bureau',emoji:'🧽',titre:'Bureaux et espace commun rangés',amis:['Alice','Bob','Carla','Dan']},{type:'group',id:'checkin_lundi',cat:'bureau',emoji:'🧭',titre:'Check-in collectif du lundi',amis:['Alice','Bob','Carla','Dan']},{type:'group',id:'docs_partages',cat:'bureau',emoji:'💾',titre:'Docs communs organisés et nommés',amis:['Alice','Bob','Carla','Dan']},{type:'group',id:'cloture_vendredi',cat:'bureau',emoji:'🕔',titre:'Clôture de la semaine en équipe',amis:['Alice','Bob','Carla','Dan']}];
+/* ===== Données ===== */
 
+// Habitudes récurrentes — VIE MATÉRIELLE EN COMMUNAUTÉ (only)
+// À coller à la place des listes précédentes
+
+const CHALLENGES = [
+  {type:'private',id:'screenoff',cat:'sante',emoji:'🛌',titre:'Sans écran avant le coucher',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'private',id:'repas',cat:'sante',emoji:'🥗',titre:'Repas sain fait maison',amis:['Ben','Duc']},
+  {type:'private',id:'lire',cat:'esprit',emoji:'📖',titre:'Lire un livre ou un roman',amis:['Chloé']},
+  {type:'private',id:'etire',cat:'corps',emoji:'🤸',titre:'Étirements corporels',amis:['Anna','Nicolas']},
+  {type:'private',id:'ranger',cat:'vie',emoji:'🧽',titre:'Rangement ou ménage',amis:['Chloé']},
+  {type:'private',id:'creer',cat:'loisirs',emoji:'🎸',titre:'Créer ou jouer',amis:['Ben','Pauline']},
+  {type:'private',id:'respirer',cat:'repos',emoji:'🌬️',titre:'Respiration cohérence cardiaque',amis:['Anna','Marie']},
+  /* +12 Individu (bien-être & quotidien) */
+  {type:'private',id:'hydratation_quot',cat:'sante',emoji:'💧',titre:'Boire 6–8 verres d’eau',amis:['Moi']},
+  {type:'private',id:'marche_20',cat:'corps',emoji:'🚶',titre:'Marche active 20 min',amis:['Moi','Ben']},
+  {type:'private',id:'dos_gainage',cat:'corps',emoji:'🧱',titre:'Gainage 3×30s',amis:['Moi','Anna']},
+  {type:'private',id:'plan_repas',cat:'vie',emoji:'🧾',titre:'Planifier les repas',amis:['Moi','Chloé']},
+  {type:'private',id:'inbox_zero_perso',cat:'esprit',emoji:'📬',titre:'Inbox zéro perso (10 min)',amis:['Moi']},
+  {type:'private',id:'budget_flash',cat:'esprit',emoji:'💶',titre:'Budget flash (5 lignes)',amis:['Moi']},
+  {type:'private',id:'mediter_10',cat:'repos',emoji:'🧘',titre:'Méditer 10 min',amis:['Moi','Marie']},
+  {type:'private',id:'etire_cervicales',cat:'corps',emoji:'🦴',titre:'Étirements nuque/épaules',amis:['Moi']},
+  {type:'private',id:'lecture_tech',cat:'esprit',emoji:'🧩',titre:'Lire 10 pages utile',amis:['Moi']},
+  {type:'private',id:'lessive_personnelle',cat:'vie',emoji:'🧺',titre:'Lancer sa lessive',amis:['Moi']},
+  {type:'private',id:'sortir_dehors',cat:'loisirs',emoji:'🌤️',titre:'10 min de lumière naturelle',amis:['Moi']},
+  {type:'private',id:'gratitude_3',cat:'esprit',emoji:'✨',titre:'Écrire 3 gratitudes',amis:['Moi']}
+];
+
+const GROUP_CHALLENGES = [
+  // 🏠 COLOCATION — opérations & intendance
+  {type:'group',id:'coloc_courses',cat:'coloc',emoji:'🛒',titre:'Courses communes faites',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_frigo_tri',cat:'coloc',emoji:'🥶',titre:'Frigo trié + dates vérifiées',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_lv_range',cat:'coloc',emoji:'🍽️',titre:'Lave-vaisselle vidé & rangé',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_plan_menage',cat:'coloc',emoji:'🗂️',titre:'Planning ménage à jour',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_sol',cat:'coloc',emoji:'🧹',titre:'Aspiration + serpillère',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_sdb_wc',cat:'coloc',emoji:'🚿',titre:'SDB & WC nettoyés',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_poubelles',cat:'coloc',emoji:'🗑️',titre:'Poubelles & tri sortis',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_stock_hygiene',cat:'coloc',emoji:'🧻',titre:'Stocks (papier, savon) OK',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_plantes',cat:'coloc',emoji:'🪴',titre:'Arrosage des plantes',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_entree',cat:'coloc',emoji:'🚪',titre:'Entrée dégagée & propre',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_energie',cat:'coloc',emoji:'🔌',titre:'Veilles éteintes / conso',amis:['Anna','Ben','Chloé','Nicolas','Marie']},
+  {type:'group',id:'coloc_machine',cat:'coloc',emoji:'🧼',titre:'Machine détartrée / filtre',amis:['Anna','Ben','Chloé','Nicolas','Marie']}
+];
+
+const FAMILY_CHALLENGES = [
+  // 👨‍👩‍👧‍👦 FAMILLE — logistique du foyer
+  {type:'group',id:'fam_courses',cat:'famille',emoji:'🛒',titre:'Courses familiales faites',amis:['Maman','Papa','David','Jonas']},
+  {type:'group',id:'fam_menus',cat:'famille',emoji:'🍲',titre:'Menus & liste planifiés',amis:['Maman','Papa','David','Jonas']},
+  {type:'group',id:'fam_linge',cat:'famille',emoji:'👕',titre:'Linge lavé, séché, plié',amis:['Maman','Papa','David','Jonas']},
+  {type:'group',id:'fam_lave_vaisselle',cat:'famille',emoji:'🍽️',titre:'LV vidé & cuisine rangée',amis:['Maman','Papa','David','Jonas']},
+  {type:'group',id:'fam_nettoyage',cat:'famille',emoji:'🧽',titre:'Surfaces & sols',amis:['Maman','Papa','David','Jonas']},
+  {type:'group',id:'fam_poubelles',cat:'famille',emoji:'♻️',titre:'Tri & poubelles sorties',amis:['Maman','Papa','David','Jonas']},
+  {type:'group',id:'fam_stock',cat:'famille',emoji:'📦',titre:'Stocks (alimentaire/hygiène)',amis:['Maman','Papa','David','Jonas']},
+  {type:'group',id:'fam_rangement',cat:'famille',emoji:'🧺',titre:'Pièces communes rangées',amis:['Maman','Papa','David','Jonas']},
+  {type:'group',id:'fam_entretien',cat:'famille',emoji:'🛠️',titre:'Petites réparations faites',amis:['Maman','Papa','David','Jonas']},
+  {type:'group',id:'fam_securite',cat:'famille',emoji:'🧯',titre:'Détecteurs & trousse OK',amis:['Maman','Papa','David','Jonas']}
+];
+
+const ASSOCIATION_CHALLENGES = [
+  // 🤝 ASSOCIATION — intendance de lieu & événements
+  {type:'group',id:'asso_salle',cat:'asso',emoji:'🏟️',titre:'Salle prête (chaises, sono)',amis:['Alice','Bruno','Camille','Dina']},
+  {type:'group',id:'asso_stock',cat:'asso',emoji:'📦',titre:'Inventaire & réassort',amis:['Alice','Bruno','Camille','Dina']},
+  {type:'group',id:'asso_buvette',cat:'asso',emoji:'🥤',titre:'Buvette & caisse prêts',amis:['Alice','Bruno','Camille','Dina']},
+  {type:'group',id:'asso_proprete',cat:'asso',emoji:'🧽',titre:'Nettoyage avant/après',amis:['Alice','Bruno','Camille','Dina']},
+  {type:'group',id:'asso_affichages',cat:'asso',emoji:'📋',titre:'Affichages & signalétique',amis:['Alice','Bruno','Camille','Dina']},
+  {type:'group',id:'asso_matos',cat:'asso',emoji:'🧰',titre:'Matériel vérifié/chargé',amis:['Alice','Bruno','Camille','Dina']},
+  {type:'group',id:'asso_dechets',cat:'asso',emoji:'🗑️',titre:'Déchets triés & sortis',amis:['Alice','Bruno','Camille','Dina']},
+  {type:'group',id:'asso_clefs',cat:'asso',emoji:'🔑',titre:'Clés & accès gérés',amis:['Alice','Bruno','Camille','Dina']},
+  {type:'group',id:'asso_securite',cat:'asso',emoji:'🦺',titre:'Sécurité : extincteurs/issue',amis:['Alice','Bruno','Camille','Dina']}
+];
+
+const OFFICE_CHALLENGES = [
+  // 🧑‍💼 BUREAU — logistique & maintenance courante
+  {type:'group',id:'bureau_postes',cat:'bureau',emoji:'🧽',titre:'Bureaux & open-space rangés',amis:['Alice','Bob','Carla','Dan']},
+  {type:'group',id:'bureau_salle_reu',cat:'bureau',emoji:'🏷️',titre:'Salle de réunion prête',amis:['Alice','Bob','Carla','Dan']},
+  {type:'group',id:'bureau_kitchenette',cat:'bureau',emoji:'🍵',titre:'Coin café/vaisselle OK',amis:['Alice','Bob','Carla','Dan']},
+  {type:'group',id:'bureau_consommables',cat:'bureau',emoji:'🖨️',titre:'Papier/toner/lingettes OK',amis:['Alice','Bob','Carla','Dan']},
+  {type:'group',id:'bureau_dechets',cat:'bureau',emoji:'♻️',titre:'Tri & bennes vidées',amis:['Alice','Bob','Carla','Dan']},
+  {type:'group',id:'bureau_nettoyage',cat:'bureau',emoji:'🧹',titre:'Sol & surfaces faits',amis:['Alice','Bob','Carla','Dan']},
+  {type:'group',id:'bureau_stock_it',cat:'bureau',emoji:'💾',titre:'Stock IT (câbles, adapt.)',amis:['Alice','Bob','Carla','Dan']},
+  {type:'group',id:'bureau_plantes',cat:'bureau',emoji:'🪴',titre:'Plantes arrosées',amis:['Alice','Bob','Carla','Dan']},
+  {type:'group',id:'bureau_securite',cat:'bureau',emoji:'🧯',titre:'Affichages & trousse OK',amis:['Alice','Bob','Carla','Dan']}
+];
+
+// (Optionnel) CLASSE si tu gères un lieu scolaire
+const CLASS_CHALLENGES = [
+  {type:'group',id:'classe_materiel',cat:'classe',emoji:'🧰',titre:'Matériel rangé & complet',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},
+  {type:'group',id:'classe_proprete',cat:'classe',emoji:'🧹',titre:'Sol & tableau propres',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},
+  {type:'group',id:'classe_consos',cat:'classe',emoji:'✏️',titre:'Consommables (craie/feutres)',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},
+  {type:'group',id:'classe_affichages',cat:'classe',emoji:'📜',titre:'Affiches & consignes à jour',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']},
+  {type:'group',id:'classe_tri',cat:'classe',emoji:'♻️',titre:'Tri & poubelles sorties',amis:['M. Dupont','Emma','Lucas','Lucie','Yanis','Clara']}
+];
+
+
+
+const claps={};(()=>{const all=[...CHALLENGES,...GROUP_CHALLENGES,...FAMILY_CHALLENGES,...CLASS_CHALLENGES,...OFFICE_CHALLENGES,...ASSOCIATION_CHALLENGES];all.forEach(c=>{claps[c.id]={};[...new Set([...c.amis,'Moi'])].forEach(n=>claps[c.id][n]=Math.floor(Math.random()*101));});})();
+
+/* États */
+const HABIT_DESC={}, HABIT_TITLE_CUSTOM={}, SPACE_DESC_TXT={};
+const BASE_MINUTES={}, HABIT_MODE={}, LOCKED_COMMUN={}, LOCKED_BY={}, DONE_SETS={};
+const HAS_DESC={}, DELETED_HABITS=new Set();
+
+/* Fréquences */
+const FREQ_MODE={};
+function defaultFreqMode(h){if(h.type==='group'){return Math.random()<0.6?{type:'quotidien'}:{type:'tousx',x:2}}return Math.random()<0.4?{type:'quotidien'}:{type:'tousx',x:Math.floor(Math.random()*4)+2}}
+
+/* Utils */
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 function fmtDate(d){const M=['01','02','03','04','05','06','07','08','09','10','11','12'][d.getMonth()];const j=String(d.getDate()).padStart(2,'0');const J=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'][d.getDay()];return `${J} ${j}/${M}`;}
 function genCode(){const c='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';let s='';for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return s;}
@@ -321,167 +443,203 @@ const GENERIC_TIPS=["Commence petit et régulier.","Prépare ton matériel à l�
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function buildDesc(){return shuffle([...GENERIC_TIPS]).slice(0,7).join('\n')}
 function oneLiner(s){return (s||'').replace(/\s*\n\s*/g,' · ')}
+
+/* Global */
 let period='30', spaceId='D0PWE3', userName='Moi', dayOff=0;
+
+/* Spaces */
 const SPACES={'D0PWE3':{emoji:'👤',label:'👤 Individu',type:'private',ch:CHALLENGES,desc:'Jardin personnel.'},'E8D3FS':{emoji:'🏠',label:'🏠 Colocation',type:'group',ch:GROUP_CHALLENGES,desc:'Jardin partagé à la maison.'},'AS50CI':{emoji:'🏛️',label:'🏛️ Association',type:'group',ch:ASSOCIATION_CHALLENGES,desc:'Rituels d’équipe pour une asso.'},'WS32D7':{emoji:'🌞',label:'🌞 Famille',type:'group',ch:FAMILY_CHALLENGES,desc:'Routines familiales au quotidien.'},'SR3S0D':{emoji:'🏫',label:'🏫 Classe',type:'group',ch:CLASS_CHALLENGES,desc:'Vie de classe et rituels pédagogiques.'},'PD03XZ':{emoji:'🏢',label:'🏢 Bureau',type:'group',ch:OFFICE_CHALLENGES,desc:'Rituels simples pour mieux travailler.'}};
-const HABIT_DESC={}, HABIT_TITLE_CUSTOM={}, SPACE_DESC_TXT={};
-const claps={};(()=>{const all=[...CHALLENGES,...GROUP_CHALLENGES,...FAMILY_CHALLENGES,...CLASS_CHALLENGES,...OFFICE_CHALLENGES,...ASSOCIATION_CHALLENGES];all.forEach(c=>{claps[c.id]={};[...new Set([...c.amis,'Moi'])].forEach(n=>claps[c.id][n]=Math.floor(Math.random()*101));});})();
-const FREQ={};function defaultFreqFor(h){return h.type==='group'?(Math.random()<0.6?1:2):(Math.random()<0.4?1:rint(2,5))}
-;[...CHALLENGES,...GROUP_CHALLENGES,...FAMILY_CHALLENGES,...CLASS_CHALLENGES,...OFFICE_CHALLENGES,...ASSOCIATION_CHALLENGES].forEach(h=>{FREQ[h.id]=FREQ[h.id]||defaultFreqFor(h)});
-const BASE_MINUTES={}, HISTORY_MIN={}, STATE_TODAY={};
-function ensureHabit(hid){if(!BASE_MINUTES[hid]) BASE_MINUTES[hid]=pickQuarterUpTo75(); if(!HISTORY_MIN[hid]) HISTORY_MIN[hid]={}; if(!HABIT_DESC[hid]) HABIT_DESC[hid]=buildDesc();}
-function parseSeedNames(text){return text.replace(/^💧\s*/,'').split(',').map(s=>s.trim()).filter(Boolean)}
-function setSeedBadge(namesEl, arr){if(!arr.length){namesEl.parentElement?.remove();return}namesEl.textContent=`💧 ${names(arr,3)}`}
+const HABIT_TITLE_IS_CUSTOM={};
+
+/* Init */
+;[...CHALLENGES,...GROUP_CHALLENGES,...FAMILY_CHALLENGES,...CLASS_CHALLENGES,...OFFICE_CHALLENGES,...ASSOCIATION_CHALLENGES].forEach(h=>{
+  if(!FREQ_MODE[h.id]) FREQ_MODE[h.id]=defaultFreqMode(h);
+});
+
+/* Helpers */
+function ensureHabit(hid){
+ if(!BASE_MINUTES[hid]) BASE_MINUTES[hid]=pickQuarterUpTo75();
+// 50% des habitudes sans description
+if(HABIT_DESC[hid]===undefined){
+HABIT_DESC[hid] = (Math.random()<0.5) ? '' : buildDesc();
+}
+  if(!HABIT_DESC[hid]) HABIT_DESC[hid]= HAS_DESC[hid] ? buildDesc() : '';
+  if(!HABIT_MODE[hid]){
+    const sp=getSpace();
+    if(sp.type==='private'){HABIT_MODE[hid]={type:'libre',n:2}}
+    else{ // collectif : libre ou commun uniquement
+      HABIT_MODE[hid]= Math.random()<0.8 ? {type:'commun',n:2} : {type:'libre',n:2};
+    }
+  }
+  if(!DONE_SETS[hid]) DONE_SETS[hid]=new Set();
+  if(LOCKED_COMMUN[hid]===undefined){LOCKED_COMMUN[hid]=false;LOCKED_BY[hid]=null;}
+}
 function daySerial(d){return Math.floor(d.getTime()/86400000)}
 function curDate(){const t=new Date();t.setHours(0,0,0,0);t.setDate(t.getDate()+dayOff);return t;}
 function randDay(hid,serial){let h=0;const s=hid+':'+serial;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return (h%100)/100}
-function isVisibleToday(hid,d){const serial=daySerial(d);const f=FREQ[hid]||1;const due=(serial%f)===0;const hidden=(randDay(hid,serial)<0.25);return due && !hidden}
+
+/* visibilité par fréquence */
+function parseDDMMYYYY(str){const m=str.match(/^(\d{2})\/(\d{2})\/(\d{4})$/); if(!m) return null; const d=new Date(+m[3],+m[2]-1,+m[1]); d.setHours(0,0,0,0); return d;}
+function isSameDay(a,b){return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate()}
+function isVisibleToday(hid,d){
+  const fm=FREQ_MODE[hid]||{type:'quotidien'};
+  const serial=daySerial(d);
+  let due=true;
+  if(fm.type==='quotidien'){due=true}
+  else if(fm.type==='tousx'){const x=Math.max(2, fm.x||2); due=((serial % x)===0)}
+  else if(fm.type==='hebdo'){due=(d.getDay()===1)}
+  else if(fm.type==='ponctuelle'){const dd=parseDDMMYYYY(fm.date||''); due=dd?isSameDay(d,dd):false}
+  else if(fm.type==='jours'){const set=fm.days||new Set([1,2,3,4,5]); due=set.has(d.getDay());}
+  const hidden=(randDay(hid,serial)<0.25);
+  return due && !hidden;
+}
+
 function getSpace(){return SPACES[spaceId]||SPACES['D0PWE3'];}
 function listChallenges(){return getSpace().ch;}
 function findAny(id){return [...CHALLENGES,...GROUP_CHALLENGES,...FAMILY_CHALLENGES,...CLASS_CHALLENGES,...OFFICE_CHALLENGES,...ASSOCIATION_CHALLENGES].find(c=>c.id===id);}
 function habitLabel(it){const custom=HABIT_TITLE_CUSTOM[it.id];return custom&&custom.trim()?custom.trim():it.titre;}
-function habitLabelById(id){const it=findAny(id);return it?habitLabel(it):'';}
+function habitLabelById(id){const it=findAny(id);return it?habitLabel(it):''}
 
-/* === Durée jour: 0 -> base -> base+15 -> base+30 -> 0 === */
-function minutesFromState(base,st){
-  if(st===1) return round15(base);
-  if(st===2) return round15(base+15);
-  if(st===3) return round15(base+30);
-  return 0;
-}
-function sumTodayMinutes(){
-  return $$('#cards .levelBtn').map(b=>{
-    const st=+b.dataset.state||0, base=+b.dataset.baseMin||0;
-    return minutesFromState(base,st);
-  }).reduce((a,b)=>a+b,0)
-}
+/* Durée par clic: 0 -> base -> base+15 -> 0 */
+function minutesFromState(base,st){if(st===1) return round15(base); if(st===2) return round15(base+15); return 0;}
+function sumTodayMinutes(){return $$('#cards .levelBtn').map(b=>{const st=+b.dataset.state||0, base=+b.dataset.baseMin||0;return minutesFromState(base,st);}).reduce((a,b)=>a+b,0)}
 function renderDateBar(){$("#dateLabel").textContent=fmtDate(curDate());$("#todayCount").textContent=m2txt(round15(sumTodayMinutes()));}
 
-let activeId=null, refBtn=null;
+/* Emojis */
+function currentBigEmoji(btn,tot){return btn.dataset.override|| (tot<=7?'🌰':tot<=14?'🌱':tot<=21?'🍀':tot<=28?'🌼':tot<=35?'🌻':tot<=42?'🌷':tot<=49?'🌹':tot<=56?'🪻':tot<=64?'💐':'🎋');}
+function drawBtn(btn){const p=+btn.dataset.plants||0, s=+btn.dataset.suns||0, tot=p+s;const st=+btn.dataset.state||0, base=+btn.dataset.baseMin||0;const val=st===0?'À faire':m2txtShort(minutesFromState(base,st));btn.innerHTML=`<div class="big">${currentBigEmoji(btn,tot)}</div><div class="scoreText">${val}</div>`;}
 
-/* Emoji override logic for levelBtn: 🍃(20%), 🍂(10%), 🌾(10%). Reset on click */
-function decideOverrideEmoji(){
-  const r=Math.random();
-  if(r<0.20) return '🍃';
-  if(r<0.30) return '🍂';
-  if(r<0.40) return '🌾';
-  return '';
-}
-function currentBigEmoji(btn,tot){
-  const ov=btn.dataset.override||'';
-  return ov || lvlEmoji(tot);
-}
-
-function drawBtn(btn){
-  const p=+btn.dataset.plants||0, s=+btn.dataset.suns||0, tot=p+s;
-  const state=+btn.dataset.state||0, base=+btn.dataset.baseMin||0;
-  const val=state===0?'-':m2txtShort(minutesFromState(base,state));
-  btn.innerHTML=`<div class="big">${currentBigEmoji(btn,tot)}</div><div class="scoreText">${val}</div>`;
-}
-
-/* Collapse / expand via .content */
-function collapseAllDescs(){
-  $$('.desc.open').forEach(d=>{d.classList.remove('open');d.textContent=d.dataset.short||''});
-  $$('.editPen').forEach(p=>p.remove());
-}
-document.addEventListener('click',e=>{if(!e.target.closest('.content')) collapseAllDescs()},{capture:true})
-
+/* Description open/close */
+let openCard=null;
+function collapseOpenDesc(){if(!openCard) return;const d=openCard.querySelector('.desc');if(d){d.classList.remove('open');d.classList.add('hidden');d.textContent=d.dataset.short||'';}openCard.classList.remove('ready');openCard=null;}
+document.addEventListener('click',e=>{if(openCard && !e.target.closest('.card')) collapseOpenDesc();},{capture:true})
 function setupDesc(desc,hid){
-  desc.dataset.full=HABIT_DESC[hid]||'';
-  desc.dataset.short=oneLiner(desc.dataset.full);
-  desc.textContent=desc.dataset.short;
+desc.dataset.full=HABIT_DESC[hid]||'';desc.dataset.short=oneLiner(desc.dataset.full);desc.dataset.has=desc.dataset.full? '1':'0';
+desc.textContent=desc.dataset.short;desc.classList.add('hidden');
 }
-
-/* Ouvrir détail + forcer l’onglet demandé */
+/* Détail */
+let activeId=null, refBtn=null;
 function openDetail(id,btnRef){
   activeId=id;refBtn=btnRef;hideAll();$("#detail").classList.add('active');$("#daysWrap").classList.add('hide');
   $$('.tab').forEach(t=>t.classList.remove('active'));document.querySelector('[data-tab="members"]').classList.add('active');
   $$('#detail .view').forEach(v=>v.classList.remove('active'));$('#tab-members').classList.add('active');
-  const it=findAny(id);const label=habitLabel(it);$("#detailTitle").textContent=`${it.emoji} ${label}`;
+  const it=findAny(id);$("#detailTitle").textContent=`${it.emoji} ${habitLabel(it)}`;
   renderRank();populateCalWho();renderCalendar();renderHabitSettings();
 }
 function selectDetailTab(key){
-  const b=[...document.querySelectorAll('#detail .tabs [data-tab]')].find(x=>x.dataset.tab===key);
-  if(!b)return;
-  document.querySelectorAll('#detail .tabs [data-tab]').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active');
+  const b=[...document.querySelectorAll('#detail .tabs [data-tab]')].find(x=>x.dataset.tab===key); if(!b)return;
+  document.querySelectorAll('#detail .tabs [data-tab]').forEach(x=>x.classList.remove('active')); b.classList.add('active');
   document.querySelectorAll('#detail .section .view').forEach(v=>v.classList.remove('active'));
-  document.querySelector(`#detail #tab-${key}`)?.classList.add('active');
+  document.querySelector(`#detail #${'tab-'+key}`)?.classList.add('active');
 }
 
+/* Cartes */
 function renderCards(){
   const root=$("#cards");root.innerHTML='';const d=curDate();
-  let firstCard=null;
   listChallenges().forEach(it=>{
+    if(DELETED_HABITS.has(it.id)) return;
     if(!isVisibleToday(it.id,d)) return; ensureHabit(it.id);
-    const card=document.createElement('article');card.className='card';
 
+    const card=document.createElement('article');card.className='card';
     const cont=document.createElement('div');cont.className='content';
     const title=document.createElement('div');title.className='title';
     const left=document.createElement('div');left.className='left';
     const displayTitle=habitLabel(it);
     left.innerHTML=`<span style="font-size:24px">${it.emoji}</span><span class="base">${displayTitle}</span><span class="hint" id="h-${it.id}"></span>`;
     title.append(left);
+
+const pen=document.createElement('button');
+pen.className='editPen'; pen.title='Éditer'; pen.textContent='✏️';
+pen.addEventListener('click',(e)=>{
+e.stopPropagation();
+openDetail(it.id,btn);
+selectDetailTab('settings');
+});
+title.appendChild(pen);
+
     const desc=document.createElement('div');desc.className='desc';setupDesc(desc,it.id);
     const friends=document.createElement('div');friends.className='friends';
-    // Au moins un badge sur la première carte (pour le tuto)
-    if(!firstCard || Math.random()<.5){const n=rint(1,2);const seed=[...it.amis].sort(()=>Math.random()-.5).slice(0,n);const b=document.createElement('div');b.className='badge seed-badge';b.textContent=`💧 ${names(seed)}`;friends.appendChild(b)}
-    if(!firstCard || Math.random()<.7){const n=rint(2,5),sun=[...it.amis].sort(()=>Math.random()-.5).slice(0,n);const b=document.createElement('div');b.className='badge sun-badge';b.textContent=`🌞 ${names(sun)}`;friends.appendChild(b)}
-    friends.addEventListener('click',(e)=>{const badge=e.target.closest('.badge');if(badge){openDetail(it.id,btn);}})
-
-    /* Toggle description via clic sur .content (hors badges) */
-    cont.addEventListener('click',(ev)=>{
-      if(ev.target.closest('.badge')) return;
-      const isOpen=desc.classList.contains('open');
-      collapseAllDescs();
-      if(!isOpen){
-        desc.classList.add('open');desc.textContent=desc.dataset.full||'';
-        const pen=document.createElement('button');pen.className='editPen';pen.title='Éditer';pen.textContent='✏️';
-        pen.addEventListener('click',(e)=>{
-          e.stopPropagation();
-          openDetail(it.id,btn);
-          selectDetailTab('settings');
-        });
-        title.appendChild(pen);
-      }
-    });
-
+    // badge "seed" informatif (optionnel)
+    if(Math.random()<.5){const n=rint(1,2);const seed=[...it.amis].sort(()=>Math.random()-.5).slice(0,n);const b=document.createElement('div');b.className='badge seed-badge';b.textContent=`💧 ${names(seed)}`;friends.appendChild(b)}
     cont.append(title,desc,friends);
 
     const col=document.createElement('div');col.className='levelCol';
     const btn=document.createElement('button');btn.className='levelBtn';btn.dataset.cid=it.id;
     const basePlants=Math.floor(Math.random()*65), suns=claps[it.id]?.['Moi']??0;
     btn.dataset.basePlants=String(basePlants);btn.dataset.plants=String(basePlants);btn.dataset.suns=String(suns);
-    btn.dataset.baseMin=String(BASE_MINUTES[it.id]);btn.dataset.state='0';
-    // decide initial override (🍃/🍂/🌾/none)
-    btn.dataset.override = decideOverrideEmoji();
+    btn.dataset.baseMin=String(BASE_MINUTES[it.id]);btn.dataset.state='0';btn.dataset.override='';
+
+    /* ne pas déplacer les cartes en fin de liste */
+    const setDoneVisual=(on)=>{const baseEl=title.querySelector('.base'); if(on){card.classList.add('done');baseEl.classList.add('strike');}else{card.classList.remove('done');baseEl.classList.remove('strike');}};
+    const applySunBadge=(on)=>{const existing=friends.querySelector('.sun-badge'); if(existing) existing.remove(); if(!on) return; const b=document.createElement('div');b.className='badge sun-badge';const others=[...it.amis].sort(()=>Math.random()-.5).slice(0,rint(1,3));const who=new Set(others);who.add('Moi');b.textContent=`🌞 ${names(Array.from(who),3)}`;friends.appendChild(b)};
+
     drawBtn(btn);
+    updateHint(it.id, title.querySelector('.hint'));
 
-    /* Cycle 0->1->2->3->0 & badge Moi + style done; reset emoji override on first click */
-    const cycle=()=>{
-      // reset any override when the gardener marque la réalisation
-      if(btn.dataset.override){btn.dataset.override='';}
-      const st=+btn.dataset.state||0;
-      const next=(st+1)%4;
-      btn.dataset.state=String(next);
-      const hasDur=next!==0;
-      if(hasDur){
-        card.classList.add('done');
-        let sb=friends.querySelector('.seed-badge');if(!sb){sb=document.createElement('div');sb.className='badge seed-badge';friends.prepend(sb)}
-        let current=sb.textContent?parseSeedNames(sb.textContent):[];if(!current.includes('Moi')) current=['Moi',...current];setSeedBadge(sb,current);
-      }else{
-        card.classList.remove('done');
-        const sb=friends.querySelector('.seed-badge');if(sb){let current=parseSeedNames(sb.textContent);current=current.filter(x=>x!=='Moi');setSeedBadge(sb,current);}
-      }
-      drawBtn(btn);renderDateBar();
+ const ensureOpenDesc=()=>{ if(openCard!==card){ collapseOpenDesc(); openCard=card; }
+    if(!desc.classList.contains('open')){ desc.classList.remove('hidden'); desc.classList.add('open'); desc.textContent=desc.dataset.full||''; }
+ };
+    const hideDescNow=()=>{ if(desc.classList.contains('open')){desc.classList.remove('open');desc.classList.add('hidden');desc.textContent=desc.dataset.short||'';openCard=null;title.querySelector('.editPen')?.remove();} };
+
+    const advanceState=(next)=>{
+      btn.dataset.state=String(next);drawBtn(btn);renderDateBar();
+      if(next>0){ setDoneVisual(true); hideDescNow(); applySunBadge(true); }
+      else{ setDoneVisual(false); applySunBadge(false); }
     };
-    col.onclick=cycle;
 
+    // règles de clic simplifiées :
+    // - si pas de description => 1er clic valide directement (state 1), 2e clic -> state 2, 3e -> 0
+    // - si description => clic1 ouvre desc, clic2 -> state1, clic3 -> state2, clic4 -> 0
+    const handleClick=()=>{
+      const hasDesc = !!(HABIT_DESC[it.id]||'').trim();
+      const isOpen = desc.classList.contains('open');
+      const st = +btn.dataset.state||0;
+
+      if(!hasDesc){
+        // cycle direct 0->1->2->0
+        const next = st===0?1 : st===1?2 : 0;
+        advanceState(next);
+        return;
+      }
+      // Avec description
+      if(st===0 && !isOpen){ // 1er clic = ouvrir
+        ensureOpenDesc();
+        return;
+      }
+      // ensuite on cycle 0->1->2->0
+      const next = st===0?1 : st===1?2 : 0;
+      advanceState(next);
+    };
+
+    col.addEventListener('click',handleClick);
+    cont.addEventListener('click',(e)=>{ if(e.target.closest('.badge')) return; handleClick(); });
+    friends.addEventListener('click', (e) => {
+  const badge = e.target.closest('.badge');
+  if (!badge) return;
+  e.stopPropagation();
+  openDetail(it.id, btn);       // ouvre la fiche de l’habitude
+  selectDetailTab('members');   // et l’onglet "Jardiniers"
+});
     col.append(btn);card.append(col,cont);root.appendChild(card);
-    if(!firstCard) firstCard=card;
   });
   renderDateBar();
 }
 
+/* Hints : uniquement en Collectif */
+function updateHint(hid,el){
+  if(!el) return;
+  const sp=getSpace();
+  if(sp.type!=='group'){ el.textContent=''; return; }
+  const mode=HABIT_MODE[hid]||{type:'libre'};
+  if(mode.type==='commun'){
+    el.textContent = LOCKED_COMMUN[hid] ? `Collectif · terminé` : `Collectif`;
+  }else{
+    // libre en collectif : on affiche quand même "Collectif" (plus discret possible)
+    el.textContent = 'Collectif';
+  }
+}
+
+/* ===== Calendriers ===== */
 let calOff=0;
 function minfo(off=0){const b=new Date();b.setDate(1);b.setMonth(b.getMonth()+off);const y=b.getFullYear(),m=b.getMonth();return{y,m,fd:(new Date(y,m,1).getDay()+6)%7,days:new Date(y,m+1,0).getDate()}}
 function populateCalWho(){const sel=$("#calWho");sel.innerHTML='';sel.add(new Option('Tous','__all__'));sel.add(new Option('Moi','Moi'));(findAny(activeId)?.amis||[]).forEach(n=>sel.add(new Option(n,n)));sel.value='__all__';}
@@ -506,10 +664,12 @@ function renderCalendar(){
 }
 $("#prevMonth").onclick=()=>{calOff--;renderCalendar()};$("#nextMonth").onclick=()=>{calOff++;renderCalendar()};$("#calWho")?.addEventListener('change',renderCalendar);
 
+/* ===== Navigation vues ===== */
 function showHome(){hideAll();$("#home").classList.add('active');$("#daysWrap").classList.remove('hide')}
 function hideAll(){$$('#home,#detail,#space').forEach(v=>v.classList.remove('active'))}
 $("#backHome").onclick=showHome;
 
+/* ===== Classement ===== */
 function demoHM(rangeDays){const min=round15(rint(30,25*60));return {min, txt:m2txt(min)}}
 function likeFactorFromMin(min){return 0.5+(min/60)/25}
 function makeLikeBtn(base){const b=document.createElement('button');b.className='btn likeBtn';b.textContent=`🌞 ${base}`;b.dataset.base=String(base);b.dataset.liked='0';b.onclick=()=>{const liked=b.dataset.liked==='1';b.dataset.liked=liked?'0':'1';b.textContent=`🌞 ${liked?b.dataset.base:(+b.dataset.base+1)}`;b.style.outline=liked?'none':'2px solid var(--green)'};return b}
@@ -520,76 +680,78 @@ function renderRank(){
 }
 function updPeriodBtns(){$$('#btnP7,#btnP30,#btnPAll').forEach(b=>b.classList.toggle('active',b.dataset.period===period))}
 $('#btnP7').onclick=()=>{period='7';updPeriodBtns();renderRank()};$('#btnP30').onclick=()=>{period='30';updPeriodBtns();renderRank()};$('#btnPAll').onclick=()=>{period='all';updPeriodBtns();renderRank()};
+
+/* ===== Paramètres habitude ===== */
 function renderHabitSettings(){
-  if(!activeId)return;
-  ensureHabit(activeId);
+  if(!activeId)return; ensureHabit(activeId);
   const it=findAny(activeId);
-  const sel=$("#freqSelect");
-  if(sel){
-    sel.value=String(FREQ[activeId]||1);
-    sel.onchange=()=>{FREQ[activeId]=parseInt(sel.value||'1',10)};
-  }
+
+  // titre
   const titleInput=$("#habitTitleInput"), emojiEl=$("#habitTitleEmoji");
   if(it&&titleInput&&emojiEl){
-    emojiEl.textContent=it.emoji;
+    emojiEl.textContent=it.emoji||'🌱';
     if(document.activeElement!==titleInput) titleInput.value=habitLabel(it);
     if(!titleInput.dataset.bound){
-      titleInput.addEventListener('input',()=>{
-        const raw=titleInput.value;
-        if(raw.trim()){HABIT_TITLE_CUSTOM[activeId]=raw;}else{delete HABIT_TITLE_CUSTOM[activeId];}
-        const updated=habitLabel(it);
-        $("#detailTitle").textContent=`${it.emoji} ${updated}`;
-        renderCards();
-      });
+      titleInput.addEventListener('input',()=>{const raw=titleInput.value; if(raw.trim()){HABIT_TITLE_CUSTOM[activeId]=raw;}else{delete HABIT_TITLE_CUSTOM[activeId];} $("#detailTitle").textContent=`${it.emoji} ${habitLabel(it)}`; renderCards();});
       titleInput.dataset.bound='1';
     }
   }
+  // description
   const desc=$("#habitDesc");
-  if(desc){
-    desc.value=HABIT_DESC[activeId]||'';
-    if(!desc.dataset.bound){
-      desc.addEventListener('input',()=>{
-        HABIT_DESC[activeId]=desc.value;
-        renderCards();
-      });
-      desc.dataset.bound='1';
+  if(desc){ desc.value=HABIT_DESC[activeId]||''; if(!desc.dataset.bound){ desc.addEventListener('input',()=>{HABIT_DESC[activeId]=desc.value;HAS_DESC[activeId]=!!desc.value.trim();renderCards();}); desc.dataset.bound='1'; } }
+
+  // mode de réalisation (libre / commun)
+  const modeSel=$("#modeSelect");
+  if(modeSel){
+    const m=HABIT_MODE[activeId]||{type:'libre',n:2};
+    modeSel.value=(m.type==='commun')?'commun':'libre';
+    modeSel.onchange=()=>{const t=modeSel.value;HABIT_MODE[activeId]={type:t,n:2};renderCards();};
+  }
+
+  // fréquence
+  const ft=$("#freqType"), fx=$("#freqX"), fDate=$("#freqDate"), fJ=$("#freqSubJours");
+  if(ft&&fx&&fDate&&fJ){
+    const fm=FREQ_MODE[activeId]||(FREQ_MODE[activeId]=defaultFreqMode(it));
+    const setUI=()=>{
+      ft.value=fm.type||'quotidien';
+      $("#freqSubTousx").classList.toggle('hide',ft.value!=='tousx');
+      $("#freqSubPonctuelle").classList.toggle('hide',ft.value!=='ponctuelle');
+      fJ.classList.toggle('hide',ft.value!=='jours'); // jours visibles uniquement si "jours"
+      if(fm.type==='tousx'){fx.value=String(fm.x||2)}
+      if(fm.type==='ponctuelle'){fDate.value=fm.date||''}
+      if(fm.type==='jours'){fJ.querySelectorAll('input[type=checkbox]').forEach(cb=>{cb.checked = fm.days?fm.days.has(+cb.value):false;});}
+    };
+    setUI();
+    if(!ft.dataset.bound){
+      ft.onchange=()=>{const v=ft.value; if(v==='tousx')FREQ_MODE[activeId]={type:'tousx',x:parseInt(fx.value||'2',10)}; else if(v==='ponctuelle')FREQ_MODE[activeId]={type:'ponctuelle',date:(fDate.value||'')}; else if(v==='jours')FREQ_MODE[activeId]={type:'jours',days:new Set()}; else if(v==='hebdo')FREQ_MODE[activeId]={type:'hebdo'}; else FREQ_MODE[activeId]={type:'quotidien'}; setUI(); renderCards(); };
+      fx.onchange=()=>{const x=parseInt(fx.value||'2',10);FREQ_MODE[activeId]={...(FREQ_MODE[activeId]||{}),type:'tousx',x}; renderCards();};
+      fDate.oninput=()=>{FREQ_MODE[activeId]={...(FREQ_MODE[activeId]||{}),type:'ponctuelle',date:fDate.value}; renderCards();};
+      fJ.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.addEventListener('change',()=>{const days=new Set(FREQ_MODE[activeId]?.days||[]); if(cb.checked)days.add(+cb.value); else days.delete(+cb.value); FREQ_MODE[activeId]={type:'jours',days}; renderCards();}));
+      ft.dataset.bound='1';
     }
+  }
+
+  // supprimer
+  const del=$("#deleteHabitBtn");
+  if(del && !del.dataset.bound){
+    del.onclick=()=>{ if(confirm('Supprimer cette habitude ?')){ DELETED_HABITS.add(activeId); showHome(); renderCards(); } };
+    del.dataset.bound='1';
   }
 }
 
-function openSpacePage(){hideAll();$("#space").classList.add('active');$("#daysWrap").classList.add('hide');updSpaceHeader();renderSpaceRank();setupSpaceInfo();populateSpaceWho();renderSpaceCalendar();}
+/* ===== Espace ===== */
+function openSpacePage(){hideAll();$("#space").classList.add('active');$("#daysWrap").classList.add('hide');updSpaceHeader();renderSpaceRank();setupSpaceInfo();populateSpaceWho();renderSpaceCalendar();maybeTogglePrivateAdd();}
 function updSpaceHeader(){const sp=getSpace();$("#spaceHeaderTitle").textContent=sp.label;$("#paramSpaceLabel").value=sp.label;$("#paramName").value=userName||'Moi'}
-function setupSpaceInfo(){const sp=getSpace();const t=$("#spaceDescInfo");t.value=SPACE_DESC_TXT[spaceId]??(sp.desc||'');setupEditableTextarea(t,val=>{SPACE_DESC_TXT[spaceId]=val;sp.desc=val})}
+function setupSpaceInfo(){const sp=getSpace();const t=$("#spaceDescInfo");t.value=SPACE_DESC_TXT[spaceId]??(sp.desc||'');t.classList.add('editing');t.oninput=()=>{SPACE_DESC_TXT[spaceId]=t.value;sp.desc=t.value}}
 function allMembersOfSpace(){const ch=listChallenges();const set=new Set(['Moi']);ch.forEach(c=>c.amis.forEach(a=>set.add(a)));return Array.from(set)}
 function renderSpaceRank(){
   const root = $("#spaceRank"); root.innerHTML = '';
   const days = sPeriod==='7' ? 7 : (sPeriod==='30' ? 30 : 120);
-  const rows = allMembersOfSpace()
-    .map(n=>{
-      const v = demoHM(days);
-      const baseLikes = Math.max(0, Math.round(v.min/60 * likeFactorFromMin(v.min)));
-      return { n, txt:v.txt, min:v.min, me:(n===userName||n==='Moi'), likes:baseLikes };
-    })
-    .sort((a,b)=>b.min-a.min);
-
-  rows.forEach(({n,txt,min,me,likes})=>{
-    const row=document.createElement('div'); row.className='row';
-    const left=document.createElement('div'); left.className='leftRank';
-    const big=document.createElement('span'); big.className='scoreEmoji';
-    big.textContent = `${lvlEmoji(Math.min(65,Math.round(min/60)))} ${txt}`;
-    const name=document.createElement('b'); name.textContent = `${n}${me?' (toi)':''}`;
-    left.append(big,name);
-    const like = makeLikeBtn(likes);
-    row.append(left, like);
-    root.appendChild(row);
-  });
+  const rows = allMembersOfSpace().map(n=>{const v = demoHM(days);const baseLikes = Math.max(0, Math.round(v.min/60 * likeFactorFromMin(v.min)));return { n, txt:v.txt, min:v.min, me:(n===userName||n==='Moi'), likes:baseLikes };}).sort((a,b)=>b.min-a.min);
+  rows.forEach(({n,txt,min,me,likes})=>{const row=document.createElement('div'); row.className='row';const left=document.createElement('div'); left.className='leftRank';const big=document.createElement('span'); big.className='scoreEmoji';big.textContent = `${lvlEmoji(Math.min(65,Math.round(min/60)))} ${txt}`;const name=document.createElement('b'); name.textContent = `${n}${me?' (toi)':''}`;left.append(big,name);const like = makeLikeBtn(likes);row.append(left, like);root.appendChild(row);});
 }
-/* ====== Space period selector (mirrors habit selector) ====== */
 let sPeriod = '30';
-function updSpacePeriodBtns(){
-  $$('#sBtnP7,#sBtnP30,#sBtnPAll')
-    .forEach(b=>b.classList.toggle('active', b.dataset.speriod===sPeriod));
-}
+function updSpacePeriodBtns(){$$('#sBtnP7,#sBtnP30,#sBtnPAll').forEach(b=>b.classList.toggle('active', b.dataset.speriod===sPeriod));}
 $('#sBtnP7').onclick = ()=>{ sPeriod='7';  updSpacePeriodBtns(); renderSpaceRank(); };
 $('#sBtnP30').onclick= ()=>{ sPeriod='30'; updSpacePeriodBtns(); renderSpaceRank(); };
 $('#sBtnPAll').onclick = ()=>{ sPeriod='all';updSpacePeriodBtns(); renderSpaceRank(); };
@@ -598,7 +760,7 @@ let sCalOff=0;
 function populateSpaceWho(){const sel=$("#sCalWho");sel.innerHTML='';sel.add(new Option('Tous','__all__'));allMembersOfSpace().forEach(n=>sel.add(new Option(n,n)));sel.value='__all__';}
 function renderSpaceCalendar(){
   const wrap=$("#sCal");wrap.innerHTML='';const {y,m,fd,days}=minfo(sCalOff);const months=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];let monthMinutes=0;
-  for(let i=0;i<fd;i++){const c=document.createElement('div');c.className='cell';c.style.opacity=.35;wrap.appendChild(c)}
+  for(let d=1,i=0;i<fd;i++){const c=document.createElement('div');c.className='cell';c.style.opacity=.35;wrap.appendChild(c)}
   for(let d=1;d<=days;d++){
     const c=document.createElement('div');c.className='cell';const dn=document.createElement('div');dn.className='dayNum';dn.textContent=String(d);c.appendChild(dn);
     if(Math.random()<0.65){const mins=pickQuarterUpTo75();const mark=document.createElement('div');mark.className='seedMark';mark.textContent='💧';c.appendChild(mark);const dur=document.createElement('div');dur.className='dur';dur.textContent=m2txtShort(mins);c.appendChild(dur);monthMinutes+=mins;}
@@ -608,17 +770,32 @@ function renderSpaceCalendar(){
 }
 $("#sPrevMonth").onclick=()=>{sCalOff--;renderSpaceCalendar()};$("#sNextMonth").onclick=()=>{sCalOff++;renderSpaceCalendar()};$("#sCalWho").addEventListener('change',renderSpaceCalendar);
 
+/* Sélecteur d’espace */
 function updSel(){const sel=$("#spaceSel");sel.innerHTML='';const order=['E8D3FS','AS50CI','D0PWE3','WS32D7','SR3S0D','PD03XZ'];order.forEach(id=>{if(SPACES[id]){const o=document.createElement('option');o.value=id;o.textContent=SPACES[id].label;sel.appendChild(o)}});Object.keys(SPACES).forEach(id=>{if(!order.includes(id)){const o=document.createElement('option');o.value=id;o.textContent=SPACES[id].label;sel.appendChild(o)}});sel.value=spaceId;}
 const selSpace=$("#spaceSel");selSpace.addEventListener('change',()=>{spaceId=selSpace.value;renderCards();showHome();});
 $("#openSpace").onclick=openSpacePage;$("#backFromSpace").onclick=showHome;
 
+/* Modales */
 const mAdd=$("#modalAdd"),mHabit=$("#modalHabit"),mInvite=$("#modalInvite"),mSpace=$("#modalSpace"),mWizard=$("#modalWizard");
 const open=m=>m.classList.add('on'), close=m=>m.classList.remove('on');
-$("#addBtn").onclick=()=>open(mAdd);$("#closeAdd").onclick=()=>close(mAdd);
-$("#addHabit").onclick=()=>{close(mAdd);open(mHabit);step1()};$("#inviteFriend").onclick=()=>{close(mAdd);openInvite()};$("#joinSpace").onclick=()=>{close(mAdd);open(mSpace)};
+$("#addBtn").onclick=()=>{open(mAdd);maybeTogglePrivateAdd();};$("#closeAdd").onclick=()=>close(mAdd);
+$("#addHabit").onclick=()=>{close(mAdd);open(mHabit);step1()}
+function maybeTogglePrivateAdd(){ const isPrivate=getSpace().type==='private'; $("#addPrivateHabit").classList.toggle('hide',!isPrivate); }
+$("#addPrivateHabit").onclick=()=>{
+  close(mAdd);
+  const id='priv_'+genCode();
+  const h={type:'private',id,cat:'sante',emoji:'✨',titre:'Nouvelle habitude privée ✨',amis:[]};
+  CHALLENGES.unshift(h);
+  HAS_DESC[id]=Math.random()<0.5; HABIT_DESC[id]=HAS_DESC[id]?buildDesc():'';
+  FREQ_MODE[id]={type:'quotidien'}; HABIT_MODE[id]={type:'libre',n:2};
+  activeId=id; renderCards(); openDetail(id,null); selectDetailTab('settings');
+};
+$("#inviteFriend").onclick=()=>{close(mAdd);openInvite()};$("#joinSpace").onclick=()=>{close(mAdd);open(mSpace)};
 function openInvite(){const code=spaceId;$("#inviteLink").value=`https://habitu.be/?code=${code}`;open(mInvite)}
 $("#closeInvite").onclick=()=>close(mInvite);$("#copyInvite").onclick=async()=>{try{await navigator.clipboard.writeText($("#inviteLink").value);alert("Lien copié !")}catch(e){alert("Copie impossible")}}
 $("#spaceGen").onclick=()=>{$("#spaceCode").value=genCode()};$("#spaceCancel").onclick=()=>close(mSpace);$("#closeSpace").onclick=()=>close(mSpace);
+
+/* Space join/wizard */
 $("#spaceSave").onclick=()=>{const code=($("#spaceCode").value||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6), name=($("#spaceName").value||'').trim()||'Moi'; if(!code){alert("Entre un code de jardin.");return} if(SPACES[code]){spaceId=code;userName=name;updSel();renderCards();close(mSpace)} else{close(mSpace);launchWizard(code,name)}};
 let wiz={code:'',name:'',type:'private',profile:'Autre'};
 function launchWizard(code,name){wiz={code,name,type:'private',profile:'Autre'};open(mWizard);wizProfileStep()}
@@ -630,99 +807,28 @@ function wizProfileStep(){const root=$("#wizStep");$("#wizTitle").textContent="T
   {emoji:'🏫',label:'Classe',apply:()=>({emoji:'🏫',label:'🏫 Classe',type:'group',ch:CLASS_CHALLENGES,desc:'Vie de classe.'})},
   {emoji:'🏢',label:'Bureau',apply:()=>({emoji:'🏢',label:'🏢 Bureau',type:'group',ch:OFFICE_CHALLENGES,desc:'Rituels simples pour mieux travailler.'})},
   {emoji:'✨',label:'Autre',apply:()=>({emoji:'✨',label:'✨ Autre',type:'group',ch:GROUP_CHALLENGES,desc:'Jardin partagé.'})}
-].forEach(o=>{const el=document.createElement('div');el.className='opt';el.innerHTML=`<div class="emoji">${o.emoji}</div><div><b>${o.label}</b></div>`;el.onclick=()=>{const d=o.apply();SPACES[wiz.code]=d;spaceId=wiz.code;userName=wiz.name;updSel();close(mWizard);renderCards();};root.appendChild(el);});}
+].forEach(o=>{const el=document.createElement('div');el.className='opt';el.innerHTML=`<div class="emoji">${o.emoji}</div><div><b>${o.label}</b></div>`;el.onclick=()=>{const d=o.apply();SPACES[wiz.code]=d;spaceId=wiz.code;userName=wiz.name;updSel();renderCards();close(mWizard);};root.appendChild(el);});}
 $("#closeWizard").onclick=()=>close(mWizard);
-$("#quitSpaceBtn").onclick=()=>{const sp=getSpace();if(confirm(`Quitter ${sp.label} ?`)){spaceId='D0PWE3';updSel();renderCards();showHome()}};
+$("#quitSpaceBtn").onclick=()=>{const sp=getSpace();if(confirm(`Quitter ${sp.label} ?`)){spaceId='D0PWE3';updSel();renderCards();showHome()}}
 
+/* Ajout habitude (catalogue) */
 let pickedCat=null;
 function step1(){const root=$("#step1");$("#step1").style.display='grid';$("#step2").style.display='none';root.innerHTML='';CATS.forEach(c=>{const el=document.createElement('div');el.className='opt';el.innerHTML=`<div class="emoji">${c.emoji}</div><div><b>${c.nom}</b></div>`;el.onclick=()=>{pickedCat=c.id;step2()};root.appendChild(el)})}
 function step2(){const root=$("#step2");$("#step1").style.display='none';$("#step2").style.display='grid';root.innerHTML='';CHALLENGES.filter(x=>x.cat===pickedCat).forEach(x=>{const el=document.createElement('div');el.className='opt';el.innerHTML=`<div class="emoji">${x.emoji}</div><div><b>${x.titre}</b></div>`;el.onclick=()=>{alert("Habitude ajoutée (démo)");close(mHabit)};root.appendChild(el)})}
 $("#closeHabit").onclick=()=>close(mHabit);
 
+/* Jour +/- */
 $("#prevDay").onclick=()=>{dayOff--;renderCards();renderDateBar()};$("#nextDay").onclick=()=>{dayOff++;renderCards();renderDateBar()};
 
+/* Lancement */
 function renderCalendarAndKeepMonth(){renderCalendar()}
 let dayInit=false;function renderDateOnce(){if(!dayInit){dayOff=0;renderDateBar();dayInit=true}}
-function updAll(){renderCards();renderCalendarAndKeepMonth();renderDateOnce();updSel()}
+function updAll(){renderCards();renderCalendarAndKeepMonth();renderDateOnce();updSel();maybeTogglePrivateAdd()}
 updAll();
 
-/* Textarea editable helper */
-function setupEditableTextarea(t,onSave){
-  t.classList.add('editing');
-  t.addEventListener('input',()=>onSave(t.value));
-}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){['modalAdd','modalHabit','modalInvite','modalSpace','modalWizard'].forEach(id=>document.getElementById(id).classList.remove('on'))}})
-
-/* Tabs switching util */
+/* Tabs util */
 function switchViews(btn,groupAttr,prefix){const key=btn.getAttribute(groupAttr);document.querySelectorAll(`.tabs [${groupAttr}]`).forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll(`#${prefix} .view`).forEach(v=>v.classList.remove('active'));const target=document.querySelector(`#${prefix} #${(groupAttr==='data-tab'?'tab-':'')}${key}`);if(target)target.classList.add('active');if(key==='history'){populateCalWho?.();renderCalendar?.()}if(key==='shistory'){populateSpaceWho?.();renderSpaceCalendar?.()}}
 document.querySelectorAll('#detail .tabs [data-tab]').forEach(btn=>{btn.addEventListener('click',()=>switchViews(btn,'data-tab','detail').bind(null))});
 document.querySelectorAll('#space .tabs [data-stab]').forEach(btn=>{btn.addEventListener('click',()=>switchViews(btn,'data-stab','space').bind(null))});
-
-/* ===== Simple guided tour (first launch only) ===== */
-const tourEl=$("#tour"), focusEl=$("#tourFocus"), tipEl=$("#tourTip");
-const TOUR_STEPS=[
-  {sel:"#brand", title:"Bienvenue dans ton jardin d’habitudes 🌿", text:"• Chaque habitude est une plante à faire grandir 🌰 → 🌱\n• Les jardiniers 💧 arrosent \n• Les encouragements 🌞 réchauffent.\n\nBon courage dans l'entretien de notre jardin à tous !"},
-  {sel:"#cards .content", title:"1/ Instructions détaillées", text:"Clique une carte pour lire la description complète de l’habitude."},
-  {sel:"#cards .card .friends", title:"2/ Participations des jardiniers", text:"Ici, vois qui a arrosé (💧) et qui a encouragé (🌞)."},
-  {sel:"#cards .card .levelBtn", title:"3/ Marquer la réalisation", text:"Clique pour valider. Re-clique pour augmenter la durée d'entretien effective\nAu départ, arrose les 🌰 régulièrement pour les faire grandir en 🌱 puis en 🌻.\nSi l’habitude est délaissée, la plante peut se désécher 🍃🍂🌾."},
-  {sel:"#spaceSel", title:"4/ Changer de jardin", text:"Bascule entre Individu, Colocation, etc. depuis ce sélecteur."},
-  {sel:"#addBtn", title:"5/ Ajouter", text:"Ajoute une habitude, un jardinier ou rejoins/crées un jardin."}
-];
-let tourIdx=0;
-function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
-function placeFocusFor(el){
-  const r=el.getBoundingClientRect();
-  const pad=8, br=10;
-  const top=clamp(r.top-pad,6,window.innerHeight-40), left=clamp(r.left-pad,6,window.innerWidth-40);
-  const w=clamp(r.width+pad*2,40,window.innerWidth-12), h=clamp(r.height+pad*2,30,window.innerHeight-12);
-  Object.assign(focusEl.style,{top:top+"px",left:left+"px",width:w+"px",height:h+"px",borderRadius:br+"px",display:"block"});
-  // Tip positioning
-  const tipW=300, spaceBelow=window.innerHeight-(top+h), spaceAbove=top;
-  let tipTop, tipLeft=clamp(left,8,window.innerWidth-tipW-8);
-  if(spaceBelow>120){tipTop=top+h+10}else{tipTop=clamp(top-10-110,8,window.innerHeight-118)}
-  Object.assign(tipEl.style,{top:tipTop+"px",left:tipLeft+"px"});
-}
-function showStep(idx){
-  // Skip missing targets gracefully
-  while(idx<TOUR_STEPS.length && TOUR_STEPS[idx].sel && !document.querySelector(TOUR_STEPS[idx].sel)) idx++;
-  tourIdx=idx;
-  if(tourIdx>=TOUR_STEPS.length){endTour();return}
-  const step=TOUR_STEPS[tourIdx];
-
-  if(step.intro){
-    focusEl.style.display="none";
-    const centerTop=Math.max(20,(window.innerHeight-220)/3);
-    Object.assign(tipEl.style,{top:centerTop+"px",left:clamp((window.innerWidth-300)/2,8,window.innerWidth-308)+"px"});
-    tipEl.innerHTML=`<b>${step.title}</b><div>${step.html}</div><div class="tourActions"><button class="tourBtn tourSkip" id="tourSkipBtn">Passer</button><button class="tourBtn tourNext" id="tourNextBtn">Commencer →</button></div>`;
-    $("#tourNextBtn").onclick=(e)=>{e.stopPropagation();showStep(tourIdx+1)};
-    $("#tourSkipBtn").onclick=(e)=>{e.stopPropagation();endTour()};
-    return;
-  }
-
-  const target=document.querySelector(step.sel);
-  target?.scrollIntoView({block:'center',behavior:'smooth'});
-  setTimeout(()=>{if(!target){showStep(tourIdx+1);return}
-    placeFocusFor(target);
-    tipEl.innerHTML=`<b>${step.title}</b><div>${(step.text||'').replace(/\n/g,'<br>')}</div><div class="tourActions"><button class="tourBtn tourSkip" id="tourSkipBtn">Passer</button><button class="tourBtn tourNext" id="tourNextBtn">${tourIdx===TOUR_STEPS.length-1?'Terminer':'Suivant →'}</button></div>`;
-    $("#tourNextBtn").onclick=(e)=>{e.stopPropagation();showStep(tourIdx+1)};
-    $("#tourSkipBtn").onclick=(e)=>{e.stopPropagation();endTour()};
-  },220);
-}
-function startTour(){
-  if(localStorage.getItem('tourDone')) return;
-  if(!document.querySelector('#cards .card')){ // si pas de cartes visibles, re-render aujourd'hui
-    dayOff=0;renderCards();
-  }
-  tourEl.classList.add('on');
-  showStep(0);
-}
-function endTour(){
-  tourEl.classList.remove('on');
-  localStorage.setItem('tourDone','1');
-}
-tourEl.addEventListener('click',()=>showStep(tourIdx+1));
-window.addEventListener('resize',()=>{ const step=TOUR_STEPS[tourIdx]; if(step && step.sel){ const el=document.querySelector(step.sel); if(el) placeFocusFor(el);} });
-document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && tourEl.classList.contains('on')) { const step=TOUR_STEPS[tourIdx]; if(step && step.sel){ const el=document.querySelector(step.sel); if(el) placeFocusFor(el);} }});
-setTimeout(startTour,450);
 </script>
 </body></html>
