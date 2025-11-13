@@ -1,25 +1,35 @@
 ### 🌱 Habitu.be — Les petites habitudes qui changent tout
 
-**Habitu.be** est une application ludique et minimaliste pour t’aider à construire de bonnes habitudes **avec tes amis**.  
-Chaque jour, un petit défi, un peu de régularité, et beaucoup de motivation partagée.  
+**Habitu.be, c’est ton jardin d’habitudes partagées 🌿**
 
-💧 **Agis chaque jour** — coche tes routines en un geste  
-☀️ **Reçois du soutien** — tes amis t’encouragent par des “claps”  
-🌻 **Vois ta progression pousser** — ton emoji évolue à mesure de tes efforts  
-🎯 **Un défi = un ami = un jour** — simple, clair et fun  
+🙋‍♀️🙋‍♂️ **Pour qui ?**  
+• Colocs, familles, classes, associations, bureaux…  
+• Tous ceux qui veulent mieux s’organiser sans se prendre la tête  
 
-✨ **Fais grandir tes habitudes. Fais éclore ta discipline.**
+✨ **Ce que ça fait**  
+• Tu transformes les petites tâches du quotidien en habitudes visibles (rangement, linge, frigo, salle de classe…)  
+• Chaque membre devient jardinier : il choisit ses habitudes, les réalise, aide les autres  
+• L’app suit les progrès à la semaine et montre qui contribue, combien d’heures, et sur quoi  
+• Tout est présenté comme un jardin vivant plutôt qu’une to-do list stressante  
+
+💚 **La promesse**  
+Moins de “Qui devait faire ça déjà ?”, plus de clarté, de partage et de douceur dans la gestion du quotidien.
 
 --
 
 ### 🌱 Habitu.be — Small habits, big change
 
-**Habitu.be** is a playful, minimalist app that helps you build better habits **together with your friends**.  
-Each day brings a tiny challenge, a bit of consistency, and a lot of shared motivation.  
+**Habitu.be is your shared habit garden 🌿**
 
-💧 **Act daily** — check your routines with one tap  
-☀️ **Get support** — your friends cheer you on with “claps”  
-🌻 **Watch your progress grow** — your emoji evolves as you do  
-🎯 **One challenge = one friend = one day** — simple, clear, and fun  
+🙋‍♀️🙋‍♂️ **Who is it for?**  
+• Roommates, families, classrooms, associations, teams…  
+• Anyone who wants smoother organization without the mental load  
 
-✨ **Grow your habits. Watch your discipline blossom.**
+✨ **What it does**  
+• Turns everyday tasks into clear habits (cleaning, laundry, fridge check, classroom setup…)  
+• Everyone becomes a gardener: choose habits, complete them, support others  
+• Tracks weekly progress: who contributes, how much time, and on what  
+• A living garden metaphor instead of a stressful to-do list  
+
+💚 **The promise**  
+Less “Who was supposed to do this?”, more clarity, teamwork, and calm in shared daily life.
