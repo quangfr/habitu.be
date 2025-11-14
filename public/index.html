@@ -184,16 +184,10 @@
     }
 
     .auth-card img {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 80px;
+      height: 80px;
+      border-radius: 16px;
       margin: 0 auto
-    }
-
-    .auth-card h1 {
-      margin: 0;
-      font-size: 20px;
-      font-weight: 800
     }
 
     .auth-card form {
@@ -250,20 +244,10 @@
       min-height: 18px
     }
 
-    .auth-reset {
-      width: 320px;
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: var(--r);
-      border: 1px solid var(--border);
-      background: #fffdf8;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .auth-reset .rowInline {
-      margin-top: 0;
+    .auth-helper {
+      font-size: 12px;
+      color: var(--green);
+      min-height: 18px;
     }
 
     .auth-card .auth-note {
@@ -506,8 +490,7 @@
       align-items: flex-end
     }
 
-    .dateLabel,
-    .todayCount {
+    .dateLabel {
       font-weight: 700;
       padding: 0;
       border: none;
@@ -663,6 +646,13 @@
       min-height: 26px
     }
 
+    .friends-badges {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
     .friends .card-edit {
       margin-left: auto;
       padding: 4px 6px;
@@ -704,7 +694,7 @@
     }
 
     .levelCol {
-      padding: 0 6px;
+      padding: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -714,8 +704,10 @@
     .levelBtn {
       width: 100%;
       height: 60px;
-      border-radius: var(--r);
-      border: 1px solid var(--border);
+      padding: 0;
+      border-radius: 0;
+      border: none;
+      border-right: 1px solid var(--border);
       background: #fff;
       display: flex;
       flex-direction: column;
@@ -724,6 +716,10 @@
       user-select: none;
       line-height: 1.05;
       position: relative
+    }
+
+    .levelBtn.done {
+      background: var(--bg);
     }
 
     .levelBtn .big {
@@ -745,6 +741,12 @@
       font-size: 12px;
       font-weight: 800;
       line-height: 1
+    }
+
+    .freq-sub-jours {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
     }
 
     /* Sections & vues */
@@ -928,6 +930,29 @@
       height: calc(100% - 50px);
       overflow: auto;
       background: var(--bg)
+    }
+
+    @media (min-width: 720px) {
+      .modal.on {
+        align-items: center;
+        justify-content: center;
+      }
+
+      .sheet {
+        position: relative;
+        inset: auto;
+        width: min(520px, 96vw);
+        max-width: 520px;
+        max-height: 90vh;
+        margin: 0 12px;
+        border-radius: 16px;
+        box-shadow: 0 24px 48px rgba(0, 0, 0, .25);
+      }
+
+      .sheetBody {
+        height: auto;
+        max-height: calc(90vh - 60px);
+      }
     }
 
     .grid {
@@ -1146,8 +1171,7 @@
   </div>
   <div class="auth-overlay hide" id="authOverlay">
     <div class="auth-card">
-      <img src="icon-192.png" alt="Habitube" />
-      <h1>Habitube</h1>
+      <img src="icon-512.png" alt="Logo Habitube" />
       <div class="auth-message" id="authMessage">Connecte-toi pour retrouver Habitube.</div>
       <div class="auth-forms">
         <form id="loginForm">
@@ -1166,27 +1190,11 @@
         </form>
       </div>
       <div class="auth-switch">
-        <span id="showSignup">Créer un compte</span>
-        <span id="showLogin" class="hide">Déjà inscrit ? Se connecter</span>
+        <span id="showSignup" class="auth-link">Créer un compte</span>
+        <span id="showLogin" class="auth-link hide">Déjà inscrit ? Se connecter</span>
         <span id="forgotPasswordLink" class="auth-link">Mot de passe oublié ?</span>
       </div>
-      <div class="auth-reset hide" id="passwordResetSection">
-        <div class="field">
-          <label><b>Recevoir un lien de réinitialisation</b></label>
-          <div class="rowInline">
-            <input id="resetEmailLink" type="email" placeholder="Ton email" />
-            <button class="btn" type="button" id="sendResetLink">Envoyer</button>
-          </div>
-          <div class="subtitle" id="resetLinkStatus"></div>
-        </div>
-        <div class="field">
-          <label><b>Changer le mot de passe</b></label>
-          <input id="resetCode" type="text" placeholder="Code reçu" />
-          <input id="resetPassword" type="password" placeholder="Nouveau mot de passe" />
-          <button class="btn primary" type="button" id="confirmResetBtn">Changer</button>
-          <div class="subtitle" id="resetStatus"></div>
-        </div>
-      </div>
+      <div class="auth-helper" id="resetNotice"></div>
     </div>
   </div>
   <div id="app">
@@ -1201,7 +1209,6 @@
       <button class="navbtn" id="prevDay">←</button>
       <div style="display:flex;align-items:center;gap:6px">
         <div class="dateLabel" id="dateLabel">—</div>
-        <div class="todayCount" id="todayCount">0h00</div>
       </div>
       <div class="rightBtns">
         <button class="navbtn" id="nextDay">→</button>
@@ -1221,7 +1228,7 @@
       <div class="tabs">
         <button class="tab active" data-tab="members">👨‍🌾 Jardiniers</button>
         <button class="tab" data-tab="history">📅 Historique</button>
-        <button class="tab" data-tab="settings">⚙️ Réglages</button>
+        <button class="tab" data-tab="settings">✏️ Édition</button>
       </div>
       <div class="section">
         <div class="view active" id="tab-members">
@@ -1282,7 +1289,7 @@
                 </select>
                 <div id="freqSubPonctuelle" class="rowInline hide"><span>Date</span><input id="freqDate" type="text"
                     placeholder="JJ/MM/AAAA" /></div>
-                <div id="freqSubJours" class="hide" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+        <div id="freqSubJours" class="hide freq-sub-jours">
                   <label><input type="checkbox" value="1">Lu</label>
                   <label><input type="checkbox" value="2">Ma</label>
                   <label><input type="checkbox" value="3">Me</label>
@@ -1322,18 +1329,16 @@
               <label><b>Mode de réalisation</b></label>
               <div class="rowInline">
                 <select id="modeSelect" class="select">
-                  <option value="libre">Individuel</option>
-                  <option value="commun">Partagé</option>
+                  <option value="libre">Individuel 👤</option>
+                  <option value="commun">Partagé 👥</option>
                 </select>
               </div>
-              <div class="miniInfo">Individuel (toi) · Partagé (1 personne suffit).</div>
             </div>
 
             <div style="margin-top:14px;display:flex;justify-content:space-between;gap:8px">
               <button class="btn danger" id="deleteHabitBtn">Supprimer</button>
               <button class="btn primary" id="saveHabitBtn">Sauvegarder</button>
             </div>
-            <div class="subtitle" id="habitEditNotice"></div>
           </div>
         </div>
       </div>
@@ -1349,7 +1354,7 @@
       <div class="tabs">
         <button class="tab active" data-stab="sprofile">👨‍🌾 Jardiniers</button>
         <button class="tab" data-stab="shistory">📅 Historique</button>
-        <button class="tab" data-stab="sparams">✏️ Édition</button>
+        <button class="tab" data-stab="sparams">⚙️ Réglages</button>
       </div>
       <div class="section">
         <div class="view active" id="sprofile">
@@ -2096,33 +2101,33 @@
     }
 
     /* Utils cartes */
-    function ensureOwnerBadge(friends, owner, it, btn) {
-      let b = friends.querySelector('.owner-badge');
+    function ensureOwnerBadge(badges, owner, it, btn) {
+      let b = badges.querySelector('.owner-badge');
       if (!owner) { if (b) b.remove(); return; }
       if (!b) {
         b = document.createElement('button');
         b.type = 'button';
         b.className = 'badge owner-badge';
         b.addEventListener('click', (e) => { e.stopPropagation(); openDetail(it.id, btn); selectDetailTab('members'); });
-        friends.appendChild(b);
+        badges.appendChild(b);
       }
       b.textContent = `🧑‍🌾 ${owner}`;
     }
-    function ensureHelperBadge(friends, helpers) {
+    function ensureHelperBadge(badges, helpers) {
       helpers = [...new Set(helpers || [])];
-      let b = friends.querySelector('.helper-badge');
+      let b = badges.querySelector('.helper-badge');
       if (helpers.length === 0) { if (b) b.remove(); return; }
       if (!b) {
         b = document.createElement('div');
         b.className = 'badge helper-badge';
-        const heart = friends.querySelector('.heart-badge');
-        if (heart) friends.insertBefore(b, heart);
-        else friends.appendChild(b);
+        const heart = badges.querySelector('.heart-badge');
+        if (heart) badges.insertBefore(b, heart);
+        else badges.appendChild(b);
       }
       b.textContent = `🤝 ${names(helpers, 3)}`;
     }
-    function ensureHeartBadge(friends, shouldShow, namesList, btnRef, habitId) {
-      let b = friends.querySelector('.heart-badge');
+    function ensureHeartBadge(badges, shouldShow, namesList, btnRef, habitId) {
+      let b = badges.querySelector('.heart-badge');
       if (!shouldShow) {
         if (b) b.remove();
         return;
@@ -2131,7 +2136,7 @@
         b = document.createElement('button');
         b.type = 'button';
         b.className = 'badge heart heart-badge';
-        friends.appendChild(b);
+        badges.appendChild(b);
         b.addEventListener('click', (e) => {
           e.stopPropagation();
           const arr = JSON.parse(btnRef.dataset.heartList || '[]');
@@ -2199,11 +2204,13 @@
       if (map.has(id)) return map.get(id);
       return LIBRARY_HABITS.find(h => h.id === id);
     }
-    function habitLabel(it) { const custom = HABIT_TITLE_CUSTOM[it.id]; return custom && custom.trim() ? custom.trim() : it.titre; }
+    function habitLabel(it) {
+      if (!it) return '';
+      const custom = HABIT_TITLE_CUSTOM[it.id];
+      if (custom && custom.trim()) return custom.trim();
+      return it.titre || it.title || '';
+    }
 
-    /* TodayCount : somme des minutes des tâches non faites + en cours */
-    function minutesForTodayCount(base, st) { return (st === 0 || st === 1) ? round15(base) : 0; }
-    function sumTodayMinutes() { return $$('#cards .levelBtn').map(b => { const st = +b.dataset.state || 0, base = +b.dataset.baseMin || 0; return minutesForTodayCount(base, st); }).reduce((a, b) => a + b, 0) }
     function renderDateBar() {
       const d = curDate();
       if (isWeekMode()) {
@@ -2211,7 +2218,6 @@
       } else {
         $("#dateLabel").textContent = fmtDate(d);
       }
-      $("#todayCount").textContent = m2txt(round15(sumTodayMinutes()));
     }
 
     function getOwnerNameFromEvent(event) {
@@ -2303,6 +2309,7 @@
       const habitEmoji = btn.dataset.habitEmoji || '🌱';
       const bigEmoji = (st === 2) ? currentBigEmoji(btn, tot) : habitEmoji;
       btn.innerHTML = `<div class="big">${bigEmoji}</div><div class="scoreText">${val}</div>`;
+      btn.classList.toggle('done', st === 2);
     }
 
     /* Init per habit */
@@ -2349,6 +2356,14 @@
       const today = curDate();
       today.setHours(0, 0, 0, 0);
       const items = pickVisibleList(listChallenges());
+      items.sort((a, b) => {
+        const aMode = (HABIT_MODE[a.id] || {}).type;
+        const bMode = (HABIT_MODE[b.id] || {}).type;
+        const aIndividual = aMode === 'libre';
+        const bIndividual = bMode === 'libre';
+        if (aIndividual === bIndividual) return 0;
+        return aIndividual ? -1 : 1;
+      });
       items.forEach(it => {
         if (DELETED_HABITS.has(it.id)) return;
         if (!isVisibleToday(it.id, today)) return;
@@ -2362,8 +2377,10 @@
         title.className = 'title';
         const left = document.createElement('div');
         left.className = 'left';
+        const mode = HABIT_MODE[it.id] || { type: 'libre' };
         const displayTitle = habitLabel(it);
-        left.innerHTML = `<span class="base">${displayTitle}</span>`;
+        const titleIcon = mode.type === 'libre' ? ' 👤' : '';
+        left.innerHTML = `<span class="base">${displayTitle}${titleIcon}</span>`;
         title.append(left);
 
         const desc = document.createElement('div');
@@ -2380,6 +2397,9 @@
 
         const friends = document.createElement('div');
         friends.className = 'friends';
+        const friendsBadges = document.createElement('div');
+        friendsBadges.className = 'friends-badges';
+        friends.appendChild(friendsBadges);
         cont.append(title, desc, friends);
 
         const col = document.createElement('div');
@@ -2392,7 +2412,6 @@
         const records = getHabitRecords(spaceId, it.id, today);
         const record = records.find(r => r.owner === 'Moi') || records[0] || null;
         const baseMin = BASE_MINUTES[it.id] || 15;
-        const mode = HABIT_MODE[it.id] || { type: 'libre' };
         const state = record?.state ?? 0;
         const owner = state > 0 ? (record?.owner || '') : '';
         const helpers = state > 0 ? (record?.helpers || []) : [];
@@ -2426,16 +2445,16 @@
           const ownerNow = btn.dataset.owner || '';
           const helpingNow = btn.dataset.helping === '1';
           const shouldShowOwner = (mode.type === 'commun') ? ((stNow === 1 || stNow === 2) ? ownerNow : '') : (stNow >= 1 ? 'Moi' : '');
-          ensureOwnerBadge(friends, shouldShowOwner, it, btn);
+          ensureOwnerBadge(friendsBadges, shouldShowOwner, it, btn);
           if (mode.type === 'commun') {
             const hlist = (btn.dataset.helpers ? JSON.parse(btn.dataset.helpers) : []) || [];
-            ensureHelperBadge(friends, hlist);
+            ensureHelperBadge(friendsBadges, hlist);
           } else {
-            ensureHelperBadge(friends, []);
+            ensureHelperBadge(friendsBadges, []);
           }
           const shouldHeart = (stNow === 1) || (stNow === 2 && ownerNow !== 'Moi');
           const arr = JSON.parse(btn.dataset.heartList || '[]');
-          ensureHeartBadge(friends, shouldHeart, arr, btn, it.id);
+          ensureHeartBadge(friendsBadges, shouldHeart, arr, btn, it.id);
         };
 
         const ensureOpenDesc = () => {
@@ -2761,9 +2780,7 @@
     function renderHabitSettings() {
       if (!activeId) return; ensureHabit(activeId);
       const it = findAny(activeId);
-      const habitNotice = $("#habitEditNotice");
       const isAdmin = isCurrentSpaceAdmin();
-      if (habitNotice) { habitNotice.textContent = isAdmin ? 'Tu peux modifier cette habitude.' : 'Les modifications sont réservées au créateur du jardin.'; }
 
       const titleInput = $("#habitTitleInput"), emojiEl = $("#habitTitleEmoji");
       if (it && titleInput && emojiEl) {
@@ -2847,7 +2864,6 @@
           if (!requireAdmin('modifier une habitude')) return;
           const payload = { id: activeId, customTitle: HABIT_TITLE_CUSTOM[activeId] || '', desc: HABIT_DESC[activeId] || '', mode: HABIT_MODE[activeId] || null };
           await persistHabit(spaceId, payload);
-          if (habitNotice) habitNotice.textContent = 'Modifications synchronisées.';
           activeId = null;
           renderCards();
           showHome();
@@ -3807,32 +3823,19 @@
     const loaderOverlay = $("#loaderOverlay");
     const loaderEmojiEl = $("#loaderEmoji");
     const authOverlay = $("#authOverlay");
-    const passwordResetSection = $("#passwordResetSection");
     const forgotPasswordLink = $("#forgotPasswordLink");
-    const resetEmailLink = $("#resetEmailLink");
-    const sendResetLinkBtn = $("#sendResetLink");
-    const resetLinkStatus = $("#resetLinkStatus");
-    const resetCodeInput = $("#resetCode");
-    const resetPasswordInput = $("#resetPassword");
-    const confirmResetBtn = $("#confirmResetBtn");
-    const resetStatus = $("#resetStatus");
-    const urlParams = new URLSearchParams(window.location.search);
-    const oobCode = urlParams.get('oobCode');
-    if (oobCode && resetCodeInput) {
-      resetCodeInput.value = oobCode;
-      if (passwordResetSection) {
-        passwordResetSection.classList.remove('hide');
-      }
-    }
-    const LOADER_EMOJIS = ['🌰', '🌱', '🍀', '🌼', '🌻', '🌷', '🌹', '🪻', '💐', '🎋'];
-    let loaderIndex = 0;
-    let loaderTimer = null;
     const loginForm = $("#loginForm");
     const signupForm = $("#signupForm");
+    const loginEmailInput = $("#authEmail");
+    const signupEmailInput = $("#authEmailSignup");
+    const resetNotice = $("#resetNotice");
     const showSignupBtn = $("#showSignup");
     const showLoginBtn = $("#showLogin");
     const authError = $("#authError");
     const signupError = $("#authSignupError");
+    const LOADER_EMOJIS = ['🌰', '🌱', '🍀', '🌼', '🌻', '🌷', '🌹', '🪻', '💐', '🎋'];
+    let loaderIndex = 0;
+    let loaderTimer = null;
     showSignupBtn.addEventListener('click', () => setAuthMode('signup'));
     showLoginBtn.addEventListener('click', () => setAuthMode('login'));
     loginForm.addEventListener('submit', handleLoginSubmit);
@@ -3848,6 +3851,25 @@
       signupForm.classList.toggle('hide', !isSignup);
       showSignupBtn.classList.toggle('hide', isSignup);
       showLoginBtn.classList.toggle('hide', !isSignup);
+      authError.textContent = '';
+      signupError.textContent = '';
+      clearResetNotice();
+    }
+
+    function clearResetNotice() {
+      if (resetNotice) resetNotice.textContent = '';
+    }
+
+    function isEmailValid(input) {
+      if (!input) return false;
+      return input.checkValidity();
+    }
+
+    function getVisibleEmailInput() {
+      if (loginForm?.classList.contains('hide')) {
+        return signupEmailInput || loginEmailInput;
+      }
+      return loginEmailInput || signupEmailInput;
     }
 
     function animateLoaderEmoji() {
@@ -3877,61 +3899,33 @@
       stopLoaderAnimation();
     }
 
-    function togglePasswordResetSection() {
-      if (!passwordResetSection) return;
-      passwordResetSection.classList.toggle('hide');
-      resetLinkStatus.textContent = '';
-      resetStatus.textContent = '';
-    }
-
-    forgotPasswordLink?.addEventListener('click', (e) => {
+    forgotPasswordLink?.addEventListener('click', async (e) => {
       e.preventDefault();
-      togglePasswordResetSection();
-    });
-
-    async function sendResetLink() {
-      if (!resetEmailLink) return;
-      const email = (resetEmailLink.value || '').trim().toLowerCase();
-      if (!email) {
-        resetLinkStatus.textContent = 'Entre ton email.';
+      const emailInput = getVisibleEmailInput();
+      if (!emailInput) return;
+      const email = (emailInput.value || '').trim().toLowerCase();
+      if (!email || !isEmailValid(emailInput)) {
+        resetNotice.textContent = 'Entre un email valide.';
         return;
       }
       try {
         await HABITU_FIREBASE_AUTH.sendPasswordResetEmail(email);
-        resetLinkStatus.textContent = 'Lien envoyé !';
       } catch (err) {
-        resetLinkStatus.textContent = 'Impossible d’envoyer le lien.';
-      }
-    }
-
-    async function confirmNewPassword() {
-      if (!resetCodeInput || !resetPasswordInput) return;
-      const code = (resetCodeInput.value || '').trim();
-      const newPassword = resetPasswordInput.value || '';
-      if (!code || !newPassword) {
-        resetStatus.textContent = 'Code et mot de passe obligatoires.';
-        return;
-      }
-      showLoaderOverlay();
-      try {
-        const email = await HABITU_FIREBASE_AUTH.confirmPasswordReset(code, newPassword);
-        resetStatus.textContent = 'Mot de passe mis à jour, tu es connecté.';
-        togglePasswordResetSection();
-        await HABITU_FIREBASE_AUTH.signInWithEmailAndPassword(email, newPassword);
-      } catch (err) {
-        resetStatus.textContent = 'Code invalide ou mot de passe trop court.';
+        // Do not surface whether the account exists.
       } finally {
-        hideLoaderOverlay();
+        resetNotice.textContent = 'Lien de réinitialisation envoyé !';
       }
-    }
-
-    sendResetLinkBtn?.addEventListener('click', sendResetLink);
-    confirmResetBtn?.addEventListener('click', confirmNewPassword);
+    });
 
     async function handleLoginSubmit(event) {
       event.preventDefault();
       authError.textContent = '';
-      const email = ($("#authEmail").value || '').trim().toLowerCase();
+      const emailInput = loginEmailInput;
+      if (!emailInput || !isEmailValid(emailInput)) {
+        authError.textContent = 'Entre un email valide.';
+        return;
+      }
+      const email = (emailInput.value || '').trim().toLowerCase();
       const password = $("#authPassword").value || '';
       try {
         await HABITU_FIREBASE_AUTH.signInWithEmailAndPassword(email, password);
@@ -3944,9 +3938,14 @@
       event.preventDefault();
       signupError.textContent = '';
       const name = ($("#authName").value || '').trim();
-      const email = ($("#authEmailSignup").value || '').trim().toLowerCase();
-      const password = $("#authPasswordSignup").value || '';
+      const emailInput = signupEmailInput;
       if (!name) { signupError.textContent = 'Entre ton prénom.'; return; }
+      if (!emailInput || !isEmailValid(emailInput)) {
+        signupError.textContent = 'Entre un email valide.';
+        return;
+      }
+      const email = (emailInput.value || '').trim().toLowerCase();
+      const password = $("#authPasswordSignup").value || '';
       try {
         const cred = await HABITU_FIREBASE_AUTH.createUserWithEmailAndPassword(email, password);
         await cred.user.updateProfile({ displayName: name });
