@@ -847,6 +847,74 @@
       gap: 8px
     }
 
+    .tag-section {
+      display: grid;
+      gap: 6px;
+      padding: 4px 0;
+    }
+
+    .tag-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      border: 1px solid var(--border);
+      background: #fffdf8;
+      border-radius: 999px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--text);
+      transition: border-color .2s, color .2s, background .2s;
+    }
+
+    .tag.active {
+      border-color: var(--green);
+      color: var(--green);
+      background: #e6f4ea;
+    }
+
+    .habit-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .habit-btn {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: var(--card);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+
+    .habit-btn .emoji {
+      font-size: 16px;
+    }
+
+    .habit-btn.selected {
+      border-color: var(--green);
+      color: var(--green);
+      background: #eaf4ee;
+    }
+
+    .habit-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+
     .opt {
       border: 1px solid var(--border);
       background: var(--card);
@@ -1354,21 +1422,8 @@
     // Bibliothèque logistique : 20 habitudes non numériques, organisées en 10 catégories
 
     const LIBRARY_HABITS = [];
-
-    // Catégories lisibles pour le filtre d’ajout
-    const LIB_CAT_LABELS = {
-      tous: 'Tous',
-      individuel: 'Individuel',
-      coloc: 'Colocation',
-      famille: 'Famille',
-      asso: 'Association',
-      classe: 'Classe',
-      bureau: 'Bureau',
-      cuisine: 'Cuisine',
-      linge: 'Linge',
-      rangement: 'Rangement',
-      planning: 'Planning'
-    };
+    const LIBRARY_CONTEXTS = [];
+    const LIBRARY_NEEDS = [];
 
     /* États / stock */
     const HABIT_DESC = {}, HABIT_TITLE_CUSTOM = {}, SPACE_DESC_TXT = {};
@@ -1390,6 +1445,35 @@
     const round15 = m => Math.round(m / 15) * 15; function rint(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
     function lvlEmoji(v) { if (v <= 7) return '🌰'; if (v <= 14) return '🌱'; if (v <= 21) return '🍀'; if (v <= 28) return '🌼'; if (v <= 35) return '🌻'; if (v <= 42) return '🌷'; if (v <= 49) return '🌹'; if (v <= 56) return '🪻'; if (v <= 64) return '💐'; return '🎋'; }
     function names(xs, m = 3) { if (xs.length <= m) return xs.join(', '); const s = xs.slice(0, m).join(', '); return `${s}… et ${xs.length - m} autres`; }
+    function slugifyTag(text) {
+      const base = (text || '').toString();
+      const normalized = base.normalize ? base.normalize('NFD') : base;
+      return normalized
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '') || 'habitude';
+    }
+    function prettifyTag(tag) {
+      if (!tag) return '';
+      return tag
+        .split(/[-_ ]+/)
+        .filter(Boolean)
+        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ');
+    }
+    function refreshLibraryTags() {
+      const contexts = new Set();
+      const needs = new Set();
+      LIBRARY_HABITS.forEach(habit => {
+        (habit.contexts || []).forEach(c => contexts.add(c));
+        (habit.needs || []).forEach(n => needs.add(n));
+      });
+      LIBRARY_CONTEXTS.length = 0;
+      LIBRARY_CONTEXTS.push(...Array.from(contexts).sort((a, b) => a.localeCompare(b, 'fr')));
+      LIBRARY_NEEDS.length = 0;
+      LIBRARY_NEEDS.push(...Array.from(needs).sort((a, b) => a.localeCompare(b, 'fr')));
+    }
     function m2txt(m) {
       if (!m) return '0h00';
       const h = Math.floor(m / 60), mn = m % 60;
@@ -1682,14 +1766,38 @@
       }
     }
     async function loadLibraryData() {
-      if (!HABITU_FIREBASE_DB) { LIBRARY_HABITS.length = 0; return; }
+      const hydrateFromSnapshot = async () => {
+        if (!HABITU_FIREBASE_DB) {
+          LIBRARY_HABITS.length = 0;
+          return;
+        }
+        try {
+          const snapshot = await HABITU_FIREBASE_DB.collection('libraryHabits').get();
+          LIBRARY_HABITS.length = 0;
+          snapshot.docs.forEach(doc => LIBRARY_HABITS.push({ id: doc.id, ...doc.data() }));
+        } catch (err) {
+          console.warn('loadLibraryData (firestore)', err);
+          LIBRARY_HABITS.length = 0;
+        }
+      };
+
       try {
-        const snapshot = await HABITU_FIREBASE_DB.collection('libraryHabits').get();
+        const response = await fetch('/library.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error('library.json unavailable');
+        const data = await response.json();
+        if (!Array.isArray(data)) throw new Error('library.json malformé');
         LIBRARY_HABITS.length = 0;
-        snapshot.docs.forEach(doc => LIBRARY_HABITS.push({ id: doc.id, ...doc.data() }));
+        data.forEach((habit, index) => {
+          const slug = slugifyTag(habit.title || `habitude-${index}`);
+          const safeSlug = slug || `habitude-${index}`;
+          const id = habit.id || `lib-${safeSlug}-${index}`;
+          LIBRARY_HABITS.push({ id, ...habit });
+        });
       } catch (err) {
-        console.warn('loadLibraryData', err);
-        LIBRARY_HABITS.length = 0;
+        console.warn('loadLibraryData (static)', err);
+        await hydrateFromSnapshot();
+      } finally {
+        refreshLibraryTags();
       }
     }
     async function resetFirestoreState(email) {
@@ -2858,95 +2966,225 @@
 
     /* Wizard bibliothèque multi-sélection */
     function step1() {
-      const root = $("#step1"); const step2 = $("#step2");
+      const root = $("#step1");
+      const step2 = $("#step2");
       $("#habitTitle").textContent = "Nouvelle(s) habitude(s)";
       if (step2) step2.style.display = 'none';
+      if (!root) return;
+      root.style.display = 'grid';
       root.innerHTML = '';
 
-      // Barre sticky : filtre + bouton à droite
-      const bar = document.createElement('div');
-      bar.className = 'addBar';
-
-      const sel = document.createElement('select');
-      sel.id = 'addCatFilter'; sel.className = 'select';
-      Object.entries(LIB_CAT_LABELS).forEach(([id, label]) => {
-        const opt = document.createElement('option');
-        opt.value = id; opt.textContent = label;
-        sel.appendChild(opt);
-      });
-      sel.value = 'tous';
-
-      const btn = document.createElement('button');
-      btn.className = 'btn primary';
-      btn.id = 'addHabitsBtn';
-      btn.textContent = 'Ajouter 0';
-
-      bar.appendChild(sel);
-      bar.appendChild(btn);
-      root.appendChild(bar);
-
-      const list = document.createElement('div');
-      list.id = 'habitChoiceList'; list.className = 'grid';
-      root.appendChild(list);
-
-      function updateAddLabel() {
-        const count = [...list.querySelectorAll('input[type="checkbox"]:checked')].length;
-        btn.textContent = `Ajouter ${count}`;
+      if (!LIBRARY_HABITS.length) {
+        const empty = document.createElement('div');
+        empty.className = 'miniInfo';
+        empty.textContent = "La bibliothèque d'habitudes est momentanément indisponible.";
+        root.appendChild(empty);
+        return;
       }
 
-      function rebuild() {
-        const cat = sel.value;
-        const space = getSpace();
-        const presentIds = new Set((space.ch || []).map(h => h.id));
-        let items = LIBRARY_HABITS.filter(h => {
-          const okCat = (cat === 'tous') || h.cat === cat;
-          const notPresent = !presentIds.has(h.id);
-          return okCat && notPresent;
-        });
-        items = items.slice().sort((a, b) => a.titre.localeCompare(b.titre, 'fr'));
-        list.innerHTML = '';
-        if (!items.length) {
-          const empty = document.createElement('div');
-          empty.className = 'miniInfo';
-          empty.textContent = "Aucune habitude disponible dans cette catégorie.";
-          list.appendChild(empty);
-          updateAddLabel();
+      const intro = document.createElement('div');
+      intro.className = 'subtitle';
+      intro.textContent = "Sélectionne jusqu'à trois contextes puis trois besoins pour décrire ton envie.";
+      root.appendChild(intro);
+
+      const actions = document.createElement('div');
+      actions.className = 'habit-actions';
+      const nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'btn primary';
+      nextBtn.disabled = true;
+      nextBtn.textContent = 'Voir les habitudes (0 contextes · 0 besoins)';
+
+      let contextSection;
+      let needSection;
+      function updateNextLabel() {
+        const ctxCount = contextSection?.selected.length || 0;
+        const needCount = needSection?.selected.length || 0;
+        nextBtn.disabled = ctxCount === 0 || needCount === 0;
+        nextBtn.textContent = `Voir les habitudes (${ctxCount} contextes · ${needCount} besoins)`;
+      }
+
+      contextSection = buildTagSection('Contextes', LIBRARY_CONTEXTS, 3, updateNextLabel);
+      needSection = buildTagSection('Besoins', LIBRARY_NEEDS, 3, updateNextLabel);
+
+      nextBtn.addEventListener('click', () => {
+        if (!contextSection.selected.length || !needSection.selected.length) {
+          alert("Choisis au moins un contexte et un besoin.");
           return;
         }
-        items.forEach(h => {
-          const el = document.createElement('label');
-          el.className = 'opt';
-          const cb = document.createElement('input');
-          cb.type = 'checkbox'; cb.value = h.id; cb.style.marginRight = '8px';
-          const inner = document.createElement('div');
-          inner.innerHTML = `<div class="emoji">${h.emoji}</div><div><b>${h.titre}</b><div style="font-size:11px;color:#666">${oneLiner(h.desc)}</div></div>`;
-          el.appendChild(cb);
-          el.appendChild(inner);
-          cb.addEventListener('change', updateAddLabel);
-          list.appendChild(el);
+        renderHabitSuggestions([...contextSection.selected], [...needSection.selected]);
+      });
+
+      actions.appendChild(nextBtn);
+      root.appendChild(contextSection.container);
+      root.appendChild(needSection.container);
+      root.appendChild(actions);
+      updateNextLabel();
+    }
+
+    function buildTagSection(title, tags, limit, onUpdate) {
+      const container = document.createElement('div');
+      container.className = 'tag-section';
+      const titleRow = document.createElement('div');
+      titleRow.className = 'field';
+      const labelEl = document.createElement('label');
+      labelEl.innerHTML = `<b>${title}</b> <span style="font-size:11px;color:#777">(max ${limit})</span>`;
+      titleRow.appendChild(labelEl);
+      container.appendChild(titleRow);
+
+      if (!tags.length) {
+        const empty = document.createElement('div');
+        empty.className = 'miniInfo';
+        empty.textContent = `Aucune suggestion de ${title.toLowerCase()} pour l'instant.`;
+        container.appendChild(empty);
+        return { container, selected: [] };
+      }
+
+      const helper = document.createElement('div');
+      helper.className = 'subtitle';
+      helper.textContent = 'Clique pour sélectionner ou dé-sélectionner.';
+      container.appendChild(helper);
+
+      const grid = document.createElement('div');
+      grid.className = 'tag-grid';
+      container.appendChild(grid);
+
+      const selected = [];
+      tags.forEach(tag => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tag';
+        btn.textContent = prettifyTag(tag);
+        btn.addEventListener('click', () => {
+          const idx = selected.indexOf(tag);
+          if (idx >= 0) {
+            selected.splice(idx, 1);
+            btn.classList.remove('active');
+            if (typeof onUpdate === 'function') onUpdate();
+            return;
+          }
+          if (selected.length >= limit) {
+            alert(`Tu peux sélectionner jusqu'à ${limit} ${title.toLowerCase()}.`);
+            return;
+          }
+          selected.push(tag);
+          btn.classList.add('active');
+          if (typeof onUpdate === 'function') onUpdate();
+        });
+        grid.appendChild(btn);
+      });
+
+      return { container, selected };
+    }
+
+    function renderHabitSuggestions(contextTags, needTags) {
+      const step1El = $("#step1");
+      const root = $("#step2");
+      if (!root) return;
+      $("#habitTitle").textContent = "Habitudes suggérées";
+      if (step1El) step1El.style.display = 'none';
+      root.style.display = 'grid';
+      root.innerHTML = '';
+
+      const summary = document.createElement('div');
+      summary.className = 'subtitle';
+      summary.textContent = `Résultat pour ${contextTags.length} contexte(s) et ${needTags.length} besoin(s).`;
+      root.appendChild(summary);
+
+      const suggestions = computeSuggestedHabits(contextTags, needTags);
+      const grid = document.createElement('div');
+      grid.className = 'habit-grid';
+      const selection = new Set(suggestions.map(h => h.id));
+      const suggestionMap = new Map(suggestions.map(habit => [habit.id, habit]));
+      let addBtn;
+      const updateAddLabel = () => {
+        if (!addBtn) return;
+        addBtn.textContent = `Ajouter ${selection.size}`;
+        addBtn.disabled = selection.size === 0;
+      };
+
+      if (!suggestions.length) {
+        const info = document.createElement('div');
+        info.className = 'miniInfo';
+        info.textContent = "Aucune habitude ne correspond exactement à ces tags pour l'instant.";
+        root.appendChild(info);
+      } else {
+        const hint = document.createElement('div');
+        hint.className = 'subtitle';
+        hint.style.marginTop = '4px';
+        hint.textContent = 'Ces habitudes sont présélectionnées, clic encore pour les retirer.';
+        root.appendChild(hint);
+        suggestions.forEach(habit => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'habit-btn selected';
+          btn.dataset.id = habit.id;
+          btn.innerHTML = `<span class="emoji">${habit.emoji || '🌱'}</span><span class="label">${habit.title}</span>`;
+          btn.addEventListener('click', () => {
+            const active = btn.classList.toggle('selected');
+            if (active) selection.add(habit.id);
+            else selection.delete(habit.id);
+            updateAddLabel();
+          });
+          grid.appendChild(btn);
+        });
+        root.appendChild(grid);
+        addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'btn primary';
+        addBtn.addEventListener('click', () => {
+          if (!selection.size) return;
+          const sp = getSpace();
+          selection.forEach(hid => {
+            if (!sp) return;
+            if ((sp.ch || []).some(x => x.id === hid)) return;
+            const habit = suggestionMap.get(hid) || LIBRARY_HABITS.find(x => x.id === hid);
+            if (!habit) return;
+            (sp.ch || (sp.ch = [])).push(habit);
+            ensureHabit(hid);
+            persistHabit(spaceId, habit);
+          });
+          close(mHabit);
+          renderCards();
         });
         updateAddLabel();
       }
 
-      rebuild();
-      sel.onchange = rebuild;
+      const controls = document.createElement('div');
+      controls.className = 'habit-actions';
+      const backBtn = document.createElement('button');
+      backBtn.type = 'button';
+      backBtn.className = 'btn';
+      backBtn.textContent = 'Changer les tags';
+      backBtn.addEventListener('click', () => step1());
+      controls.appendChild(backBtn);
+      if (addBtn) controls.appendChild(addBtn);
+      root.appendChild(controls);
+    }
 
-      btn.onclick = () => {
-        const checked = [...list.querySelectorAll('input[type="checkbox"]:checked')].map(x => x.value);
-        if (!checked.length) { alert("Sélectionne au moins une habitude."); return; }
-        const sp = getSpace();
-        checked.forEach(id => {
-          const h = LIBRARY_HABITS.find(x => x.id === id);
-          if (!h) return;
-          if (!(sp.ch || []).some(x => x.id === id)) {
-            (sp.ch || (sp.ch = [])).push(h);
-            ensureHabit(id);
-            persistHabit(spaceId, h);
-          }
-        });
-        close(mHabit);
-        renderCards();
-      };
+    function computeSuggestedHabits(contextTags, needTags) {
+      if (!LIBRARY_HABITS.length) return [];
+      const pool = LIBRARY_HABITS.map((habit, index) => {
+        const ctxMatches = (habit.contexts || []).filter(context => contextTags.includes(context)).length;
+        const needMatches = (habit.needs || []).filter(need => needTags.includes(need)).length;
+        const score = ctxMatches * 3 + needMatches * 4;
+        return { habit, score, index };
+      });
+      const filtered = pool.filter(item => item.score > 0);
+      filtered.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return (a.habit.title || '').localeCompare(b.habit.title || '', 'fr');
+      });
+      const top = filtered.slice(0, 20);
+      if (top.length < 10) {
+        const ids = new Set(top.map(entry => entry.habit.id));
+        const fallback = LIBRARY_HABITS.filter(habit => !ids.has(habit.id)).slice(0, 10 - top.length);
+        fallback.forEach(habit => top.push({ habit, score: 0, index: Infinity }));
+      }
+      if (!top.length) {
+        return LIBRARY_HABITS.slice(0, Math.min(12, LIBRARY_HABITS.length));
+      }
+      return top.slice(0, 20).map(entry => entry.habit);
     }
     $("#closeHabit").onclick = () => close(mHabit);
 
