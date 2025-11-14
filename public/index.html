@@ -1175,6 +1175,24 @@
       background: var(--bg);
       padding: 6px 0;
     }
+
+    .session-conflict {
+      position: sticky;
+      top: 0;
+      z-index: 7;
+      text-align: center;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #7a4900;
+      background: #fff4e5;
+      border-bottom: 1px solid #f6c26d;
+      display: none;
+    }
+
+    .session-conflict.visible {
+      display: block;
+    }
   </style>
 </head>
 
@@ -1669,6 +1687,109 @@
         .map(part => part.charAt(0).toUpperCase() + part.slice(1))
         .join(' ');
     }
+    const SESSION_LOCK_KEY = 'habitu-primary-tab';
+    const SESSION_LOCK_TTL = 15 * 1000;
+    const SESSION_LOCK_PING = 4 * 1000;
+    const SESSION_CONFLICT_MESSAGE = 'Un autre onglet Habitube est actif. Ferme-le ou attends qu\'il se libère pour continuer.';
+    const TAB_INSTANCE_ID = (window.crypto?.randomUUID ? crypto.randomUUID() : `tab-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    let sessionLockTimer;
+    let isPrimaryTab = false;
+    let sessionBanner = null;
+
+    function safeStorageGet(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (e) {
+        return null;
+      }
+    }
+    function safeStorageSet(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch (e) {}
+    }
+    function safeStorageRemove(key) {
+      try {
+        localStorage.removeItem(key);
+      } catch (e) {}
+    }
+    function parseSessionLock(value) {
+      if (!value) return null;
+      try {
+        return JSON.parse(value);
+      } catch (e) {
+        return null;
+      }
+    }
+    function ensureSessionBanner() {
+      if (sessionBanner) return sessionBanner;
+      const root = $('#app');
+      if (!root) return null;
+      sessionBanner = document.createElement('div');
+      sessionBanner.className = 'session-conflict';
+      sessionBanner.textContent = SESSION_CONFLICT_MESSAGE;
+      root.prepend(sessionBanner);
+      return sessionBanner;
+    }
+    function setSessionBannerVisible(show) {
+      const banner = ensureSessionBanner();
+      if (!banner) return;
+      banner.classList.toggle('visible', show);
+    }
+    function readSessionLock() {
+      return parseSessionLock(safeStorageGet(SESSION_LOCK_KEY));
+    }
+    function refreshSessionLock() {
+      const now = Date.now();
+      const current = readSessionLock();
+      const otherActive = current && current.tabId !== TAB_INSTANCE_ID && (now - (current.ts || 0) < SESSION_LOCK_TTL);
+      if (otherActive) {
+        isPrimaryTab = false;
+        setSessionBannerVisible(true);
+        return;
+      }
+      safeStorageSet(SESSION_LOCK_KEY, JSON.stringify({ tabId: TAB_INSTANCE_ID, ts: now }));
+      if (!isPrimaryTab) {
+        isPrimaryTab = true;
+      }
+      setSessionBannerVisible(false);
+    }
+    function startSessionLockHeartbeat() {
+      refreshSessionLock();
+      if (!sessionLockTimer) {
+        sessionLockTimer = setInterval(refreshSessionLock, SESSION_LOCK_PING);
+      }
+    }
+    function stopSessionLockHeartbeat() {
+      if (sessionLockTimer) {
+        clearInterval(sessionLockTimer);
+        sessionLockTimer = null;
+      }
+    }
+    function releaseSessionLock() {
+      const current = readSessionLock();
+      if (current && current.tabId === TAB_INSTANCE_ID) {
+        safeStorageRemove(SESSION_LOCK_KEY);
+      }
+    }
+    function ensureSingleSessionActive() {
+      if (isPrimaryTab) return true;
+      setSessionBannerVisible(true);
+      return false;
+    }
+    startSessionLockHeartbeat();
+    window.addEventListener('storage', event => {
+      if (event.key === SESSION_LOCK_KEY) {
+        refreshSessionLock();
+      }
+    });
+    window.addEventListener('focus', refreshSessionLock);
+    const teardownSessionLock = () => {
+      stopSessionLockHeartbeat();
+      releaseSessionLock();
+    };
+    window.addEventListener('beforeunload', teardownSessionLock);
+    window.addEventListener('pagehide', teardownSessionLock);
     const MIN_DAY_OFF = -3650;
     function getWeekStart(date = new Date()) {
       const copy = new Date(date);
@@ -1776,7 +1897,7 @@
     let pendingInviteToken = new URLSearchParams(window.location.search).get('invite');
     let pendingInviteInfo = null;
     const HABITU_FIREBASE_DB = window.HABITU_FIREBASE_DB;
-    const ACTIVITY_BUFFER_MS = 30e3;
+    const ACTIVITY_BUFFER_MS = 3e3;
     const IS_LOCAL_FILE_URL = window.location.protocol === 'file:';
     const activityQueue = new Map();
     const SESSION_COOKIE_NAME = 'habitube-session';
@@ -2612,7 +2733,10 @@
           }
         };
 
-        const handleClick = () => { (mode.type === 'commun') ? clickCommon() : clickLibre(); };
+        const handleClick = () => {
+          if (!ensureSingleSessionActive()) return;
+          (mode.type === 'commun') ? clickCommon() : clickLibre();
+        };
 
         drawBtn(btn);
         setVisualFromState(state);
