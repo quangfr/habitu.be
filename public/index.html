@@ -53,7 +53,12 @@
     }
 
     body.no-space {
-      background: #f5e0c9;
+      background: var(--card);
+    }
+
+    body.no-space .top,
+    body.no-space #daysWrap {
+      display: none;
     }
 
     #app {
@@ -2159,7 +2164,7 @@
             </div>
             <div class="field">
               <label><b>Code d’accès</b></label>
-              <input id="joinCode" type="text" maxlength="6" placeholder="XXXXXX" />
+              <input id="joinCode" type="text" maxlength="7" placeholder="XXX-XXX" />
               <div class="subtitle" style="margin-top:4px;font-size:12px">Le code est fourni dans l’invitation.</div>
             </div>
             <div class="field">
@@ -2988,6 +2993,17 @@
         return new Set(Object.values(SPACES)
           .map(space => (space?.code || '').toUpperCase())
           .filter(Boolean));
+      }
+
+      function normalizeAccessCode(value) {
+        return ((value || '').toUpperCase().replace(/[^A-Z0-9]/g, '')).slice(0, 6);
+      }
+
+      function formatAccessCode(code) {
+        const normalized = normalizeAccessCode(code);
+        if (!normalized) return '';
+        if (normalized.length <= 3) return normalized;
+        return `${normalized.slice(0, 3)}-${normalized.slice(3)}`;
       }
 
       function generateSpaceAccessCode() {
@@ -5113,7 +5129,7 @@
       function openInvite() { updateSpaceAccessCodeDisplay(); renderInviteList(); open(mInvite) }
       function openJoinModal() {
         setJoinStatus('', false);
-        const defaultName = pendingInviteInfo?.invitedName || currentProfile?.name || userName || '';
+        const defaultName = pendingInviteInfo?.invitedName || currentProfile?.name || userName || 'Moi';
         if (joinNameInput) joinNameInput.value = defaultName;
         if (joinCodeInput) joinCodeInput.value = '';
         setJoinDescription('');
@@ -5148,14 +5164,14 @@
           regenerateSpaceCodeBtn.disabled = !isCurrentSpaceAdmin();
         }
         if (code) {
-          spaceAccessCodeEl.value = code;
+          spaceAccessCodeEl.value = formatAccessCode(code);
           return;
         }
         spaceAccessCodeEl.value = '—';
         if (!current) return;
         ensureSpaceHasCode(current).then(newCode => {
           if (newCode && spaceId === current) {
-            spaceAccessCodeEl.value = newCode;
+            spaceAccessCodeEl.value = formatAccessCode(newCode);
           }
         });
       }
@@ -5280,9 +5296,13 @@
       createGardenBtn.onclick = createGarden;
       joinCodeInput?.addEventListener('input', () => {
         if (!joinCodeInput) return;
-        joinCodeInput.value = (joinCodeInput.value || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
-        if (joinCodeInput.value.length === 6) {
-          previewJoinSpace(joinCodeInput.value);
+        const normalized = normalizeAccessCode(joinCodeInput.value);
+        const formatted = formatAccessCode(normalized);
+        if (joinCodeInput.value !== formatted) {
+          joinCodeInput.value = formatted;
+        }
+        if (normalized.length === 6) {
+          previewJoinSpace(normalized);
         } else {
           setJoinDescription('');
         }
@@ -5553,8 +5573,8 @@
         if (!joinSpaceBtn) return;
         const name = (joinNameInput?.value || '').trim();
         if (!name) { setJoinStatus('Entre ton prénom.', true); return; }
-        const code = (joinCodeInput?.value || '').trim().toUpperCase();
-        if (!/^[A-Z0-9]{6}$/.test(code)) { setJoinStatus('Code invalide (6 caractères).', true); return; }
+        const code = normalizeAccessCode(joinCodeInput?.value || '');
+        if (code.length !== 6) { setJoinStatus('Code invalide (6 caractères).', true); return; }
         joinSpaceBtn.disabled = true;
         try {
           const spaceData = await findSpaceByAccessCode(code);
