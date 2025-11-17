@@ -2234,7 +2234,7 @@
       const FREQ_MODE = {}, HABIT_REC = {};
 
       /* Utils */
-      const APP_VERSION = '0.0.3';
+      const APP_VERSION = '0.0.4';
       const NEED_EMOJIS = {
         affection: '❤️',
         joy: '😄',
@@ -6380,7 +6380,7 @@
           await registration.update();
           if (registration.waiting) {
             registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-            showToast(''Mise à jour'…', { type: 'success' });
+            showToast('Mise à jour…', { type: 'success' });
           }
         } catch (err) {
           console.warn('handleAppUpdateRequest', err);
