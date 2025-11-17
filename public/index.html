@@ -682,8 +682,7 @@
       transition: transform 0.15s ease;
       display: grid;
       grid-template-columns: 64px 1fr;
-      overflow: hidden;
-      touch-action: manipulation;
+      overflow: hidden
     }
 
     .card:active {
@@ -2441,7 +2440,7 @@
       const FREQ_MODE = {}, HABIT_REC = {};
 
       /* Utils */
-      const APP_VERSION = '0.0.15';
+      const APP_VERSION = '0.0.14';
       const NEED_EMOJIS = {
         affection: '❤️',
         joy: '😄',
@@ -2551,28 +2550,16 @@
           }
         };
         const startLongPress = (event) => {
-          const isTouchEvent = event.type.startsWith('touch');
-          if (!isTouchEvent && event.pointerType === 'mouse' && event.button !== 0) return;
+          if (event.pointerType === 'mouse' && event.button !== 0) return;
           clearLongPress();
           longPressTimer = setTimeout(() => {
-            const clientX = isTouchEvent ? event.touches?.[0]?.clientX || event.changedTouches?.[0]?.clientX : event.clientX;
-            const clientY = isTouchEvent ? event.touches?.[0]?.clientY || event.changedTouches?.[0]?.clientY : event.clientY;
-            if (clientX != null && clientY != null) {
-              showCardContextMenu(habit, btn, clientX, clientY);
-            }
+            showCardContextMenu(habit, btn, event.clientX, event.clientY);
           }, CARD_CONTEXT_LONG_PRESS_MS);
-          if (isTouchEvent && event.cancelable) {
-            event.preventDefault();
-          }
         };
         card.addEventListener('pointerdown', startLongPress);
         card.addEventListener('pointerup', clearLongPress);
         card.addEventListener('pointerleave', clearLongPress);
         card.addEventListener('pointercancel', clearLongPress);
-        card.addEventListener('touchstart', startLongPress, { passive: false });
-        card.addEventListener('touchend', clearLongPress);
-        card.addEventListener('touchmove', clearLongPress);
-        card.addEventListener('touchcancel', clearLongPress);
         card.addEventListener('contextmenu', (event) => {
           event.preventDefault();
           showCardContextMenu(habit, btn, event.clientX, event.clientY);
