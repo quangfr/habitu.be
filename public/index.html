@@ -682,7 +682,12 @@
       transition: transform 0.15s ease;
       display: grid;
       grid-template-columns: 64px 1fr;
-      overflow: hidden
+      overflow: hidden;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
     .card:active {
@@ -2440,7 +2445,7 @@
       const FREQ_MODE = {}, HABIT_REC = {};
 
       /* Utils */
-      const APP_VERSION = '0.0.14';
+      const APP_VERSION = '0.0.17';
       const NEED_EMOJIS = {
         affection: '❤️',
         joy: '😄',
@@ -2479,7 +2484,7 @@
       };
       const cardContextMenuEl = document.getElementById('cardContextMenu');
       let shouldSuppressCardClick = false;
-      const CARD_CONTEXT_LONG_PRESS_MS = 520;
+      const CARD_CONTEXT_LONG_PRESS_MS = 360;
       function hideCardContextMenu() {
         if (!cardContextMenuEl) return;
         cardContextMenuEl.classList.remove('open');
