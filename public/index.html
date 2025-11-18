@@ -481,12 +481,28 @@
       font-size: 12px;
       cursor: pointer;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
     .habit-filter button.active {
       border-color: var(--green);
       color: var(--green);
       font-weight: 700;
+    }
+
+    .habit-filter button .habit-filter-count {
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(42, 122, 87, 0.35);
+      color: var(--text);
+      padding: 0 6px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.2;
+      box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.08);
     }
 
 
@@ -704,16 +720,6 @@
       z-index: 1
     }
 
-    .card-pin {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      font-size: 16px;
-      line-height: 1;
-      pointer-events: none;
-      opacity: 0.9;
-    }
-
     .card-shifted {
       position: absolute;
       top: 6px;
@@ -743,90 +749,6 @@
 
     .card:active {
       transform: translateY(1px);
-    }
-
-    .list.dense-view {
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 2px;
-      padding: 8px 4px 4px 2px;
-    }
-
-    .list.dense-view .card {
-      grid-template-columns: auto 1fr;
-      padding: 2px 4px 2px 0;
-      border-radius: calc(var(--r) + 2px);
-      min-height: auto;
-    }
-
-    .list.dense-view .card.s1me .content {
-      padding-right: 0;
-      gap: 2px;
-    }
-
-    .list.dense-view .card.s1me .title {
-      margin-bottom: 0;
-      min-height: 0;
-    }
-
-    .list.dense-view .levelCol {
-      padding: 0;
-      justify-content: flex-start;
-      align-items: center;
-    }
-
-    .list.dense-view .levelBtn {
-      width: 40px;
-      height: 40px;
-    }
-
-    .list.dense-view .levelBtn .big {
-      font-size: 24px;
-    }
-
-    .list.dense-view .content {
-      padding: 2px 0 0 0;
-      gap: 4px;
-    }
-
-    .list.dense-view .title {
-      order: 1;
-      font-size: 13px;
-    }
-
-    .list.dense-view .title .base {
-      white-space: normal;
-      overflow: hidden;
-      line-height: 1.1;
-      max-height: 2.4em;
-    }
-
-    .list.dense-view .weekly-progress {
-      order: 2;
-      gap: 4px;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-
-    .list.dense-view.week-mode .weekly-progress {
-      order: 0;
-      margin-bottom: 4px;
-    }
-
-    .list.dense-view.week-mode .title {
-      order: 1;
-    }
-
-    .list.dense-view .desc,
-    .list.dense-view .friends {
-      display: none;
-    }
-
-    .list.dense-view .weekly-progress__block {
-      width: 8px;
-      height: 8px;
-      border-radius: 4px;
     }
 
     .weekly-progress__block--today {
@@ -880,14 +802,19 @@
     }
 
     .recurrence-badge {
-      border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 0 8px;
+      padding: 0 4px;
       font-size: 11px;
-      color: var(--text);
-      background: var(--card);
+      font-weight: 600;
       margin-left: 8px;
       white-space: nowrap;
+    }
+
+    .recurrence-badge.soft {
+      border: 1px solid #d5cbb6;
+      background: #fff8e5;
+      color: #3a311b;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
     }
 
     .title .base {
@@ -1076,7 +1003,7 @@
     }
 
     .levelBtn .big {
-      font-size: 28px;
+      font-size: 36px;
       font-weight: 800;
       text-align: center;
     }
@@ -1526,6 +1453,15 @@
       margin-top: 4px;
     }
 
+    .habit-grid-separator {
+      width: 100%;
+      font-size: 12px;
+      color: var(--text-muted, #5f5f5f);
+      padding-bottom: 4px;
+      border-bottom: 1px dashed var(--border);
+      margin-bottom: 6px;
+    }
+
     .habit-btn {
       border: 1px solid var(--border);
       border-radius: 4px;
@@ -1632,6 +1568,9 @@
       font-size: 12px;
       color: #5f5f5f;
       align-self: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .opt {
@@ -1745,7 +1684,7 @@
     }
 
     .recurrence-date__control {
-      font-family: 'Inter', 'Helvetica Neue', system-ui, sans-serif;
+      font-family: inherit;
     }
 
     .recurrence-date__control input {
@@ -1757,7 +1696,9 @@
       background: var(--card);
       color: var(--text);
       font-weight: 500;
+      font-family: inherit;
     }
+
     .recurrence-date__control input:focus {
       outline: 2px solid var(--green);
       border-color: var(--green);
@@ -2256,6 +2197,7 @@
                 <label><input type="radio" name="habitRecurrenceMode" value="weekly" checked /> Hebdomadaire</label>
                 <label><input type="radio" name="habitRecurrenceMode" value="interval" /> Toutes les
                   <select id="habitRecurrenceInterval" class="select" style="margin-left:4px">
+                    <option value="">–</option>
                     <option value="2">2 semaines</option>
                     <option value="3">3 semaines</option>
                     <option value="4">4 semaines</option>
@@ -2274,14 +2216,14 @@
               <div class="recurrence-date-row">
                 <div class="recurrence-date">
                   <label><b>Début</b></label>
-                <div class="recurrence-date__control">
+                  <div class="recurrence-date__control">
                     <input id="habitStartDate" type="date" />
                   </div>
                 </div>
                 <div class="recurrence-date">
                   <label><b>Fin</b></label>
                   <div class="recurrence-date__control">
-                    <input id="habitEndDate" type="date" />
+                    <input id="habitEndDate" type="date" placeholder="(aucun)" />
                   </div>
                 </div>
               </div>
@@ -2407,7 +2349,7 @@
           <div class="grid">
             <div class="opt" id="addHabit">
               <div class="emoji">🌱</div>
-              <div><b>Semer des graines</b>
+              <div><b>Semer des routines</b>
                 <div class="subtitle">Démarrer des nouvelles habitudes</div>
               </div>
             </div>
@@ -2560,13 +2502,6 @@
               </select>
             </div>
             <div class="field">
-              <label><b>Mode d'affichage</b></label>
-              <select id="prefsDisplayMode" class="select">
-                <option value="dense" selected>Dense</option>
-                <option value="confort">Confort</option>
-              </select>
-            </div>
-            <div class="field">
               <label><b>Badges amis</b></label>
               <div class="rowInline" style="gap:6px">
                 <input type="checkbox" id="prefsFriendBadges" />
@@ -2630,11 +2565,10 @@
       const HABIT_DESC = {}, HABIT_TITLE_CUSTOM = {}, SPACE_DESC_TXT = {};
       const BASE_MINUTES = {}, HABIT_MODE = {}, LOCKED_COMMUN = {}, LOCKED_BY = {}, DONE_SETS = {};
       const HAS_DESC = {}, DELETED_HABITS = new Set();
-      const FREQ_MODE = {}, HABIT_REC = {};
       const REPEAT_CONFIGS = {};
 
       /* Utils */
-      const APP_VERSION = '0.0.18';
+      const APP_VERSION = '0.0.20';
       const NEED_EMOJIS = {
         affection: '❤️',
         joy: '😄',
@@ -2701,7 +2635,13 @@
           const button = document.createElement('button');
           button.type = 'button';
           button.dataset.filterKey = filter.key;
-          button.textContent = filter.label;
+          button.innerHTML = '';
+          const labelSpan = document.createElement('span');
+          labelSpan.textContent = filter.label;
+          const countSpan = document.createElement('span');
+          countSpan.className = 'habit-filter-count';
+          countSpan.textContent = '0';
+          button.append(labelSpan, countSpan);
           button.addEventListener('click', () => setHabitFilter(filter.key));
           habitFilterBarEl.appendChild(button);
           habitFilterButtons.set(filter.key, button);
@@ -2709,68 +2649,15 @@
         updateHabitFilterButtons();
       }
 
-      function buildHabitPreferenceBar() {
-        const bar = document.createElement('div');
-        bar.className = 'habit-actions habit-actions--modal';
-        const pref = document.createElement('div');
-        pref.className = 'habit-actions__pref';
-        const label = document.createElement('span');
-        label.className = 'habit-actions__label';
-        label.textContent = 'Jours souhaités :';
-        const days = document.createElement('div');
-        days.className = 'habit-actions__days';
-        pref.append(label, days);
-        const addBtn = document.createElement('button');
-        addBtn.type = 'button';
-        addBtn.className = 'btn primary habit-actions__add';
-        addBtn.textContent = 'Ajouter X';
-        bar.append(pref, addBtn);
-        return { bar, days, addBtn };
-      }
-
-      let habitDayPrefButtons = [];
-      function initHabitDayPreferenceControls(container) {
-        if (!container) return;
-        habitDayPrefButtons = [];
-        container.innerHTML = '';
-        WEEKDAY_ORDER.forEach(day => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'habit-actions__day';
-          btn.dataset.day = String(day);
-          btn.textContent = WEEKDAY_SHORT_LABELS[day] || '';
-          btn.addEventListener('click', () => {
-            toggleHabitDayPreference(day);
-          });
-          container.appendChild(btn);
-          habitDayPrefButtons.push(btn);
+      function updateHabitFilterCounts(counts = new Map()) {
+        HABIT_FILTERS.forEach(filter => {
+          const button = habitFilterButtons.get(filter.key);
+          if (!button) return;
+          const countEl = button.querySelector('.habit-filter-count');
+          if (!countEl) return;
+          const value = counts instanceof Map ? counts.get(filter.key) || 0 : counts[filter.key] || 0;
+          countEl.textContent = String(value);
         });
-        updateHabitDayPreferencesUI();
-      }
-
-      function updateHabitDayPreferencesUI() {
-        if (!habitDayPrefButtons.length) return;
-        const activeDays = new Set(getHabitDayPreferences());
-        habitDayPrefButtons.forEach(btn => {
-          const day = normalizeDayIndex(btn.dataset.day);
-          btn.classList.toggle('habit-actions__day--active', day !== null && activeDays.has(day));
-        });
-      }
-
-      function toggleHabitDayPreference(day) {
-        const current = getHabitDayPreferences();
-        const nextSet = new Set(current);
-        if (nextSet.has(day)) nextSet.delete(day);
-        else nextSet.add(day);
-        const normalized = Array.from(nextSet);
-        persistHabitDayPreferences(normalized)
-          .then(() => {
-            updateHabitDayPreferencesUI();
-            renderCards();
-          })
-          .catch(() => {
-            updateHabitDayPreferencesUI();
-          });
       }
 
       function setHabitFilter(key) {
@@ -2843,24 +2730,29 @@
             hideCardContextMenu();
             showHabit(habit.id);
           });
-        } else {
-          addOption('Cacher', () => {
-            hideCardContextMenu();
-            hideHabit(habit.id);
-          });
         }
         const shiftKey = getPostponedHabitDate(habit.id);
         const tomorrowKey = getTomorrowKey();
         const isShifted = shiftKey === tomorrowKey;
+        const state = Number(btn.dataset.state || 0);
+        const isDone = state >= 2;
         if (isShifted) {
           addOption('Revenir à la veille', () => {
             hideCardContextMenu();
             toggleShiftForHabit(habit.id);
           });
         } else {
-          addOption('Décaler', () => {
+          if (!isHidden && !isDone) {
+            addOption('Décaler', () => {
+              hideCardContextMenu();
+              toggleShiftForHabit(habit.id);
+            });
+          }
+        }
+        if (!isHidden && !isShifted) {
+          addOption('Cacher', () => {
             hideCardContextMenu();
-            toggleShiftForHabit(habit.id);
+            hideHabit(habit.id);
           });
         }
         if (!hasOption) return;
@@ -3166,16 +3058,30 @@
         const isLast = nextWeek.getMonth() !== date.getMonth();
         return { ordinal, isLast };
       }
-      function buildDefaultMonthMode(startDate) {
-        if (!startDate) return { type: 'day', day: 1 };
-        return { type: 'day', day: startDate.getDate() };
+      function daysBetween(start, end) {
+        const a = parseDateInput(start);
+        const b = parseDateInput(end);
+        if (!a || !b) return 0;
+        return Math.round((b - a) / 86400000);
+      }
+      function weeksBetween(start, end) {
+        const a = getWeekStart(parseDateInput(start) || new Date());
+        const b = getWeekStart(parseDateInput(end) || new Date());
+        if (!a || !b) return 0;
+        return Math.round((b - a) / 604800000);
+      }
+      function monthsBetween(start, end) {
+        const a = parseDateInput(start);
+        const b = parseDateInput(end);
+        if (!a || !b) return 0;
+        return (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth());
       }
       function normalizeRepeatConfig(habit, override = {}) {
-        const fallbackUnit = (habit?.freqType === 'jours') ? 'week' : 'day';
+        const fallbackUnit = 'day';
         const normalizedUnit = (override.unit || habit?.repeatConfig?.unit || fallbackUnit || 'day').toString().toLowerCase();
-        const unit = ['day', 'week', 'month'].includes(normalizedUnit) ? normalizedUnit : 'day';
+        const unit = normalizedUnit === 'week' ? 'week' : 'day';
         const baselineDate = parseDateInput(override.startDate || habit?.repeatConfig?.startDate || habit?.startDate || habit?.addedAt || curDate()) || curDate();
-        const intervalCandidate = override.interval ?? habit?.frequency ?? HABIT_REC[habit?.id] ?? 1;
+        const intervalCandidate = override.interval ?? habit?.frequency ?? 1;
         const interval = Math.max(1, Number.isFinite(Number(intervalCandidate)) ? Number(intervalCandidate) : 1);
         let weekDays = Array.isArray(override.weekDays) ? override.weekDays.map(normalizeDayIndex).filter(day => day !== null) : null;
         if (!weekDays || !weekDays.length) {
@@ -3189,42 +3095,21 @@
           weekDays.push(baselineDate.getDay());
         }
         weekDays = Array.from(new Set(weekDays));
-        let monthMode = override.monthMode ?? habit?.repeatConfig?.monthMode ?? null;
-        if (monthMode && typeof monthMode === 'object') {
-          const ordinalValue = (monthMode.ordinal || '').toString();
-          if (monthMode.type === 'ordinal' && ordinalValue) {
-            monthMode = {
-              type: 'ordinal',
-              ordinal: ordinalValue === 'last' ? 'last' : Number(ordinalValue) || 1,
-              weekday: normalizeDayIndex(monthMode.weekday ?? baselineDate.getDay()) ?? baselineDate.getDay()
-            };
-          } else {
-            const candidateDay = Number(monthMode.day || baselineDate.getDate());
-            monthMode = {
-              type: 'day',
-              day: Math.max(1, Math.min(31, Number.isFinite(candidateDay) ? candidateDay : baselineDate.getDate()))
-            };
-          }
-        } else if (unit === 'month') {
-          const info = getWeekdayOrdinalInfo(baselineDate);
-          monthMode = { type: 'ordinal', ordinal: info.isLast ? 'last' : info.ordinal, weekday: baselineDate.getDay() };
-        } else {
-          monthMode = buildDefaultMonthMode(baselineDate);
-        }
         const startDate = toIsoDateString(baselineDate) || toIsoDateString(curDate());
+        const endDateCandidate = override.endDate ?? habit?.repeatConfig?.endDate ?? '';
+        const endDate = toIsoDateString(endDateCandidate);
         return {
           interval,
           unit,
           startDate,
-          weekDays,
-          monthMode
+          endDate,
+          weekDays
         };
       }
       function cacheRepeatConfigFromHabit(habit) {
         if (!habit || !habit.id) return null;
         const cached = normalizeRepeatConfig(habit, habit.repeatConfig || {});
         REPEAT_CONFIGS[habit.id] = cached;
-        HABIT_REC[habit.id] = cached.interval;
         habit.repeatConfig = { ...cached };
         return cached;
       }
@@ -3395,7 +3280,7 @@
       const FULL_WEEK_DAYS = [0, 1, 2, 3, 4, 5, 6];
       const WEEKDAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
       const WEEKDAY_SHORT_LABELS = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'];
-      const WEEKDAY_BADGE_LABEL = { 1: 'L', 2: 'Ma', 3: 'Me', 4: 'Je', 5: 'Ve', 6: 'Sa', 0: 'Di' };
+      const WEEKDAY_BADGE_LABEL = { 1: 'L', 2: 'Ma', 3: 'Me', 4: 'J', 5: 'V', 6: 'S', 0: 'D' };
 
       function normalizeDayList(list) {
         if (!Array.isArray(list)) return [];
@@ -3417,88 +3302,145 @@
       }
 
       function buildHabitRecurrenceLabel(habit) {
-        const recurrence = getHabitRecurrenceSetting(habit?.id) || {};
-        const mode = recurrence.mode || 'weekly';
-        const days = normalizeDayList((recurrence.days && recurrence.days.length) ? recurrence.days : getHabitDayPreferences());
+        const repeatConfig = getHabitRepeatConfig(habit);
+        if (!repeatConfig) return '';
+        let days = [];
+        if (repeatConfig.unit === 'week' && repeatConfig.weekDays.length) {
+          days = repeatConfig.weekDays.slice();
+        } else if (repeatConfig.unit === 'day') {
+          days = WEEKDAY_ORDER.slice();
+        }
         if (!days.length) return '';
         const orderedDays = WEEKDAY_ORDER.filter(day => days.includes(day));
         const labelDays = orderedDays.map(day => WEEKDAY_BADGE_LABEL[day]).filter(Boolean).join('');
         if (!labelDays) return '';
-        if (mode === 'interval') {
-          const intervalWeeks = Math.max(2, Math.min(4, Number(recurrence.intervalWeeks) || 2));
-          return `${labelDays} /${intervalWeeks}`;
+        const everyWeekDay = WEEKDAY_ORDER.length && WEEKDAY_ORDER.every(day => orderedDays.includes(day));
+        if (everyWeekDay) {
+          const dailyLabel = 'Quotidien';
+          if (repeatConfig.unit === 'week' && repeatConfig.interval > 1) {
+            return `${dailyLabel} /${repeatConfig.interval}`;
+          }
+          return dailyLabel;
+        }
+        if (repeatConfig.unit === 'week' && repeatConfig.interval > 1) {
+          return `${labelDays} /${repeatConfig.interval}`;
         }
         return labelDays;
       }
 
-      function normalizeHabitRecurrenceMap(map) {
-        if (!map || typeof map !== 'object') return {};
-        const normalized = {};
-        Object.entries(map).forEach(([key, value]) => {
-          if (!key) return;
-          normalized[String(key)] = { ...(value || {}) };
+      function getSelectedRecurrenceMode(modeRadios) {
+        return modeRadios.find(radio => radio.checked)?.value || 'daily';
+      }
+
+      function configureRecurrenceDayInputsForMode(dayInputs, isInterval) {
+        if (!dayInputs.length) return;
+        dayInputs.forEach(input => {
+          input.type = isInterval ? 'radio' : 'checkbox';
+          input.name = isInterval ? 'habitRecurrenceDayRadio' : `habitRecurrenceDay${input.value}`;
         });
-        return normalized;
       }
 
-      function getHabitRecurrenceMap() {
-        return normalizeHabitRecurrenceMap(currentProfile?.habitRecurrence);
-      }
-
-      function getHabitRecurrenceSetting(habitId) {
-        if (!habitId) return null;
-        const map = getHabitRecurrenceMap();
-        return map[String(habitId)] || null;
-      }
-
-      function getHabitDayPreferences() {
-        const stored = normalizeDayList(currentProfile?.habitDayPreferences || []);
-        return stored.length ? stored : WEEKDAY_ORDER.slice();
-      }
-
-      function pickScheduledDays(days, slots) {
-        if (!days.length) return FULL_WEEK_DAYS.slice();
-        const selected = [];
-        let idx = 0;
-        while (selected.length < slots) {
-          selected.push(days[idx % days.length]);
-          idx += 1;
+      function applyRecurrenceMode(mode, { modeRadios, intervalSelect, dayInputs, isAdmin }) {
+        const normalizedMode = mode === 'daily' ? 'weekly' : mode;
+        modeRadios.forEach(radio => {
+          radio.checked = radio.value === normalizedMode;
+        });
+        if (intervalSelect) {
+          if (normalizedMode === 'interval') {
+            if (!intervalSelect.value) {
+              intervalSelect.value = intervalSelect.dataset.savedValue || intervalSelect.dataset.defaultInterval || '2';
+            }
+          } else {
+            const fallback = intervalSelect.value || intervalSelect.dataset.savedValue || intervalSelect.dataset.defaultInterval || '2';
+            intervalSelect.dataset.savedValue = fallback;
+            intervalSelect.value = '';
+          }
+          intervalSelect.disabled = !isAdmin || normalizedMode !== 'interval';
         }
-        return Array.from(new Set(selected));
+        configureRecurrenceDayInputsForMode(dayInputs, normalizedMode === 'interval');
       }
+
+      function bindRecurrenceDaySelectionBehavior(dayInputs, getSelectedMode) {
+        if (!dayInputs.length) return;
+        dayInputs.forEach(input => {
+          if (input.dataset.boundDay) return;
+          input.addEventListener('change', () => {
+            if (getSelectedMode() === 'interval' && input.checked) {
+              dayInputs.forEach(other => {
+                if (other === input) return;
+                other.checked = false;
+              });
+            }
+          });
+          input.dataset.boundDay = '1';
+        });
+      }
+
+      function setRecurrenceDaysOnInputs(dayInputs, days, isAdmin) {
+        if (!dayInputs.length) return;
+        const normalized = normalizeDayList(days);
+        dayInputs.forEach(input => {
+          const dayValue = normalizeDayIndex(input.value);
+          input.checked = dayValue !== null && normalized.includes(dayValue);
+          input.disabled = !isAdmin;
+        });
+      }
+
+      function getSelectedRecurrenceDaysFromInputs(dayInputs) {
+        if (!dayInputs.length) return normalizeDayList(WEEKDAY_ORDER.slice());
+        const values = [];
+        dayInputs.forEach(input => {
+          if (!input.checked) return;
+          const dayValue = normalizeDayIndex(input.value);
+          if (dayValue !== null) values.push(dayValue);
+        });
+        return normalizeDayList(values.length ? values : WEEKDAY_ORDER.slice());
+      }
+
+      function readRecurrenceConfigFromForm(habit, { modeRadios, intervalSelect, startDateInput, endDateInput, dayInputs }) {
+        const mode = getSelectedRecurrenceMode(modeRadios);
+        const intervalWeeks = mode === 'interval'
+          ? Math.max(2, Math.min(4, Number(intervalSelect?.value) || 2))
+          : 1;
+        const startDateValue = startDateInput
+          ? toIsoDateString(parseDateInput(startDateInput.value) || curDate())
+          : toIsoDateString(curDate());
+        const endDateValue = endDateInput
+          ? toIsoDateString(endDateInput.value)
+          : '';
+        const weekDays = getSelectedRecurrenceDaysFromInputs(dayInputs);
+        return normalizeRepeatConfig(habit, {
+          unit: 'week',
+          interval: intervalWeeks,
+          startDate: startDateValue,
+          endDate: endDateValue,
+          weekDays
+        });
+      }
+
 
       function getSlotsFromFrequency(habit) {
-        const freqValue = Number(habit?.frequency ?? HABIT_REC[habit?.id] ?? 3);
+        const freqValue = Number(habit?.frequency ?? 3);
         if (freqValue <= 0) return 1;
         if (freqValue < 1) return 1;
         return Math.max(1, Math.min(7, Math.round(freqValue)));
       }
 
-      function shouldHabitOccurToday(habit, date = curDate()) {
-        if (!habit) return true;
-        const target = new Date(date || curDate());
-        target.setHours(0, 0, 0, 0);
-        const recurrence = getHabitRecurrenceSetting(habit.id);
-        const freqValue = Number(habit.frequency ?? HABIT_REC[habit.id] ?? 3);
-        let mode = recurrence?.mode;
-        if (!mode) {
-          if (freqValue >= 7) mode = 'daily';
-          else if (freqValue < 1) mode = 'interval';
-          else mode = 'weekly';
+      function shouldOccurOnDate(habit, date = curDate()) {
+        const config = getHabitRepeatConfig(habit);
+        if (!config) return true;
+        const target = parseDateInput(date) || curDate();
+        const start = parseDateInput(config.startDate);
+        if (!start || target < start) return false;
+        if (config.unit === 'day') {
+          const diff = daysBetween(start, target);
+          return diff >= 0 && diff % config.interval === 0;
         }
-        const normalizedMode = mode === 'daily' ? 'weekly' : mode;
-        const preferenceDays = normalizeDayList((recurrence?.days && recurrence.days.length) ? recurrence.days : getHabitDayPreferences());
-        const slots = getSlotsFromFrequency(habit);
-        const scheduledDays = pickScheduledDays(preferenceDays.length ? preferenceDays : WEEKDAY_ORDER.slice(), slots);
-        const dayIndex = target.getDay();
-        if (!scheduledDays.includes(dayIndex)) return false;
-        const startDate = parseDateInput(recurrence?.startDate) || parseDateInput(habit?.addedAt) || curDate();
-        if (startDate && target < startDate) return false;
-        if (normalizedMode === 'interval') {
-          const intervalWeeks = Math.max(1, Number(recurrence?.intervalWeeks) || 1);
-          const weeksElapsed = Math.floor((target - startDate) / 604800000);
-          if (isNaN(weeksElapsed) || weeksElapsed < 0) return false;
-          return weeksElapsed % intervalWeeks === 0;
+        if (config.unit === 'week') {
+          const diffWeeks = weeksBetween(start, target);
+          const day = target.getDay();
+          const hasDay = config.weekDays.includes(day);
+          return diffWeeks >= 0 && hasDay && diffWeeks % config.interval === 0;
         }
         return true;
       }
@@ -3516,25 +3458,16 @@
         const repeatConfig = normalizeRepeatConfig(baseHabit, overrides.repeatConfig || {});
         const freqValue = overrides.frequency ?? repeatConfig.interval ?? source.frequency ?? 1;
         const defaultMode = space?.type === 'private' ? { type: 'libre', n: 2 } : { type: 'commun', n: 2 };
-        const durationCandidate = overrides.baseMin ?? source.baseMin ?? source.duration;
-        const parsedDuration = Number(durationCandidate);
-        const baseMin = Number.isFinite(parsedDuration) ? parsedDuration : 15;
-        const fallbackFreqDays = repeatConfig.unit === 'week'
-          ? repeatConfig.weekDays.slice()
-          : repeatConfig.unit === 'day' ? FULL_WEEK_DAYS.slice() : [];
         return {
           id: overrides.id || source.id,
           titre: overrides.titre || source.titre || source.title || '',
           emoji: overrides.emoji || source.emoji || '🌱',
           desc: (overrides.desc ?? source.desc ?? source.note ?? '').trim(),
           note: source.note || overrides.note || '',
-          duration: overrides.duration ?? source.duration ?? baseMin,
-          baseMin,
           frequency: String(freqValue),
           contexts: overrides.contexts || source.contexts || [],
           needs: overrides.needs || source.needs || [],
           spaces: overrides.spaces || source.spaces || [],
-          freqDays: overrides.freqDays ?? source.freqDays ?? fallbackFreqDays,
           mode: overrides.mode || source.mode || defaultMode,
           repeatConfig,
           addedAt: overrides.addedAt || getWeekStart(new Date())
@@ -3671,8 +3604,6 @@
         clearObject(LOCKED_BY);
         clearObject(DONE_SETS);
         clearObject(HAS_DESC);
-        clearObject(HABIT_REC);
-        clearObject(FREQ_MODE);
         DELETED_HABITS.clear();
         allowedSpaces = [];
         Object.keys(SPACE_ACTIVITIES).forEach(k => delete SPACE_ACTIVITIES[k]);
@@ -3943,29 +3874,17 @@
         if (profile.tipsDisplayMode !== undefined) {
           payload.tipsDisplayMode = profile.tipsDisplayMode;
         }
-        if (profile.habitListDisplayMode !== undefined) {
-          payload.habitListDisplayMode = profile.habitListDisplayMode;
-        }
         if (profile.pinnedHabits !== undefined) {
           payload.pinnedHabits = normalizeHabitArray(profile.pinnedHabits);
         }
         if (profile.postponedHabits !== undefined) {
           payload.postponedHabits = normalizePostponedMap(profile.postponedHabits);
         }
-        if (profile.ignoredHabits !== undefined) {
-          payload.ignoredHabits = normalizeIgnoredMap(profile.ignoredHabits);
-        }
         if (profile.forgottenHabits !== undefined) {
           payload.forgottenHabits = normalizeHabitArray(profile.forgottenHabits);
         }
         if (profile.showFriendBadges !== undefined) {
           payload.showFriendBadges = profile.showFriendBadges;
-        }
-        if (profile.habitRecurrence !== undefined) {
-          payload.habitRecurrence = normalizeHabitRecurrenceMap(profile.habitRecurrence);
-        }
-        if (profile.habitDayPreferences !== undefined) {
-          payload.habitDayPreferences = normalizeDayList(profile.habitDayPreferences);
         }
         return HABITU_FIREBASE_DB.collection('users').doc(profile.uid)
           .set(payload, { merge: true })
@@ -3994,23 +3913,6 @@
           email: updated.email,
           name: updated.name,
           tipsDisplayMode: normalized,
-          habitListDisplayMode: updated.habitListDisplayMode,
-          pinnedHabits: updated.pinnedHabits,
-          postponedHabits: updated.postponedHabits,
-          showFriendBadges: updated.showFriendBadges
-        });
-      }
-      async function updateUserHabitListDisplayMode(mode) {
-        if (!currentProfile) return;
-        const normalized = ['confort', 'dense'].includes(mode) ? mode : 'dense';
-        const updated = { ...currentProfile, habitListDisplayMode: normalized };
-        persistProfile(updated);
-        await persistUserProfile({
-          uid: updated.uid,
-          email: updated.email,
-          name: updated.name,
-          tipsDisplayMode: updated.tipsDisplayMode,
-          habitListDisplayMode: normalized,
           pinnedHabits: updated.pinnedHabits,
           postponedHabits: updated.postponedHabits,
           showFriendBadges: updated.showFriendBadges
@@ -4026,10 +3928,8 @@
           email: updated.email,
           name: updated.name,
           tipsDisplayMode: updated.tipsDisplayMode,
-          habitListDisplayMode: updated.habitListDisplayMode,
           pinnedHabits: updated.pinnedHabits,
           postponedHabits: updated.postponedHabits,
-          ignoredHabits: updated.ignoredHabits,
           forgottenHabits: updated.forgottenHabits,
           showFriendBadges: normalized
         });
@@ -4154,13 +4054,15 @@
       }
       function ensureHabitMetadata(habit) {
         if (!habit?.id) return;
-        if (habit.baseMin) BASE_MINUTES[habit.id] = habit.baseMin;
+        const candidateBaseMin = habit?.baseMin ?? habit?.duration;
+        if (candidateBaseMin && Number.isFinite(Number(candidateBaseMin))) {
+          BASE_MINUTES[habit.id] = Number(candidateBaseMin);
+        } else if (!BASE_MINUTES[habit.id]) {
+          BASE_MINUTES[habit.id] = DEFAULT_DURATION;
+        }
         if (habit.desc || habit.note) HABIT_DESC[habit.id] = habit.desc || habit.note || '';
         if (habit.customTitle) HABIT_TITLE_CUSTOM[habit.id] = habit.customTitle;
         if (habit.mode) HABIT_MODE[habit.id] = habit.mode;
-        if (habit.recurrence) HABIT_REC[habit.id] = habit.recurrence;
-        const freqTypeValue = habit.freqType || habit.freqDefault;
-        if (freqTypeValue) FREQ_MODE[habit.id] = { type: freqTypeValue };
         cacheRepeatConfigFromHabit(habit);
       }
       async function fetchSpacesForUser(profile) {
@@ -4506,12 +4408,6 @@
       function getTipsDisplayMode() {
         return currentProfile?.tipsDisplayMode || 'auto';
       }
-      function getHabitListDisplayMode() {
-        return currentProfile?.habitListDisplayMode || 'dense';
-      }
-      function isHabitListDense() {
-        return getHabitListDisplayMode() === 'dense';
-      }
       function shouldShowFriendBadges() {
         return currentProfile?.showFriendBadges !== false;
       }
@@ -4541,30 +4437,8 @@
         });
         return trimmed;
       }
-      function normalizeIgnoredMap(map) {
-        if (!map || typeof map !== 'object') return {};
-        const trimmed = {};
-        Object.entries(map).forEach(([key, value]) => {
-          if (!key) return;
-          if (typeof value !== 'string') return;
-          trimmed[key] = value;
-        });
-        return trimmed;
-      }
       function getProfileHabitArray(field) {
         return normalizeHabitArray(currentProfile?.[field]);
-      }
-      function getIgnoredHabitsMap() {
-        return normalizeIgnoredMap(currentProfile?.ignoredHabits);
-      }
-      function getIgnoredHabitDate(habitId) {
-        if (!habitId) return '';
-        return getIgnoredHabitsMap()[String(habitId)] || '';
-      }
-      function isHabitIgnoredToday(habitId, targetKey) {
-        if (!habitId) return false;
-        const key = targetKey || dayKeyFromDate(curDate());
-        return getIgnoredHabitDate(habitId) === key;
       }
       function getPinnedHabitIds() {
         return getProfileHabitArray('pinnedHabits');
@@ -4598,20 +4472,8 @@
           payloadFields.postponedHabits = normalizePostponedMap(fields.postponedHabits);
           hasField = true;
         }
-        if (fields.ignoredHabits !== undefined) {
-          payloadFields.ignoredHabits = normalizeIgnoredMap(fields.ignoredHabits);
-          hasField = true;
-        }
         if (fields.forgottenHabits !== undefined) {
           payloadFields.forgottenHabits = normalizeHabitArray(fields.forgottenHabits);
-          hasField = true;
-        }
-        if (fields.habitRecurrence !== undefined) {
-          payloadFields.habitRecurrence = normalizeHabitRecurrenceMap(fields.habitRecurrence);
-          hasField = true;
-        }
-        if (fields.habitDayPreferences !== undefined) {
-          payloadFields.habitDayPreferences = normalizeDayList(fields.habitDayPreferences);
           hasField = true;
         }
         if (!hasField) return;
@@ -4622,27 +4484,13 @@
           email: updated.email,
           name: updated.name,
           tipsDisplayMode: updated.tipsDisplayMode,
-          habitListDisplayMode: updated.habitListDisplayMode,
           pinnedHabits: updated.pinnedHabits,
           postponedHabits: updated.postponedHabits,
-          ignoredHabits: updated.ignoredHabits,
           forgottenHabits: updated.forgottenHabits,
-          habitRecurrence: updated.habitRecurrence,
-          habitDayPreferences: updated.habitDayPreferences,
           showFriendBadges: updated.showFriendBadges
         });
       }
 
-      function persistHabitRecurrenceSetting(habitId, recurrence) {
-        if (!habitId || !recurrence) return Promise.resolve();
-        const map = getHabitRecurrenceMap();
-        const next = { ...map, [String(habitId)]: recurrence };
-        return persistHabitProfileFields({ habitRecurrence: next });
-      }
-
-      function persistHabitDayPreferences(days) {
-        return persistHabitProfileFields({ habitDayPreferences: normalizeDayList(days) });
-      }
       function getDescTipSeed(baseDate = curDate()) {
         const anchor = new Date(baseDate);
         anchor.setHours(0, 0, 0, 0);
@@ -4741,22 +4589,6 @@
           showToast('Habitude décalée à demain.');
         }
         persistHabitProfileFields({ postponedHabits: next }).catch(() => { });
-        renderCards();
-      }
-      function toggleHabitIgnore(habitId) {
-        if (!habitId) return;
-        const todayKey = dayKeyFromDate(curDate());
-        const normalizedId = String(habitId);
-        const map = getIgnoredHabitsMap();
-        const next = { ...map };
-        if (next[normalizedId] === todayKey) {
-          delete next[normalizedId];
-          showToast('Ignoré annulé pour aujourd’hui.');
-        } else {
-          next[normalizedId] = todayKey;
-          showToast('Habitude ignorée pour aujourd’hui.');
-        }
-        persistHabitProfileFields({ ignoredHabits: next }).catch(() => { });
         renderCards();
       }
       function hideHabit(habitId) {
@@ -4918,10 +4750,13 @@
         const root = $("#cards");
         hideCardContextMenu();
         if (!root) return;
-        const isDenseList = isHabitListDense();
-        root.classList.toggle('dense-view', isDenseList);
+        const filterCounts = new Map(HABIT_FILTERS.map(filter => [filter.key, 0]));
+        root.classList.remove('dense-view');
         root.innerHTML = '';
-        if (!spaceId) return;
+        if (!spaceId) {
+          updateHabitFilterCounts(filterCounts);
+          return;
+        }
         const today = curDate();
         today.setHours(0, 0, 0, 0);
         const viewTipSeed = getDescTipSeed(today);
@@ -4958,7 +4793,7 @@
             const shiftKey = getPostponedHabitDate(it.id);
             const isShiftedToday = shiftKey === todayKey;
             ensureHabit(it.id);
-            const visibleToday = shouldHabitOccurToday(it, today);
+            const visibleToday = shouldOccurOnDate(it, today);
             const isHiddenHabit = isHabitHidden(it.id);
 
             const card = document.createElement('article');
@@ -4973,12 +4808,13 @@
             left.className = 'left';
             const mode = HABIT_MODE[it.id] || { type: 'libre' };
             const displayTitle = habitLabel(it);
-            left.innerHTML = `<span class="base">${displayTitle}</span>`;
+            const pinPrefix = pinned ? '📌 ' : '';
+            left.innerHTML = `<span class="base">${pinPrefix}${displayTitle}</span>`;
             title.append(left);
             const recurrenceLabel = buildHabitRecurrenceLabel(it);
             if (recurrenceLabel) {
               const badge = document.createElement('span');
-              badge.className = 'recurrence-badge';
+              badge.className = 'recurrence-badge soft';
               badge.textContent = recurrenceLabel;
               title.append(badge);
             }
@@ -5003,7 +4839,6 @@
 
             const windowStart = today;
             const records = getHabitRecords(spaceId, it.id, windowStart);
-            const freqWeekly = HABIT_REC[it.id] || 1;
             const viewRecordedAt = new Date(today);
             let userRecord = records.find(r => isCurrentUserLabel(r.owner)) || null;
             const doneRecord = records.find(r => (r.state || 0) >= 1) || null;
@@ -5013,6 +4848,8 @@
             } else {
               ownerRecord = userRecord || doneRecord || null;
             }
+            const recurrenceConfig = getHabitRepeatConfig(it);
+            const freqWeekly = recurrenceConfig?.interval ?? 1;
             const ownerFreq = Math.max(1, Number(ownerRecord?.frequency ?? freqWeekly));
             const ownerModeType = ownerRecord?.modeType || mode.type;
             const resetProgress = ownerRecord && ownerModeType !== mode.type;
@@ -5035,9 +4872,14 @@
             const state = userState;
             const contextForCounts = {
               state,
-             isHidden: isHiddenHabit,
+              isHidden: isHiddenHabit,
               dueToday: visibleToday
             };
+            HABIT_FILTERS.forEach(filter => {
+              if (!habitMatchesFilter(filter.key, contextForCounts)) return;
+              if (filter.key === 'hidden' && !visibleToday) return;
+              filterCounts.set(filter.key, (filterCounts.get(filter.key) || 0) + 1);
+            });
             if (!visibleToday && !pinned) return;
             if (!habitMatchesFilter(activeHabitFilter, contextForCounts)) {
               return;
@@ -5160,12 +5002,6 @@
               shiftedBadge.textContent = '⏳';
               card.appendChild(shiftedBadge);
             }
-            if (pinned && !isShiftedToday) {
-              const pinBadge = document.createElement('span');
-              pinBadge.className = 'card-pin';
-              pinBadge.textContent = '📌';
-              card.appendChild(pinBadge);
-            }
             attachCardContextHandlers(card, btn, it);
             if (isShiftedToday) {
               shiftedCards.push({ card, state, title: displayTitle });
@@ -5176,7 +5012,7 @@
             }
           });
           const sortByStateTitle = (a, b) => {
-            const stateOrder = {1: 0, 0: 1, 2: 2};
+            const stateOrder = { 1: 0, 0: 1, 2: 2 };
             const aPriority = stateOrder[a.state] ?? 99;
             const bPriority = stateOrder[b.state] ?? 99;
             if (aPriority !== bPriority) return aPriority - bPriority;
@@ -5198,10 +5034,10 @@
             root.appendChild(emptyState);
           }
         }
+        updateHabitFilterCounts(filterCounts);
         updateHabitFilterButtons();
         renderDateBar();
         updateAddModalOptions();
-        updateHabitDayPreferencesUI();
       }
       function cleanupPostponedHabits(todayKey) {
         const map = getPostponedHabitsMap();
@@ -5546,82 +5382,32 @@
         const recurrenceIntervalSelect = $("#habitRecurrenceInterval");
         const recurrenceStartDateInput = $("#habitStartDate");
         const recurrenceEndDateInput = $("#habitEndDate");
-        const storedRecurrence = getHabitRecurrenceSetting(activeId) || {};
-        const freqValue = Number(it.frequency ?? HABIT_REC[it.id] ?? 3);
-        const defaultMode = storedRecurrence.mode === 'interval' ? 'interval' : 'weekly';
-        const getSelectedMode = () => recurrenceModeRadios.find(radio => radio.checked)?.value || 'daily';
-        const configureDayInputsForMode = (isInterval) => {
-          recurrenceDayInputs.forEach(input => {
-            input.type = isInterval ? 'radio' : 'checkbox';
-            input.name = isInterval ? 'habitRecurrenceDayRadio' : `habitRecurrenceDay${input.value}`;
-          });
-        };
-        const applyRecurrenceMode = (mode) => {
-          const normalizedMode = mode === 'daily' ? 'weekly' : mode;
-          recurrenceModeRadios.forEach(radio => { radio.checked = radio.value === normalizedMode; });
-          if (recurrenceIntervalSelect) {
-            recurrenceIntervalSelect.disabled = !isAdmin || normalizedMode !== 'interval';
-          }
-          configureDayInputsForMode(normalizedMode === 'interval');
-        };
-        const setRecurrenceDays = (days) => {
-          const normalized = normalizeDayList(days);
-          recurrenceDayInputs.forEach(input => {
-            const dayValue = normalizeDayIndex(input.value);
-            input.checked = dayValue !== null && normalized.includes(dayValue);
-            input.disabled = !isAdmin;
-            if (!input.dataset.boundDay) {
-              input.addEventListener('change', () => {
-                if (getSelectedMode() === 'interval' && input.checked) {
-                  recurrenceDayInputs.forEach(other => {
-                    if (other === input) return;
-                    other.checked = false;
-                  });
-                }
-              });
-              input.dataset.boundDay = '1';
-            }
-          });
-        };
-        const getSelectedRecurrenceDays = () => {
-          const values = [];
-          recurrenceDayInputs.forEach(input => {
-            if (!input.checked) return;
-            const dayValue = normalizeDayIndex(input.value);
-            if (dayValue !== null) values.push(dayValue);
-          });
-          return normalizeDayList(values.length ? values : getHabitDayPreferences());
-        };
-        const readRecurrenceFromUI = () => {
-          const mode = getSelectedMode();
-          const normalizedMode = mode === 'daily' ? 'weekly' : mode;
-          const intervalWeeks = Math.max(2, Math.min(4, Number(recurrenceIntervalSelect?.value) || 2));
-          const startDateValue = recurrenceStartDateInput
-            ? toIsoDateString(parseDateInput(recurrenceStartDateInput.value) || curDate())
-            : toIsoDateString(curDate());
-          const endDateValue = recurrenceEndDateInput && recurrenceEndDateInput.value
-            ? toIsoDateString(parseDateInput(recurrenceEndDateInput.value))
-            : '';
-          return {
-            mode: normalizedMode,
-            days: normalizedMode === 'interval' ? getSelectedRecurrenceDays() : FULL_WEEK_DAYS.slice(),
-            intervalWeeks: mode === 'interval' ? intervalWeeks : 1,
-            startDate: startDateValue,
-            endDate: endDateValue
-          };
-        };
+        const storedRecurrence = getHabitRepeatConfig(it);
+        const defaultMode = (storedRecurrence.interval ?? 1) > 1 ? 'interval' : 'weekly';
+        const getSelectedMode = () => getSelectedRecurrenceMode(recurrenceModeRadios);
+        const applyMode = (mode) => applyRecurrenceMode(mode, {
+          modeRadios: recurrenceModeRadios,
+          intervalSelect: recurrenceIntervalSelect,
+          dayInputs: recurrenceDayInputs,
+          isAdmin
+        });
         recurrenceModeRadios.forEach(radio => {
           radio.disabled = !isAdmin;
           if (!radio.dataset.bound) {
-            radio.addEventListener('change', () => applyRecurrenceMode(getSelectedMode()));
+            radio.addEventListener('change', () => applyMode(getSelectedMode()));
             radio.dataset.bound = '1';
           }
         });
-        applyRecurrenceMode(defaultMode);
-        const recurrenceDays = storedRecurrence.days && storedRecurrence.days.length ? storedRecurrence.days : getHabitDayPreferences();
-        setRecurrenceDays(recurrenceDays);
+        applyMode(defaultMode);
+        const recurrenceDays = storedRecurrence.weekDays && storedRecurrence.weekDays.length ? storedRecurrence.weekDays : WEEKDAY_ORDER.slice();
+        setRecurrenceDaysOnInputs(recurrenceDayInputs, recurrenceDays, isAdmin);
+        bindRecurrenceDaySelectionBehavior(recurrenceDayInputs, getSelectedMode);
         if (recurrenceIntervalSelect) {
-          recurrenceIntervalSelect.value = String(storedRecurrence.intervalWeeks || 2);
+          const storedInterval = Number.isFinite(Number(storedRecurrence.interval)) ? Number(storedRecurrence.interval) : 2;
+          const normalizedInterval = Math.max(2, storedInterval);
+          recurrenceIntervalSelect.dataset.defaultInterval = String(normalizedInterval);
+          recurrenceIntervalSelect.dataset.savedValue = String(normalizedInterval);
+          recurrenceIntervalSelect.value = storedRecurrence.unit === 'week' ? String(normalizedInterval) : '';
         }
         if (recurrenceStartDateInput) {
           recurrenceStartDateInput.value = storedRecurrence.startDate || toIsoDateString(it?.addedAt || curDate());
@@ -5668,17 +5454,16 @@
         if (save && !save.dataset.bound) {
           save.onclick = async () => {
             if (!requireAdmin('modifier une habitude')) return;
-            const recurrencePayload = readRecurrenceFromUI();
-            await persistHabitRecurrenceSetting(activeId, recurrencePayload);
-            const repeatConfig = getHabitRepeatConfig(it);
-            const freqTypeValue = repeatConfig.unit === 'week' ? 'jours' : 'quotidien';
-            const freqDaysPayload = repeatConfig.unit === 'week'
-              ? (Array.isArray(repeatConfig.weekDays) ? repeatConfig.weekDays.slice() : [])
-              : FULL_WEEK_DAYS.slice();
+            const repeatConfig = readRecurrenceConfigFromForm(it, {
+              modeRadios: recurrenceModeRadios,
+              intervalSelect: recurrenceIntervalSelect,
+              startDateInput: recurrenceStartDateInput,
+              endDateInput: recurrenceEndDateInput,
+              dayInputs: recurrenceDayInputs
+            });
             const repeatConfigPayload = {
               ...repeatConfig,
-              weekDays: Array.isArray(repeatConfig.weekDays) ? repeatConfig.weekDays.slice() : [],
-              monthMode: repeatConfig.monthMode ? { ...repeatConfig.monthMode } : null
+              weekDays: Array.isArray(repeatConfig.weekDays) ? repeatConfig.weekDays.slice() : []
             };
             const payload = {
               id: activeId,
@@ -5686,16 +5471,10 @@
               desc: HABIT_DESC[activeId] || '',
               note: HABIT_DESC[activeId] || '',
               mode: HABIT_MODE[activeId] || null,
-              freqType: freqTypeValue,
-              freqDefault: freqTypeValue,
-              freqDays: freqDaysPayload,
               frequency: repeatConfig.interval,
               repeatConfig: repeatConfigPayload
             };
             if (it) {
-              it.freqType = payload.freqType;
-              it.freqDefault = payload.freqDefault;
-              it.freqDays = payload.freqDays.slice();
               it.repeatConfig = { ...repeatConfigPayload };
               cacheRepeatConfigFromHabit(it);
             }
@@ -6136,7 +5915,6 @@
       let habitWizardStep = 1;
       const mPrefs = $("#modalPrefs");
       const prefsTipsSelect = $("#prefsTipsDisplayMode");
-      const prefsDisplayModeSelect = $("#prefsDisplayMode");
       const prefsFriendBadgesCheckbox = $("#prefsFriendBadges");
       const closePrefsBtn = $("#closePrefs");
       function updateHabitModalControls() {
@@ -6250,9 +6028,6 @@
         if (prefsTipsSelect) {
           prefsTipsSelect.value = getTipsDisplayMode();
         }
-        if (prefsDisplayModeSelect) {
-          prefsDisplayModeSelect.value = getHabitListDisplayMode();
-        }
         if (prefsFriendBadgesCheckbox) {
           prefsFriendBadgesCheckbox.checked = shouldShowFriendBadges();
         }
@@ -6261,11 +6036,6 @@
       prefsTipsSelect?.addEventListener('change', async () => {
         const mode = prefsTipsSelect.value || 'auto';
         await updateUserTipsDisplayMode(mode);
-        renderCards();
-      });
-      prefsDisplayModeSelect?.addEventListener('change', async () => {
-        const mode = prefsDisplayModeSelect.value || 'dense';
-        await updateUserHabitListDisplayMode(mode);
         renderCards();
       });
       prefsFriendBadgesCheckbox?.addEventListener('change', async () => {
@@ -6717,6 +6487,13 @@
         root.innerHTML = '';
 
         habitWizardStep = 1;
+        if (typeof renderHabitSuggestions === 'function') {
+          renderHabitSuggestions.disablePreselect = false;
+        }
+        const stepBackBtn = $("#habitStepBack");
+        if (stepBackBtn) {
+          stepBackBtn.style.display = 'none';
+        }
         if (!LIBRARY_HABITS.length) {
           const empty = document.createElement('div');
           empty.className = 'miniInfo';
@@ -6805,84 +6582,223 @@
       function renderHabitSuggestions(contextTags, needTags, modeFilter = null) {
         const step1El = $("#step1");
         const root = $("#step2");
+        const titleEl = $("#habitTitle");
         if (!root) return;
-        $("#habitTitle").textContent = "Habitudes suggérées";
+        const contexts = Array.isArray(contextTags) ? contextTags.slice() : [];
+        const needs = Array.isArray(needTags) ? needTags.slice() : [];
+        if (titleEl) {
+          titleEl.textContent = 'Habitudes suggérées';
+        }
+        const headerEl = titleEl?.closest('.sheetHeader');
+        if (headerEl) {
+          let stepBackBtn = headerEl.querySelector('#habitStepBack');
+          if (!stepBackBtn) {
+            stepBackBtn = document.createElement('button');
+            stepBackBtn.type = 'button';
+            stepBackBtn.id = 'habitStepBack';
+            stepBackBtn.className = 'closeX';
+            stepBackBtn.textContent = '←';
+            headerEl.insertBefore(stepBackBtn, titleEl);
+          }
+          stepBackBtn.style.display = 'inline-flex';
+          if (!stepBackBtn.dataset.bound) {
+            stepBackBtn.addEventListener('click', () => step1());
+            stepBackBtn.dataset.bound = '1';
+          }
+        }
         if (step1El) step1El.style.display = 'none';
         root.style.display = 'grid';
         root.innerHTML = '';
         habitWizardStep = 2;
-        const prefBar = buildHabitPreferenceBar();
-        root.appendChild(prefBar.bar);
-        initHabitDayPreferenceControls(prefBar.days);
-
+        const spaceHabits = new Set((getSpace()?.ch || []).map(habit => String(habit.id)));
         const matchingHabits = LIBRARY_HABITS
-          .filter(habit => matchesHabitContext(habit, contextTags))
+          .filter(habit => matchesHabitContext(habit, contexts))
           .filter(habit => matchesHabitMode(habit, modeFilter))
+          .filter(habit => !spaceHabits.has(String(habit.id)))
           .sort((a, b) => (a.title || '').localeCompare(b.title || '', 'fr'));
-        const grid = document.createElement('div');
-        grid.className = 'habit-grid';
         const selection = new Set();
+        const preselected = [];
+        const others = [];
+        const shouldAutoPreselectNeeds = !renderHabitSuggestions.disablePreselect;
         matchingHabits.forEach(habit => {
-          const matchesNeed = (habit.needs || []).some(need => needTags.includes(need));
-          if (matchesNeed) selection.add(habit.id);
+          const matchesNeed = (habit.needs || []).some(need => needs.includes(need));
+          if (matchesNeed) {
+            preselected.push(habit);
+            if (shouldAutoPreselectNeeds) {
+              selection.add(habit.id);
+            }
+            return;
+          }
+          others.push(habit);
         });
-        const suggestionMap = new Map(matchingHabits.map(habit => [habit.id, habit]));
-        let addSelectionBtn = prefBar.addBtn;
+        const orderedHabits = [...preselected, ...others];
+        const suggestionMap = new Map(orderedHabits.map(habit => [habit.id, habit]));
+        const addSelectionBtn = document.createElement('button');
+        addSelectionBtn.type = 'button';
+        addSelectionBtn.className = 'btn primary habit-actions__add';
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'btn secondary';
+        closeBtn.textContent = 'Fermer';
+        closeBtn.addEventListener('click', () => close(mHabit));
+        const controls = document.createElement('div');
+        controls.className = 'habit-actions footer-sticky';
+        const infoWrapper = document.createElement('div');
+        infoWrapper.className = 'habit-actions__info';
+        const label = document.createElement('span');
+        label.className = 'habit-actions__label';
+        label.textContent = 'Jours :';
+        const dayWrapper = document.createElement('div');
+        dayWrapper.className = 'habit-actions__days';
+        const selectedWeekDays = new Set(WEEKDAY_ORDER);
+        WEEKDAY_ORDER.forEach(day => {
+          const dayBtn = document.createElement('button');
+          dayBtn.type = 'button';
+          dayBtn.className = 'habit-actions__day habit-actions__day--active';
+          dayBtn.textContent = WEEKDAY_SHORT_LABELS[day] || '';
+          dayBtn.dataset.day = String(day);
+          dayBtn.addEventListener('click', () => {
+            if (selectedWeekDays.has(day)) {
+              if (selectedWeekDays.size <= 1) return;
+              selectedWeekDays.delete(day);
+              dayBtn.classList.remove('habit-actions__day--active');
+            } else {
+              selectedWeekDays.add(day);
+              dayBtn.classList.add('habit-actions__day--active');
+            }
+            updateAddLabel();
+          });
+          dayWrapper.appendChild(dayBtn);
+        });
+        infoWrapper.append(label, dayWrapper);
+        const buttonsWrap = document.createElement('div');
+        buttonsWrap.style.display = 'flex';
+        buttonsWrap.style.gap = '8px';
         const updateAddLabel = () => {
-          if (!addSelectionBtn) return;
           const count = selection.size;
-          const suffix = count === 1 ? '' : 's';
           addSelectionBtn.disabled = count === 0;
-          addSelectionBtn.textContent = `Ajouter les ${count} habitude${suffix}`;
+          addSelectionBtn.hidden = count === 0;
+          closeBtn.hidden = count !== 0;
+          addSelectionBtn.textContent = count > 0 ? `Ajouter (${count})` : 'Ajouter';
         };
+        buttonsWrap.append(addSelectionBtn, closeBtn);
+        controls.append(infoWrapper, buttonsWrap);
 
-        if (!matchingHabits.length) {
+        if (!orderedHabits.length) {
           const info = document.createElement('div');
           info.className = 'miniInfo';
           info.textContent = "Aucune habitude ne correspond aux contextes sélectionnés.";
           root.appendChild(info);
         } else {
-          matchingHabits.forEach(habit => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'habit-btn';
-            btn.dataset.id = habit.id;
-            if (selection.has(habit.id)) {
-              btn.classList.add('selected');
-            }
-            btn.innerHTML = `<span class="emoji">${habit.emoji || '🌱'}</span><span class="label">${habit.title}</span>`;
-            btn.addEventListener('click', () => {
-              const active = btn.classList.toggle('selected');
-              if (active) selection.add(habit.id);
-              else selection.delete(habit.id);
-              updateAddLabel();
+          const grid = document.createElement('div');
+          grid.className = 'habit-grid';
+          const renderHabitButtons = (habitList) => {
+            habitList.forEach(habit => {
+              const btn = document.createElement('button');
+              btn.type = 'button';
+              btn.className = 'habit-btn';
+              btn.dataset.id = habit.id;
+              if (selection.has(habit.id)) {
+                btn.classList.add('selected');
+              }
+              btn.innerHTML = `<span class="emoji">${habit.emoji || '🌱'}</span><span class="label">${habit.title}</span>`;
+              btn.addEventListener('click', () => {
+                const active = btn.classList.toggle('selected');
+                if (active) selection.add(habit.id);
+                else selection.delete(habit.id);
+                updateAddLabel();
+              });
+              grid.appendChild(btn);
             });
-            grid.appendChild(btn);
-          });
+          };
+          if (preselected.length) {
+            renderHabitButtons(preselected);
+          }
+          if (preselected.length && others.length) {
+            const separator = document.createElement('div');
+            separator.className = 'habit-grid-separator';
+            separator.textContent = '';
+            grid.appendChild(separator);
+          }
+          if (others.length) {
+            renderHabitButtons(others);
+          }
           root.appendChild(grid);
-          addSelectionBtn.addEventListener('click', async () => {
-            if (!selection.size) return;
-            const sp = getSpace();
-            const persistPromises = [];
-            selection.forEach(hid => {
-              if (!sp) return;
-              if ((sp.ch || []).some(x => x.id === hid)) return;
-              const habitSource = suggestionMap.get(hid) || LIBRARY_HABITS.find(x => x.id === hid);
-              if (!habitSource) return;
-              const payload = buildHabitPayload(sp, habitSource);
-              (sp.ch || (sp.ch = [])).push(payload);
-              ensureHabit(hid);
-              persistPromises.push(persistHabit(spaceId, payload));
-            });
-            if (persistPromises.length) {
-              await Promise.all(persistPromises);
-            }
-            close(mHabit);
-            renderCards();
-          });
-          updateAddLabel();
         }
+        root.appendChild(controls);
+        updateAddLabel();
+        addSelectionBtn.addEventListener('click', async () => {
+          if (!selection.size) return;
+          const sp = getSpace();
+          const persistPromises = [];
+          const targetedDays = WEEKDAY_ORDER.filter(day => selectedWeekDays.has(day));
+          selection.forEach(hid => {
+            if (!sp) return;
+            const habitId = String(hid);
+            if ((sp.ch || []).some(x => String(x.id) === habitId)) return;
+            const habitSource = suggestionMap.get(hid) || LIBRARY_HABITS.find(x => x.id === hid);
+            if (!habitSource) return;
+            const frequency = Number.isFinite(Number(habitSource.frequency)) ? Number(habitSource.frequency) : 1;
+            const schedule = chooseWeekDaysForFrequency(targetedDays, frequency, habitSource.id || habitId);
+            const payload = buildHabitPayload(sp, habitSource, {
+              frequency,
+              repeatConfig: {
+                unit: 'week',
+                interval: schedule.interval,
+                weekDays: schedule.weekDays
+              }
+            });
+            (sp.ch || (sp.ch = [])).push(payload);
+            ensureHabit(hid);
+            persistPromises.push(persistHabit(spaceId, payload));
+          });
+          if (!persistPromises.length) return;
+          await Promise.all(persistPromises);
+          renderCards();
+          renderHabitSuggestions.disablePreselect = true;
+          renderHabitSuggestions(contexts.slice(), needs.slice(), modeFilter);
+        });
       }
+
+      function chooseWeekDaysForFrequency(selectedDays, frequencyValue, habitId) {
+        const normalizedDays = WEEKDAY_ORDER.filter(day => (selectedDays || []).includes(day));
+        const days = normalizedDays.length ? normalizedDays : WEEKDAY_ORDER.slice();
+        const freqNum = Number.isFinite(Number(frequencyValue)) ? Number(frequencyValue) : 1;
+        if (freqNum <= 0) {
+          return { interval: 1, weekDays: days.slice() };
+        }
+        if (freqNum < 1) {
+          const interval = Math.max(1, Math.round(1 / freqNum));
+          const [singleDay] = pickRandomDay(days, habitId);
+          return { interval, weekDays: singleDay !== undefined ? [singleDay] : [days[0]] };
+        }
+        const times = Math.min(Math.max(1, Math.round(freqNum)), days.length);
+        const weekDays = pickSpacedDays(days, times);
+        if (!weekDays.length) {
+          return { interval: 1, weekDays: [days[0]] };
+        }
+        return { interval: 1, weekDays };
+      }
+
+      function pickSpacedDays(days, count) {
+        if (!days.length || count <= 0) return [];
+        const result = new Set();
+        const length = days.length;
+        for (let i = 0; i < count; i += 1) {
+          const idx = Math.floor((i * length) / count);
+          result.add(days[idx % length]);
+        }
+        return days.filter(day => result.has(day)).sort((a, b) => WEEKDAY_ORDER.indexOf(a) - WEEKDAY_ORDER.indexOf(b));
+      }
+
+      function pickRandomDay(days, seed) {
+        if (!days.length) return [];
+        const hash = Math.abs(hashStr(String(seed))) || 0;
+        const idx = hash % days.length;
+        return [days[idx]];
+      }
+
+      renderHabitSuggestions.disablePreselect = false;
 
       closeHabitBtn?.addEventListener('click', () => {
         if ((getSpace()?.ch?.length || 0) === 0) return;
@@ -7073,10 +6989,8 @@
             email: updated.email,
             name: finalName,
             tipsDisplayMode: updated.tipsDisplayMode,
-            habitListDisplayMode: updated.habitListDisplayMode,
             pinnedHabits: updated.pinnedHabits,
             postponedHabits: updated.postponedHabits,
-            ignoredHabits: updated.ignoredHabits,
             forgottenHabits: updated.forgottenHabits,
             showFriendBadges: updated.showFriendBadges
           });
@@ -7112,12 +7026,9 @@
         const name = user.displayName || currentProfile?.name || inviteName || userName || 'Moi';
         const remoteProfile = await loadRemoteUserProfile(user.uid);
         const fallbackTips = currentProfile?.tipsDisplayMode;
-        const fallbackHabitMode = currentProfile?.habitListDisplayMode;
         const tipsDisplayMode = remoteProfile?.tipsDisplayMode || fallbackTips || 'auto';
-        const habitListDisplayMode = remoteProfile?.habitListDisplayMode || fallbackHabitMode || 'dense';
         const pinnedHabits = Array.isArray(remoteProfile?.pinnedHabits) ? remoteProfile.pinnedHabits : [];
         const postponedHabits = normalizePostponedMap(remoteProfile?.postponedHabits);
-        const ignoredHabits = normalizeIgnoredMap(remoteProfile?.ignoredHabits);
         const forgottenHabits = Array.isArray(remoteProfile?.forgottenHabits) ? remoteProfile?.forgottenHabits : [];
         const showFriendBadges = remoteProfile?.showFriendBadges !== false;
         const profile = {
@@ -7126,10 +7037,8 @@
           name,
           guest: isGuest,
           tipsDisplayMode,
-          habitListDisplayMode,
           pinnedHabits,
           postponedHabits,
-          ignoredHabits,
           forgottenHabits,
           showFriendBadges
         };
