@@ -2768,7 +2768,7 @@
     const REPEAT_CONFIGS = {};
 
     /* Utils */
-    const APP_VERSION = '0.0.26';
+    const APP_VERSION = '0.0.27';
     const NEED_EMOJIS = {
       affection: '❤️',
       joy: '😄',
@@ -6489,8 +6489,7 @@
       const totals = new Map();
       filtered.forEach(rec => {
         if ((rec.state || 0) >= 1) {
-          const minutes = BASE_MINUTES[rec.habitId] || 15;
-          totals.set(rec.owner, (totals.get(rec.owner) || 0) + minutes);
+          totals.set(rec.owner, (totals.get(rec.owner) || 0) + 1);
         }
       });
       const sp = getSpace();
@@ -6521,12 +6520,12 @@
         .map(label => ({
           n: label,
           me: memberLabels.get(label)?.me || isCurrentUserLabel(label),
-          totalMin: totals.get(label) || 0,
-          txt: m2txt(totals.get(label) || 0)
+          totalCount: totals.get(label) || 0,
+          txt: String(totals.get(label) || 0)
         }))
         .filter(row => row.n)
-        .sort((a, b) => b.totalMin - a.totalMin);
-      rows.forEach(({ n, totalMin, txt, me, likes, help }) => {
+        .sort((a, b) => b.totalCount - a.totalCount);
+      rows.forEach(({ n, totalCount, txt, me, likes, help }) => {
         const row = document.createElement('div');
         row.className = 'row';
         const left = document.createElement('div');
