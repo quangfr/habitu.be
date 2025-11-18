@@ -720,16 +720,6 @@
       z-index: 1
     }
 
-    .card-shifted {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      font-size: 16px;
-      line-height: 1;
-      pointer-events: none;
-      opacity: 0.9;
-    }
-
 
     .card {
       position: relative;
@@ -749,6 +739,46 @@
 
     .card:active {
       transform: translateY(1px);
+    }
+
+    .habit-gardeners {
+      gap: 18px;
+      width: 100%;
+    }
+
+    .habit-gardeners-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .habit-gardeners-table {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .habit-gardeners-table table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .habit-gardeners-table th,
+    .habit-gardeners-table td {
+      padding: 6px 8px;
+      text-align: left;
+      border-bottom: 1px solid rgba(30, 31, 26, .1);
+    }
+
+    .habit-gardeners-table th {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .habit-gardeners-table td {
+      color: #5c5c5c;
+      white-space: nowrap;
     }
 
     .weekly-progress__block--today {
@@ -876,22 +906,54 @@
     .desc {
       font-size: 11px;
       color: #8f8f8c;
+      position: relative;
+      padding-right: 56px;
+      min-height: 2.5em;
+      cursor: default;
+    }
+
+    .desc-text {
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      cursor: default
     }
 
-    .desc.open {
+    .desc.open .desc-text {
       -webkit-line-clamp: unset;
       display: block;
       white-space: pre-line;
-      overflow: visible
+      overflow: visible;
     }
 
-    .desc.hidden {
-      display: none
+    .desc.hidden .desc-text {
+      display: none;
+    }
+
+    .gardener-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      border: 1px solid rgba(0, 0, 0, .12);
+      border-radius: 999px;
+      background: #fff;
+      padding: 2px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      color: var(--green);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .gardener-badge:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    .gardener-badge--empty {
+      opacity: 0.35;
+      pointer-events: none;
     }
 
     textarea#habitDesc {
@@ -1832,29 +1894,9 @@
       cursor: pointer;
     }
 
-    .field .access-code-row {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .field .access-code-row input {
-      flex: 1;
-    }
-
     .btn.mini {
       padding: 4px 10px;
       font-size: 12px;
-    }
-
-    .access-code-row .refresh-btn {
-      padding: 0 12px;
-      min-width: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      line-height: 1;
     }
 
     .org-mode-buttons {
@@ -2175,6 +2217,10 @@
         <button class="backMini" id="backHome">←</button>
         <div class="detailTitle" id="detailTitle"></div>
       </div>
+      <div class="tabs">
+        <button class="tab active" data-tab="settings">✏️ Edition</button>
+        <button class="tab" data-tab="gardeners">🧑‍🌾 Jardiniers</button>
+      </div>
       <div class="section">
         <div class="view active" id="tab-settings">
           <div class="grid">
@@ -2235,6 +2281,31 @@
             </div>
           </div>
         </div>
+        <div class="view" id="tab-gardeners">
+          <div class="grid habit-gardeners">
+            <div class="habit-gardeners-controls">
+              <div class="field">
+                <label><b>Filtrer depuis</b></label>
+                <input id="habitGardenersSince" type="date" />
+                <div class="subtitle">Période utilisée pour la colonne 30 jours.</div>
+              </div>
+            </div>
+            <div class="habit-gardeners-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Pseudo</th>
+                    <th>30 jours</th>
+                    <th>Total</th>
+                    <th>🌱 Score</th>
+                  </tr>
+                </thead>
+                <tbody id="habitGardenersBody"></tbody>
+              </table>
+              <div class="miniInfo hide" id="habitGardenersEmpty">Aucun jardinier enregistré pour cette habitude.</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2249,7 +2320,7 @@
           <button class="btn danger hide" id="removeFromGardenBtn">❌ Retirer</button>
         </div>
       </div>
-      <div class="section">
+    <!-- rest remains -->
         <div class="rankHeader profile-period-row">
           <b>Période</b>
           <div class="profile-period-buttons">
@@ -2271,6 +2342,7 @@
       </div>
       <div class="tabs">
         <button class="tab active" data-stab="sparams">⚙️ Réglages</button>
+        <button class="tab" data-stab="sprefs">✨ Préférences</button>
       </div>
       <div class="section">
         <div class="view" id="sprofile">
@@ -2305,14 +2377,36 @@
         </div>
         <div class="view active" id="sparams">
           <div class="grid">
-            <div class="field"><label><b>Mon prénom</b></label><input id="paramName" type="text" value="Moi" /></div>
-            <div class="field"><label><b>Nom du jardin</b></label><input id="paramSpaceLabel" type="text" /></div>
-            <div class="field">
+            <div class="field"><label><b>Mon prénom</b></label><input id="paramName" type="text" placeholder="Moi" />
+            </div>
+            <div class="field" id="spaceLabelField"><label><b>Nom du jardin</b></label><input id="paramSpaceLabel"
+                type="text" /></div>
+            <div class="field hide" id="spacePseudoField">
+              <label><b>Pseudo</b></label>
+              <div class="rowInline" style="gap:8px">
+                <input id="paramSpacePseudo" type="text" readonly placeholder="doux-mousse-42" />
+                <button type="button" class="btn mini refresh-btn" id="changePseudoBtn"
+                  title="Générer un nouveau pseudo">
+                  ⟲
+                </button>
+              </div>
+              <div class="subtitle">Ton pseudo est visible dans ton espace individuel.</div>
+            </div>
+            <div class="field hide" id="spaceVisibilityField">
+              <label><b>Visibilité</b></label>
+              <select id="paramVisibility" class="select">
+                <option value="public">Public</option>
+                <option value="private">Privée</option>
+                <option value="anonymous">Anonyme</option>
+              </select>
+              <div class="subtitle" id="spaceVisibilityHint"></div>
+            </div>
+            <div class="field" id="spaceIntroField">
               <label><b>Texte d'introduction</b></label>
               <textarea id="spaceDescInfo"
                 placeholder="Présentez le jardin, les règles et l’état d’esprit. Cliquez pour éditer."></textarea>
             </div>
-            <div class="field">
+            <div class="field" id="spaceRightsField">
               <label><b>Droits d'édition</b></label>
               <select id="spaceEditorRights" class="select">
                 <option value="admin">Admin</option>
@@ -2332,8 +2426,24 @@
             </div>
             <div class="space-footer">
               <button class="btn primary" id="saveSpaceSettings">Sauvegarder</button>
+              <button class="btn danger hide" id="deleteAccountBtn">Supprimer mon compte</button>
             </div>
             <div class="subtitle" id="spaceSettingsNotice"></div>
+            <div class="subtitle hide" id="personalDeleteHint">
+              Supprimer ton compte supprime ton espace individuel et te déconnecte.
+            </div>
+          </div>
+        </div>
+        <div class="view" id="sprefs">
+          <div class="grid">
+            <div class="field">
+              <label><b>Afficher les astuces</b></label>
+              <select id="prefsTipsDisplayMode" class="select">
+                <option value="auto">Auto (en cours seulement)</option>
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -2359,23 +2469,16 @@
                 <div class="subtitle">Partager un code d'accès ou un lien d'invitation</div>
               </div>
             </div>
-            <div class="opt" id="joinGarden">
+            <div class="opt hide" id="joinGarden">
               <div class="emoji">🧑‍🌾</div>
               <div><b>Rejoindre un jardin</b>
                 <div class="subtitle">Entrer un code d'accès</div>
               </div>
             </div>
-            <div class="opt" id="createGarden">
+            <div class="opt hide" id="createGarden">
               <div class="emoji">🏡</div>
               <div><b>Créer un jardin</b>
                 <div class="subtitle">Nouvel espace partagé</div>
-              </div>
-            </div>
-            <div class="opt" id="menuPrefs">
-              <div class="emoji">✨</div>
-              <div>
-                <b>Décorer ton jardin</b>
-                <div class="subtitle">Personnalise tes préférences</div>
               </div>
             </div>
             <div class="opt" id="installApp">
@@ -2415,15 +2518,18 @@
         <div class="sheetBody">
           <div class="grid">
             <div class="field">
-              <label><b>Code d’accès ⿻</b></label>
-              <div class="access-code-row">
-                <input id="spaceAccessCode" type="text" readonly placeholder="—" />
-                <button type="button" class="btn mini refresh-btn" id="regenerateSpaceCodeBtn"
-                  title="Régénérer le code">
-                  ⟲
-                </button>
-              </div>
+              <label><b>Identifiant du jardin</b></label>
+              <input id="inviteGardenPseudo" type="text" readonly placeholder="—" />
               <div class="subtitle" id="joinSpaceDesc"></div>
+            </div>
+
+            <div class="field">
+              <label><b>Pseudo du jardinier</b></label>
+              <input id="invitePseudo" type="text" placeholder="ForetCalme" />
+              <div class="subtitle">Ajoute un jardinier déjà inscrit via son pseudo Habitube.</div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <button class="btn primary" id="addMemberByPseudo">Ajouter par pseudo</button>
+              </div>
             </div>
             <div class="field">
               <label><b>Nouveau jardinier</b></label>
@@ -2432,7 +2538,7 @@
             <div style="display:flex;gap:8px;align-items:center">
               <button class="btn primary" id="generateInvite">Inviter</button>
             </div>
-            <div class="subtitle">Les invitations :</div>
+            <div class="subtitle">Liste des invitations </div>
             <div id="inviteList" class="invite-list"></div>
           </div>
         </div>
@@ -2467,46 +2573,15 @@
               <input id="gardenNameInput" type="text" placeholder="Nom du jardin" />
             </div>
             <div class="field">
-              <label><b>Mode de réalisation</b></label>
-              <select id="gardenHabitMode" class="select">
-                <option value="commun" selected>Partagé</option>
-                <option value="libre">Individuel</option>
-              </select>
+              <label><b>Pseudo du jardin</b></label>
+              <input id="gardenPseudoInput" type="text" placeholder="Pseudo du jardin" />
+              <div class="subtitle">Le pseudo est utilisé dans les invitations et les partages.</div>
             </div>
             <div class="field">
               <div class="rowInlineActions">
                 <button class="btn primary" id="createGardenBtn">Suivant</button>
               </div>
               <div class="subtitle" id="gardenStatus"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Préférences personnelles -->
-    <div class="modal" id="modalPrefs">
-      <div class="sheet">
-        <div class="sheetHeader">
-          <button type="button" class="backMini menu-back">←</button>
-          <div>Préférences</div><button class="closeX" id="closePrefs">⨉</button>
-        </div>
-        <div class="sheetBody">
-          <div class="grid">
-            <div class="field">
-              <label><b>Afficher les astuces</b></label>
-              <select id="prefsTipsDisplayMode" class="select">
-                <option value="auto">Auto (en cours seulement)</option>
-                <option value="oui">Oui</option>
-                <option value="non">Non</option>
-              </select>
-            </div>
-            <div class="field">
-              <label><b>Badges amis</b></label>
-              <div class="rowInline" style="gap:6px">
-                <input type="checkbox" id="prefsFriendBadges" />
-                <span>Afficher les badges d'amis</span>
-              </div>
             </div>
           </div>
         </div>
@@ -2526,8 +2601,8 @@
               <input id="joinName" type="text" placeholder="Ton prénom" />
             </div>
             <div class="field">
-              <label><b>Code d’accès</b></label>
-              <input id="joinCode" type="text" maxlength="7" placeholder="XXX-XXX" />
+              <label><b>Pseudo du jardin</b></label>
+              <input id="joinPseudo" type="text" maxlength="16" placeholder="foret01" />
               <div class="subtitle" style="margin-top:4px;font-size:12px">Le code est fourni dans l’invitation.</div>
             </div>
             <div class="field">
@@ -2543,6 +2618,7 @@
 
     <div id="cardContextMenu" class="card-context-menu" role="menu"></div>
 
+    <script src="names.js"></script>
     <script src="library.js"></script>
     <script>
       /* ===== Données ===== */
@@ -2560,6 +2636,56 @@
       const LIBRARY_HABITS = [];
       const LIBRARY_CONTEXTS = [];
       const LIBRARY_NEEDS = [];
+      const DEFAULT_PSEUDO_LIBRARY = {
+        nouns: [
+          'graine', 'feuille', 'tige', 'brin', 'mousse', 'seve', 'rosee', 'herbe', 'fleur', 'brume',
+          'vent', 'nuage', 'roche', 'galet', 'sable', 'terre', 'bosse', 'lande', 'liege', 'pin',
+          'orme', 'tille', 'saule', 'lierre', 'buis', 'jonc', 'roseau', 'trefle', 'lotus', 'iris',
+          'noyer', 'chene', 'erable', 'ormeau', 'plume', 'foin', 'givre', 'ecume', 'onde', 'ruisseau',
+          'source', 'bruit', 'buisson', 'sillon', 'branche', 'caillou', 'terreau', 'ronce', 'nene', 'ember'
+        ],
+        adjectives: [
+          'doux', 'calme', 'pur', 'clair', 'pale', 'vif', 'sobre', 'simple', 'sage', 'leger', 'frais',
+          'souple', 'subtil', 'brut', 'tendre', 'serein', 'vaporeux', 'fluide', 'dense', 'humble',
+          'noble', 'lent', 'rapide', 'fort', 'fin', 'neuf', 'ancien', 'neutre', 'sec', 'moelleux',
+          'brumeux', 'radieux', 'vibrant', 'epais', 'aerien', 'neigeux', 'marin', 'forestier', 'mince',
+          'large', 'court', 'rond', 'ferme'
+        ],
+        locations: [
+          'Foret', 'Prairie', 'Clairiere', 'Vallee', 'Riviere', 'Ruisseau', 'Marecage', 'Dune', 'Plage',
+          'Colline', 'Plateau', 'Grotte', 'Sentier', 'Lagon', 'Baie', 'Crique', 'Oasis', 'Bosquet',
+          'Haie', 'Sousbois', 'Mare', 'Marais', 'Archipel', 'Ilot', 'Lagune', 'Recif', 'Toundra',
+          'Steppe', 'Taiga', 'Canyon', 'Desert', 'Falaises', 'Cascade', 'Versant', 'Source', 'Embouchure',
+          'Delta', 'Promontoire', 'Sapinier', 'Pineraie', 'Bambouseraie', 'Rivage', 'Littoral', 'Lande',
+          'Tourbiere', 'Belvedere', 'Corniche'
+        ]
+      };
+      const PSEUDO_LIBRARY = {
+        nouns: [...DEFAULT_PSEUDO_LIBRARY.nouns],
+        adjectives: [...DEFAULT_PSEUDO_LIBRARY.adjectives],
+        locations: [...DEFAULT_PSEUDO_LIBRARY.locations]
+      };
+      async function loadPseudoLibrary() {
+        try {
+          const source = (typeof window !== 'undefined' ? window.NAMES_LIBRARY_DATA : null) || null;
+          const nouns = Array.isArray(source?.pseudoNouns) ? source.pseudoNouns : [];
+          const adjectives = Array.isArray(source?.pseudoAdjectives) ? source.pseudoAdjectives : [];
+          const locations = Array.isArray(source?.pseudoLocations) ? source.pseudoLocations : [];
+          if (nouns.length) {
+            PSEUDO_LIBRARY.nouns = nouns;
+          }
+          if (adjectives.length) {
+            PSEUDO_LIBRARY.adjectives = adjectives;
+          }
+          if (locations.length) {
+            PSEUDO_LIBRARY.locations = locations;
+          }
+        } catch (err) {
+          console.warn('loadPseudoLibrary', err);
+        }
+        return PSEUDO_LIBRARY;
+      }
+      const PSEUDO_LIBRARY_READY = loadPseudoLibrary();
 
       /* États / stock */
       const HABIT_DESC = {}, HABIT_TITLE_CUSTOM = {}, SPACE_DESC_TXT = {};
@@ -2568,7 +2694,7 @@
       const REPEAT_CONFIGS = {};
 
       /* Utils */
-      const APP_VERSION = '0.0.20';
+      const APP_VERSION = '0.0.21';
       const NEED_EMOJIS = {
         affection: '❤️',
         joy: '😄',
@@ -2855,6 +2981,143 @@
         libre: { label: 'Individuel', shortLabel: 'Moi 👤', emoji: '👤', target: 'individual' },
         commun: { label: 'Partagé', shortLabel: 'Tout le monde 👥', emoji: '👥', target: 'group' }
       };
+      const DEFAULT_VISIBILITY = 'public';
+      const VISIBILITY_OPTIONS = {
+        public: {
+          label: 'Public',
+          summary: 'Tu partages ton pseudo et vois ceux des publics qui font les mêmes activités.'
+        },
+        private: {
+          label: 'Privée',
+          summary: 'Tu ne partages qu’avec les pseudos que tu as ajoutés.'
+        },
+        anonymous: {
+          label: 'Anonyme',
+          summary: 'Les activités restent seulement sur ton appareil pour l’instant.'
+        }
+      };
+      function describeVisibility(mode) {
+        const key = (mode || '').toString().toLowerCase();
+        return VISIBILITY_OPTIONS[key]?.summary || VISIBILITY_OPTIONS[DEFAULT_VISIBILITY].summary;
+      }
+      const PSEUDO_LIBRARY_MAX_ATTEMPTS = 6;
+      function sanitizePseudo(value) {
+        const input = (value || '').toString();
+        const normalized = input.normalize ? input.normalize('NFD') : input;
+        return normalized
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-zA-Z0-9]+/g, '')
+          .trim();
+      }
+      function titleCase(word) {
+        const base = (word || '').toString().trim();
+        if (!base) return '';
+        const normalized = base.normalize ? base.normalize('NFD') : base;
+        const clean = normalized.replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        return clean.charAt(0).toUpperCase() + clean.slice(1);
+      }
+      function buildUserPseudo(adjective, noun) {
+        const n = titleCase(noun);
+        const adj = titleCase(adjective);
+        return `${n}${adj}`.trim();
+      }
+      function buildGardenPseudo(location, suffix = '') {
+        const loc = titleCase(location);
+        const numeric = suffix ? String(suffix).padStart(2, '0').slice(-2) : '';
+        return `${loc}${numeric}`;
+      }
+      function normalizeSpacePseudo(value) {
+        const raw = sanitizePseudo(value);
+        return raw ? raw.toLowerCase() : '';
+      }
+      async function isPseudoTaken(pseudo) {
+        if (!pseudo || !HABITU_FIREBASE_DB) return false;
+        try {
+          const snapshot = await HABITU_FIREBASE_DB.collection('users')
+            .where('pseudo', '==', pseudo)
+            .limit(1)
+            .get();
+          if (!snapshot || snapshot.empty) return false;
+          const doc = snapshot.docs[0];
+          if (currentProfile?.uid && doc.id === currentProfile.uid) return false;
+          return true;
+        } catch (err) {
+          console.warn('isPseudoTaken', err);
+          return false;
+        }
+      }
+      async function isSpacePseudoTaken(pseudo, excludeId = null) {
+        if (!pseudo) return false;
+        const normalized = normalizeSpacePseudo(pseudo);
+        const localMatch = Object.keys(SPACES).some(id => {
+          if (excludeId && id === excludeId) return false;
+          return normalizeSpacePseudo(SPACES[id]?.pseudo) === normalized;
+        });
+        if (localMatch) return true;
+        if (!HABITU_FIREBASE_DB) return false;
+        try {
+          const snapshot = await HABITU_FIREBASE_DB.collection('spaces')
+            .where('pseudoNormalized', '==', normalized)
+            .limit(1)
+            .get();
+          if (!snapshot || snapshot.empty) return false;
+          const doc = snapshot.docs[0];
+          if (excludeId && doc.id === excludeId) return false;
+          return true;
+        } catch (err) {
+          console.warn('isSpacePseudoTaken', err);
+          return false;
+        }
+      }
+      async function generateUniquePseudo(attempt = 0) {
+        await PSEUDO_LIBRARY_READY;
+        const nouns = PSEUDO_LIBRARY.nouns.length ? PSEUDO_LIBRARY.nouns : DEFAULT_PSEUDO_LIBRARY.nouns;
+        const adjectives = PSEUDO_LIBRARY.adjectives.length ? PSEUDO_LIBRARY.adjectives : DEFAULT_PSEUDO_LIBRARY.adjectives;
+        const pick = (arr) => arr[Math.floor(Math.random() * arr.length)] || '';
+        const candidateRaw = buildUserPseudo(pick(adjectives), pick(nouns));
+        const candidate = sanitizePseudo(candidateRaw);
+        if (!candidate) return '';
+        if (await isPseudoTaken(candidate) || await isSpacePseudoTaken(candidate)) {
+          if (attempt >= PSEUDO_LIBRARY_MAX_ATTEMPTS) {
+            return sanitizePseudo(`${candidate}${String(attempt).padStart(2, '0')}`);
+          }
+          return generateUniquePseudo(attempt + 1);
+        }
+        return candidate;
+      }
+      async function generateUniqueGardenPseudo(attempt = 0) {
+        await PSEUDO_LIBRARY_READY;
+        const locations = PSEUDO_LIBRARY.locations.length ? PSEUDO_LIBRARY.locations : DEFAULT_PSEUDO_LIBRARY.locations;
+        const pick = (arr) => arr[Math.floor(Math.random() * arr.length)] || '';
+        const suffix = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+        const candidateRaw = buildGardenPseudo(pick(locations), suffix);
+        const candidate = sanitizePseudo(candidateRaw);
+        if (!candidate) return '';
+        if (await isSpacePseudoTaken(candidate)) {
+          if (attempt >= PSEUDO_LIBRARY_MAX_ATTEMPTS) {
+            return sanitizePseudo(`${candidate}${String(Math.floor(Math.random() * 90) + 10)}`);
+          }
+          return generateUniqueGardenPseudo(attempt + 1);
+        }
+        return candidate;
+      }
+      async function ensureSpaceHasPseudo(targetSpaceId) {
+        if (!targetSpaceId) return null;
+        const space = SPACES[targetSpaceId];
+        if (!space) return null;
+        const current = space.pseudo || '';
+        if (current) {
+          space.pseudo = current;
+          space.pseudoNormalized = normalizeSpacePseudo(current);
+          return current;
+        }
+        const candidate = await generateUniqueGardenPseudo();
+        if (!candidate) return null;
+        space.pseudo = candidate;
+        space.pseudoNormalized = normalizeSpacePseudo(candidate);
+        await persistSpaceDoc(targetSpaceId, { pseudo: candidate });
+        return candidate;
+      }
       const CONTEXT_EMOJIS = {
         family: '👨‍👩‍👧‍👦',
         home: '🏡',
@@ -2900,6 +3163,7 @@
         "Partage ton avancée avec un proche motivant."
       ];
       const DEFAULT_DURATION = 15;
+      const DEFAULT_GARDENER_WINDOW_DAYS = 30;
       const LOADER_ROTATION_MS = 60000;
       const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
       const setLoaderVersion = () => {
@@ -3457,7 +3721,7 @@
         const baseHabit = { ...source, repeatConfig: source.repeatConfig || {} };
         const repeatConfig = normalizeRepeatConfig(baseHabit, overrides.repeatConfig || {});
         const freqValue = overrides.frequency ?? repeatConfig.interval ?? source.frequency ?? 1;
-        const defaultMode = space?.type === 'private' ? { type: 'libre', n: 2 } : { type: 'commun', n: 2 };
+        const defaultMode = isPersonalSpaceType(space) ? { type: 'libre', n: 2 } : { type: 'commun', n: 2 };
         return {
           id: overrides.id || source.id,
           titre: overrides.titre || source.titre || source.title || '',
@@ -3514,7 +3778,6 @@
       const STORAGE_USER_PROFILE = 'habitu-user-profile';
       const STORAGE_GUEST_SPACES = 'habitu-guest-spaces';
       const GARDEN_TYPES = [
-        { emoji: '👤', label: '👤 Individu', type: 'private', desc: 'Jardin solo pour prendre soin de soi.' },
         { emoji: '🏠', label: '🏠 Colocation', type: 'group', desc: 'Petites routines partagées à la maison.' },
         { emoji: '🌞', label: '🌞 Famille', type: 'group', desc: 'Rituels doux pour toute la famille.' },
         { emoji: '🏛️', label: '🏛️ Association', type: 'group', desc: 'Moments d’équipe réguliers.' },
@@ -3732,6 +3995,15 @@
         if (!userIds.length) return emails;
         return [...emails, ...userIds];
       }
+      function isMemberInSpace(spaceIdArg, memberKey) {
+        if (!spaceIdArg || !memberKey) return false;
+        const space = SPACES[spaceIdArg];
+        if (!space) return false;
+        const normalizedKey = normalizeMemberKey(memberKey);
+        if (!normalizedKey) return false;
+        const normalizedMembers = new Set(sanitizeSpaceMembers(space.members));
+        return normalizedMembers.has(normalizedKey);
+      }
       function resolveMemberUserId(spaceIdArg, email) {
         if (!spaceIdArg || !email) return null;
         const normalized = normalizeEmail(email);
@@ -3770,6 +4042,10 @@
       function isProfileSpaceOwner(space, profile) {
         if (!space || !profile) return false;
         return Boolean(space.ownerId && profile.uid && space.ownerId === profile.uid);
+      }
+      function isPersonalSpaceType(space) {
+        const value = (space?.type || '').toString().toLowerCase();
+        return value === 'private' || value === 'individual';
       }
       function getSpaceOwnerLabel(space) {
         if (!space) return '';
@@ -3886,6 +4162,16 @@
         if (profile.showFriendBadges !== undefined) {
           payload.showFriendBadges = profile.showFriendBadges;
         }
+        if (profile.pseudo !== undefined) {
+          payload.pseudo = profile.pseudo;
+          const normalizedPseudo = sanitizePseudo(profile.pseudo);
+          if (normalizedPseudo) {
+            payload.pseudoNormalized = normalizedPseudo.toLowerCase();
+          }
+        }
+        if (profile.visibility !== undefined) {
+          payload.visibility = profile.visibility;
+        }
         return HABITU_FIREBASE_DB.collection('users').doc(profile.uid)
           .set(payload, { merge: true })
           .catch(e => console.warn('persistUserProfile', e));
@@ -3918,20 +4204,41 @@
           showFriendBadges: updated.showFriendBadges
         });
       }
-      async function updateUserFriendBadgesPreference(show) {
+      async function updateUserPseudo(newPseudo) {
         if (!currentProfile) return;
-        const normalized = !!show;
-        const updated = { ...currentProfile, showFriendBadges: normalized };
+        const normalized = sanitizePseudo(newPseudo);
+        if (!normalized) return;
+        const updated = { ...currentProfile, pseudo: normalized };
         persistProfile(updated);
         await persistUserProfile({
           uid: updated.uid,
           email: updated.email,
           name: updated.name,
+          pseudo: normalized,
+          visibility: updated.visibility,
           tipsDisplayMode: updated.tipsDisplayMode,
           pinnedHabits: updated.pinnedHabits,
           postponedHabits: updated.postponedHabits,
           forgottenHabits: updated.forgottenHabits,
-          showFriendBadges: normalized
+          showFriendBadges: updated.showFriendBadges
+        });
+      }
+      async function updateUserVisibility(mode) {
+        if (!currentProfile) return;
+        const normalized = VISIBILITY_OPTIONS[mode] ? mode : DEFAULT_VISIBILITY;
+        const updated = { ...currentProfile, visibility: normalized };
+        persistProfile(updated);
+        await persistUserProfile({
+          uid: updated.uid,
+          email: updated.email,
+          name: updated.name,
+          pseudo: updated.pseudo,
+          visibility: normalized,
+          tipsDisplayMode: updated.tipsDisplayMode,
+          pinnedHabits: updated.pinnedHabits,
+          postponedHabits: updated.postponedHabits,
+          forgottenHabits: updated.forgottenHabits,
+          showFriendBadges: updated.showFriendBadges
         });
       }
       function persistSpaceDoc(spaceId, data = {}) {
@@ -3950,46 +4257,6 @@
         return HABITU_FIREBASE_DB.collection('spaces').doc(spaceId).set(payload, { merge: true }).catch(e => console.warn('persistSpaceDoc', e));
       }
 
-      function collectSpaceCodes() {
-        return new Set(Object.values(SPACES)
-          .map(space => (space?.code || '').toUpperCase())
-          .filter(Boolean));
-      }
-
-      function normalizeAccessCode(value) {
-        return ((value || '').toUpperCase().replace(/[^A-Z0-9]/g, '')).slice(0, 6);
-      }
-
-      function formatAccessCode(code) {
-        const normalized = normalizeAccessCode(code);
-        if (!normalized) return '';
-        if (normalized.length <= 3) return normalized;
-        return `${normalized.slice(0, 3)}-${normalized.slice(3)}`;
-      }
-
-      function generateSpaceAccessCode() {
-        const taken = collectSpaceCodes();
-        let code;
-        do {
-          code = genCode();
-        } while (taken.has(code));
-        return code;
-      }
-
-      async function ensureSpaceHasCode(spaceId) {
-        if (!spaceId) return null;
-        const space = SPACES[spaceId];
-        if (!space) return null;
-        const normalized = (space.code || '').toUpperCase();
-        if (normalized) {
-          space.code = normalized;
-          return normalized;
-        }
-        const newCode = generateSpaceAccessCode();
-        space.code = newCode;
-        await persistSpaceDoc(spaceId, { code: newCode });
-        return newCode;
-      }
       function persistHabit(spaceId, habitData) {
         if (!HABITU_FIREBASE_DB || !spaceId || !habitData?.id) return Promise.resolve();
         habitData.repeatConfig = normalizeRepeatConfig(habitData, habitData.repeatConfig || {});
@@ -4067,36 +4334,68 @@
       }
       async function fetchSpacesForUser(profile) {
         if (!HABITU_FIREBASE_DB || !profile) return [];
-        const normalized = normalizeEmail(profile.email);
-        const userId = profile.uid;
-        const normalizedUserId = (userId || '').trim();
-        try {
-          const snapshot = await HABITU_FIREBASE_DB.collection('spaces').get();
-          const spaces = [];
+        const normalizedEmail = normalizeEmail(profile.email);
+        const normalizedUserId = (profile.uid || '').trim();
+        const snapshots = [];
+        const queries = [];
+        if (normalizedUserId) {
+          queries.push(HABITU_FIREBASE_DB.collection('spaces').where('ownerId', '==', normalizedUserId).get());
+          queries.push(HABITU_FIREBASE_DB.collection('spaces').where('members', 'array-contains', normalizedUserId).get());
+        }
+        if (normalizedEmail) {
+          queries.push(HABITU_FIREBASE_DB.collection('spaces').where('members', 'array-contains', normalizedEmail).get());
+        }
+        for (const queryPromise of queries) {
+          try {
+            const snapshot = await queryPromise;
+            snapshots.push(snapshot);
+          } catch (err) {
+            console.warn('fetchSpacesForUser query', err);
+          }
+        }
+        if (!snapshots.length) return [];
+        const spacesById = new Map();
+        const addFromSnapshot = (snapshot) => {
+          if (!snapshot) return;
           snapshot.forEach(doc => {
             const raw = doc.data() || {};
-            const code = (raw.code || '').toUpperCase();
             const memberSettings = raw.memberSettings || {};
-            const data = { id: doc.id, ...raw, createdAt: timestampToDate(raw.createdAt), code };
-            const ownerId = data.ownerId;
+            const data = { id: doc.id, ...raw, createdAt: timestampToDate(raw.createdAt) };
             const { emails: memberEmails, userIds, idByEmail } = buildMemberInfo(raw.members);
             const sanitizedMembers = [...memberEmails, ...userIds];
-            const ownerMatches = ownerId && normalizedUserId && ownerId === normalizedUserId;
-            const memberMatches = normalized && memberEmails.includes(normalized);
-            const userMatches = normalizedUserId && userIds.includes(normalizedUserId);
-            if (ownerMatches || memberMatches || userMatches) {
-              spaces.push({
-                ...data,
-                members: sanitizedMembers,
-                memberIdByEmail: idByEmail,
-                memberSettings
-              });
-            }
+            spacesById.set(doc.id, {
+              ...data,
+              members: sanitizedMembers,
+              memberIdByEmail: idByEmail,
+              memberSettings
+            });
           });
-          return spaces;
+        };
+        snapshots.forEach(addFromSnapshot);
+        return Array.from(spacesById.values());
+      }
+      async function fetchPersonalSpaceForOwner(ownerId) {
+        if (!HABITU_FIREBASE_DB || !ownerId) return null;
+        try {
+          const snapshot = await HABITU_FIREBASE_DB.collection('spaces')
+            .where('ownerId', '==', ownerId)
+            .where('type', '==', 'individual')
+            .limit(1)
+            .get();
+          if (!snapshot || snapshot.empty) return null;
+          const doc = snapshot.docs[0];
+          const raw = doc.data() || {};
+          const members = Array.isArray(raw.members) ? raw.members : [];
+          return {
+            id: doc.id,
+            ...raw,
+            members,
+            memberIdByEmail: raw.memberIdByEmail || {},
+            createdAt: timestampToDate(raw.createdAt)
+          };
         } catch (err) {
-          console.warn('fetchSpacesForUser', err);
-          return [];
+          console.warn('fetchPersonalSpaceForOwner', err);
+          return null;
         }
       }
       async function loadHabitsForSpace(spaceId) {
@@ -4156,7 +4455,6 @@
             ...raw,
             members,
             memberIdByEmail: raw.memberIdByEmail || {},
-            code: (raw.code || '').toUpperCase(),
             createdAt: timestampToDate(raw.createdAt)
           };
         } catch (err) {
@@ -4189,7 +4487,7 @@
         allowedSpaces = [...new Set([...allowedSpaces, ...validIds])];
         await Promise.all(validIds.map(id => loadHabitsForSpace(id)));
         await Promise.all(validIds.map(id => loadActivitiesForSpace(id)));
-        await Promise.all(validIds.map(id => ensureSpaceHasCode(id)));
+        await Promise.all(validIds.map(id => ensureSpaceHasPseudo(id)));
         if (!spaceId && allowedSpaces.length) {
           spaceId = allowedSpaces[0];
         }
@@ -4324,10 +4622,10 @@
         await Promise.all(spaces.map(space => loadActivitiesForSpace(space.id)));
         await loadInvitesForOwner(profile.uid);
         renderInviteList();
-        await Promise.all(allowedSpaces.map(id => ensureSpaceHasCode(id)));
+        await Promise.all(allowedSpaces.map(id => ensureSpaceHasPseudo(id)));
         if (!spaceId && allowedSpaces.length) { spaceId = allowedSpaces[0]; }
         if (spaceId && !allowedSpaces.includes(spaceId)) { spaceId = allowedSpaces[0] || null; }
-        updateSpaceAccessCodeDisplay();
+        updateInviteGardenPseudo();
         spacesInitialized = true;
         maybeTogglePrivateAdd();
       }
@@ -4400,7 +4698,12 @@
         desc.dataset.tip = tipInfo.text || '';
         desc.dataset.tipIndex = tipInfo.index >= 0 ? String(tipInfo.index) : '';
         desc.dataset.tipCount = tipInfo.count ? String(tipInfo.count) : '';
-        desc.textContent = desc.dataset.short;
+        const descTextEl = desc.querySelector('.desc-text');
+        if (descTextEl) {
+          descTextEl.textContent = desc.dataset.short;
+        } else {
+          desc.textContent = desc.dataset.short;
+        }
         desc.classList.add('hidden');
         desc.classList.remove('open');
       }
@@ -4409,7 +4712,9 @@
         return currentProfile?.tipsDisplayMode || 'auto';
       }
       function shouldShowFriendBadges() {
-        return currentProfile?.showFriendBadges !== false;
+        const sp = getSpace();
+        if (!sp) return false;
+        return !isPersonalSpaceType(sp);
       }
       function addDays(date, offset = 0) {
         const result = new Date(date || curDate());
@@ -4527,20 +4832,28 @@
         const numericState = Number(state) || 0;
         const tipsMode = getTipsDisplayMode();
         const tipText = desc.dataset.tip || '';
+        const textHolder = desc.querySelector('.desc-text');
+        const setDescText = (value) => {
+          if (textHolder) {
+            textHolder.textContent = value;
+          } else {
+            desc.textContent = value;
+          }
+        };
         const showFull = () => {
-          desc.textContent = fullText;
+          setDescText(fullText);
           desc.classList.remove('hidden');
           desc.classList.add('open');
         };
         const showTip = () => {
-          desc.textContent = tipText;
+          setDescText(tipText);
           desc.classList.remove('hidden');
           desc.classList.add('open');
         };
         const hideShort = () => {
           desc.classList.remove('open');
           desc.classList.add('hidden');
-          desc.textContent = shortText;
+          setDescText(shortText);
         };
         if (!hasNote && tipText) {
           if (tipsMode === 'oui') {
@@ -4567,7 +4880,7 @@
         if (!sp) return 'libre';
         const configured = (sp.habitMode || '').toString().toLowerCase();
         if (configured === 'libre' || configured === 'commun') return configured;
-        return sp.type === 'private' ? 'libre' : 'commun';
+        return isPersonalSpaceType(sp) ? 'libre' : 'commun';
       }
       function shouldShowContextMenuEdit() {
         return hasEditPermission();
@@ -4771,18 +5084,12 @@
           if (aIndividual === bIndividual) return 0;
           return aIndividual ? -1 : 1;
         });
-        if (lastRenderedSpaceId !== spaceId) {
-          autoOpenedHabitModalForEmptySpace = false;
-          lastRenderedSpaceId = spaceId;
-        }
         if (!items.length) {
           const emptyState = document.createElement('div');
           emptyState.className = 'empty-state';
           emptyState.innerHTML = '<strong>Ton jardin est encore vide.</strong><p>Ajoute quelques habitudes via « Nouvelle(s) habitude(s) » pour commencer à les cultiver.</p>';
           root.appendChild(emptyState);
-          maybePromptAddHabitsForEmptySpace();
         } else {
-          autoOpenedHabitModalForEmptySpace = false;
           let cardsAppended = 0;
           const pinnedCards = [];
           const shiftedCards = [];
@@ -4792,8 +5099,13 @@
             const pinned = isHabitPinned(it.id);
             const shiftKey = getPostponedHabitDate(it.id);
             const isShiftedToday = shiftKey === todayKey;
+            const isShiftedAway = shiftKey && !isShiftedToday;
             ensureHabit(it.id);
-            const visibleToday = shouldOccurOnDate(it, today);
+            const scheduledToday = shouldOccurOnDate(it, today);
+            const visibleToday = isShiftedToday || (scheduledToday && !isShiftedAway);
+            if (isShiftedAway) {
+              return;
+            }
             const isHiddenHabit = isHabitHidden(it.id);
 
             const card = document.createElement('article');
@@ -4809,7 +5121,8 @@
             const mode = HABIT_MODE[it.id] || { type: 'libre' };
             const displayTitle = habitLabel(it);
             const pinPrefix = pinned ? '📌 ' : '';
-            left.innerHTML = `<span class="base">${pinPrefix}${displayTitle}</span>`;
+            const shiftPrefix = isShiftedToday ? '⏳ ' : '';
+            left.innerHTML = `<span class="base">${shiftPrefix}${pinPrefix}${displayTitle}</span>`;
             title.append(left);
             const recurrenceLabel = buildHabitRecurrenceLabel(it);
             if (recurrenceLabel) {
@@ -4821,6 +5134,13 @@
 
             const desc = document.createElement('div');
             desc.className = 'desc';
+            const descText = document.createElement('span');
+            descText.className = 'desc-text';
+            desc.appendChild(descText);
+            const gardenerBadge = document.createElement('button');
+            gardenerBadge.type = 'button';
+            gardenerBadge.className = 'gardener-badge';
+            desc.appendChild(gardenerBadge);
             setupDesc(desc, it.id, { tipSeed: viewTipSeed });
 
             const friends = document.createElement('div');
@@ -4862,6 +5182,17 @@
               .map(r => (r.owner || '').trim())
               .filter(Boolean)
             ));
+            const gardenerCount = ownerNames.length;
+            gardenerBadge.textContent = `🧑‍🌾${gardenerCount}`;
+            gardenerBadge.dataset.habitId = String(it.id);
+            if (!gardenerCount) {
+              gardenerBadge.classList.add('gardener-badge--empty');
+            }
+            gardenerBadge.addEventListener('click', (event) => {
+              event.stopPropagation();
+              if (!gardenerCount) return;
+              openDetail(it.id, btn, 'gardeners');
+            });
             btn.dataset.ownerList = JSON.stringify(ownerNames);
             const baseMin = BASE_MINUTES[it.id] || 15;
             const ownerState = ownerRecord?.state ?? 0;
@@ -4996,12 +5327,6 @@
             cont.addEventListener('click', (e) => { if (e.target.closest('.badge')) return; handleClick(); });
             col.append(btn);
             card.append(col, cont);
-            if (isShiftedToday) {
-              const shiftedBadge = document.createElement('span');
-              shiftedBadge.className = 'card-shifted';
-              shiftedBadge.textContent = '⏳';
-              card.appendChild(shiftedBadge);
-            }
             attachCardContextHandlers(card, btn, it);
             if (isShiftedToday) {
               shiftedCards.push({ card, state, title: displayTitle });
@@ -5038,6 +5363,82 @@
         updateHabitFilterButtons();
         renderDateBar();
         updateAddModalOptions();
+      }
+      function getHabitGardenersStats(habitId, sinceDate) {
+        if (!spaceId || !habitId) return [];
+        const events = getSpaceEvents(spaceId);
+        const minutesPerCompletion = BASE_MINUTES[habitId] || DEFAULT_DURATION;
+        const stats = new Map();
+        events.forEach(event => {
+          if (String(event.habitId) !== String(habitId)) return;
+          if ((event.state || 0) < 1) return;
+          const recordedAt = timestampToDate(event.recordedAt);
+          if (!recordedAt) return;
+          const owner = getOwnerNameFromEvent(event);
+          if (!owner) return;
+          const dayKey = dayKeyFromDate(recordedAt);
+          const entry = stats.get(owner) || { totalDays: new Set(), windowDays: new Set(), totalMinutes: 0 };
+          entry.totalDays.add(dayKey);
+          if (!sinceDate || recordedAt >= sinceDate) {
+            entry.windowDays.add(dayKey);
+          }
+          entry.totalMinutes += minutesPerCompletion;
+          stats.set(owner, entry);
+        });
+        return Array.from(stats.entries()).map(([owner, entry]) => ({
+          owner,
+          pastCount: entry.windowDays.size,
+          totalCount: entry.totalDays.size,
+          minutes: entry.totalMinutes
+        }));
+      }
+
+      function renderHabitGardeners() {
+        const tbody = habitGardenersBody;
+        const empty = habitGardenersEmpty;
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        if (!activeId) {
+          if (empty) empty.classList.remove('hide');
+          return;
+        }
+        let sinceDate = parseDateInput(habitGardenersSinceInput?.value);
+        if (!sinceDate) {
+          sinceDate = addDays(curDate(), -DEFAULT_GARDENER_WINDOW_DAYS);
+          if (habitGardenersSinceInput) {
+            habitGardenersSinceInput.value = toIsoDateString(sinceDate);
+          }
+        }
+        const stats = getHabitGardenersStats(activeId, sinceDate);
+        if (!stats.length) {
+          if (empty) empty.classList.remove('hide');
+          return;
+        }
+        if (empty) empty.classList.add('hide');
+        stats.sort((a, b) => {
+          if (b.pastCount !== a.pastCount) return b.pastCount - a.pastCount;
+          if (b.totalCount !== a.totalCount) return b.totalCount - a.totalCount;
+          return (a.owner || '').localeCompare(b.owner || '', 'fr');
+        });
+        stats.forEach(entry => {
+          const row = document.createElement('tr');
+          const ownerCell = document.createElement('td');
+          ownerCell.textContent = entry.owner;
+          const recentCell = document.createElement('td');
+          recentCell.textContent = String(entry.pastCount);
+          const totalCell = document.createElement('td');
+          totalCell.textContent = String(entry.totalCount);
+          const scoreCell = document.createElement('td');
+          scoreCell.textContent = `🌱 ${m2txt(entry.minutes || 0)}`;
+          row.append(ownerCell, recentCell, totalCell, scoreCell);
+          tbody.appendChild(row);
+        });
+      }
+
+      function activateDetailTab(key) {
+        const btn = document.querySelector(`#detail .tabs [data-tab="${key}"]`);
+        if (!btn) return;
+        switchViews(btn, 'data-tab', 'detail');
       }
       function cleanupPostponedHabits(todayKey) {
         const map = getPostponedHabitsMap();
@@ -5320,7 +5721,7 @@
           ownerName,
           invitedName: activeProfileName,
           spaceId,
-          spaceCode: sp.code || '',
+          spacePseudo: sp.pseudo || '',
           spaceDesc: (sp.desc || '').trim(),
           gardenLabel: sp.label || 'ton jardin',
           created: Date.now(),
@@ -5335,7 +5736,7 @@
 
       /* ===== Paramètres habitude ===== */
       let activeId = null, refBtn = null;
-      function openDetail(id, btnRef) {
+      function openDetail(id, btnRef, targetTab = 'settings') {
         const it = findAny(id);
         if (!it) {
           console.warn('openDetail: habit not found', id);
@@ -5348,6 +5749,7 @@
         $("#daysWrap").classList.add('hide');
         $("#detailTitle").textContent = `${it.emoji} ${habitLabel(it)}`;
         renderHabitSettings();
+        activateDetailTab(targetTab);
       }
 
       function renderHabitSettings() {
@@ -5491,20 +5893,124 @@
       }
 
       /* ===== Espace ===== */
-      function openSpacePage() { hideAll(); $("#space").classList.add('active'); $("#daysWrap").classList.add('hide'); updSpaceHeader(); renderSpaceRank(); setupSpaceInfo(); populateSpaceWho(); renderSpaceCalendar(); maybeTogglePrivateAdd(); }
+      function openSpacePage() { hideAll(); $("#space").classList.add('active'); $("#daysWrap").classList.add('hide'); updSpaceHeader(); renderSpaceRank(); setupSpaceInfo(); populateSpaceWho(); renderSpaceCalendar(); maybeTogglePrivateAdd(); if (typeof window !== 'undefined') { window.scrollTo({ top: 0, behavior: 'auto' }); } }
       function updSpaceHeader() {
         const sp = getSpace();
-        $("#spaceHeaderTitle").textContent = sp.label;
-        $("#paramSpaceLabel").value = sp.label;
+        if (sp) {
+          const headerLabel = isPersonalSpaceType(sp) ? (currentProfile?.pseudo || sp.pseudo || sp.label || '') : (sp.label || '');
+          $("#spaceHeaderTitle").textContent = headerLabel;
+          $("#paramSpaceLabel").value = sp.label || '';
+        } else {
+          $("#spaceHeaderTitle").textContent = '';
+          $("#paramSpaceLabel").value = '';
+        }
         const currentMemberKey = getCurrentSpaceMemberKey(sp);
         const currentMemberName = getSpaceMemberLabel(sp, currentMemberKey);
         $("#paramName").value = currentMemberName || getLastMemberName() || '';
       }
       function setupSpaceInfo() {
-        const sp = getSpace(); const t = $("#spaceDescInfo");
+        const sp = getSpace();
+        const descInput = $("#spaceDescInfo");
         const nameInput = $("#paramName");
-        t.value = SPACE_DESC_TXT[spaceId] ?? (sp.desc || ''); t.classList.add('editing');
-        t.oninput = () => { SPACE_DESC_TXT[spaceId] = t.value; sp.desc = t.value; persistSpaceDoc(spaceId, { desc: t.value }) }
+        const descValue = SPACE_DESC_TXT[spaceId] ?? (sp?.desc || '');
+        if (descInput) {
+          descInput.value = descValue;
+          descInput.classList.toggle('editing', !!sp);
+          if (sp && spaceId) {
+            descInput.oninput = () => {
+              const nextValue = descInput.value;
+              SPACE_DESC_TXT[spaceId] = nextValue;
+              sp.desc = nextValue;
+              persistSpaceDoc(spaceId, { desc: nextValue });
+            };
+          } else {
+            descInput.oninput = null;
+          }
+        }
+        if (!sp) {
+          if (nameInput) {
+            nameInput.value = getLastMemberName() || '';
+          }
+          return;
+        }
+        const spaceLabelField = $("#spaceLabelField");
+        const spacePseudoField = $("#spacePseudoField");
+        const pseudoInput = $("#paramSpacePseudo");
+        const visibilityField = $("#spaceVisibilityField");
+        const visibilitySelect = $("#paramVisibility");
+        const visibilityHint = $("#spaceVisibilityHint");
+        const changePseudoBtn = $("#changePseudoBtn");
+        const deleteAccountBtn = $("#deleteAccountBtn");
+        const personalDeleteHint = $("#personalDeleteHint");
+        const introField = $("#spaceIntroField");
+        const rightsField = $("#spaceRightsField");
+        const isPersonal = isPersonalSpaceType(sp);
+        const isGroupSpace = ((sp?.type || '').toString().toLowerCase() === 'group');
+        const isOwner = isCurrentSpaceAdmin();
+        if (spaceLabelField) {
+          spaceLabelField.classList.toggle('hide', isPersonal);
+        }
+        if (spacePseudoField) {
+          spacePseudoField.classList.toggle('hide', !(isPersonal || isGroupSpace));
+          const subtitle = spacePseudoField.querySelector('.subtitle');
+          if (subtitle) {
+            subtitle.textContent = isPersonal
+              ? "Ton pseudo est visible dans ton espace individuel."
+              : "Le pseudo du jardin est utilisé pour partager l’espace.";
+          }
+        }
+        if (visibilityField) {
+          visibilityField.classList.toggle('hide', !isPersonal);
+        }
+        if (introField) {
+          introField.classList.toggle('hide', isPersonal);
+        }
+        if (rightsField) {
+          rightsField.classList.toggle('hide', isPersonal);
+        }
+        if (pseudoInput) {
+          if (isPersonal) {
+            pseudoInput.value = currentProfile?.pseudo || sp?.pseudo || sp?.label || '';
+          } else if (isGroupSpace) {
+            pseudoInput.value = sp?.pseudo || '';
+          } else {
+            pseudoInput.value = '';
+          }
+        }
+        if (visibilitySelect) {
+          visibilitySelect.value = currentProfile?.visibility || DEFAULT_VISIBILITY;
+        }
+        const refreshSpaceVisibilityHint = () => {
+          if (!visibilityHint || !visibilitySelect) return;
+          visibilityHint.textContent = describeVisibility(visibilitySelect.value);
+        };
+        refreshSpaceVisibilityHint();
+        if (visibilitySelect && !visibilitySelect.dataset.bound) {
+          visibilitySelect.addEventListener('change', async () => {
+            await updateUserVisibility(visibilitySelect.value);
+            refreshSpaceVisibilityHint();
+          });
+          visibilitySelect.dataset.bound = '1';
+        }
+        if (changePseudoBtn && !changePseudoBtn.dataset.bound) {
+          changePseudoBtn.addEventListener('click', async () => {
+            changePseudoBtn.disabled = true;
+            await regenerateProfilePseudo();
+            changePseudoBtn.disabled = false;
+            setupSpaceInfo();
+            updSpaceHeader();
+          });
+          changePseudoBtn.dataset.bound = '1';
+        }
+        if (changePseudoBtn) {
+          changePseudoBtn.classList.toggle('hide', !isPersonal);
+        }
+        if (deleteAccountBtn) {
+          deleteAccountBtn.classList.toggle('hide', !(isOwner && isPersonal));
+        }
+        if (personalDeleteHint) {
+          personalDeleteHint.classList.toggle('hide', !isPersonal);
+        }
         const rightsSelect = $("#spaceEditorRights");
         if (rightsSelect) {
           rightsSelect.value = getEditorRights(sp);
@@ -5542,13 +6048,15 @@
       }
 
       function refreshOwnerPanel() {
+        const sp = getSpace();
         const ownerControls = $("#ownerControls");
         const ownerHint = $("#ownerControlsHint");
         const deleteBtn = $("#deleteSpaceBtn");
         const guestQuitControls = $("#guestQuitControls");
         const isOwner = isCurrentSpaceAdmin();
-        if (ownerControls) ownerControls.classList.toggle('hide', !isOwner);
-        if (guestQuitControls) guestQuitControls.classList.toggle('hide', isOwner);
+        const isPersonal = isPersonalSpaceType(sp);
+        if (ownerControls) ownerControls.classList.toggle('hide', !isOwner || isPersonal);
+        if (guestQuitControls) guestQuitControls.classList.toggle('hide', isOwner || isPersonal);
         if (deleteBtn) deleteBtn.disabled = !isOwner;
         if (ownerHint) {
           ownerHint.textContent = '';
@@ -5661,6 +6169,22 @@
           openSpacePage();
         } else {
           showHome();
+        }
+      }
+
+      async function handleAccountDeletion() {
+        if (!spaceId) return;
+        if (!confirm('Supprimer ton compte supprimera toutes tes infos. Continuer ?')) return;
+        await deleteCurrentSpace();
+        clearGuestSpaces();
+        persistProfile(null);
+        clearLocalState();
+        if (HABITU_FIREBASE_AUTH?.signOut) {
+          try {
+            await HABITU_FIREBASE_AUTH.signOut();
+          } catch (err) {
+            console.warn('signOut after account deletion', err);
+          }
         }
       }
 
@@ -5886,45 +6410,47 @@
           const spaceEntry = SPACES[id];
           const memberKey = getCurrentSpaceMemberKey(spaceEntry);
           const memberName = getSpaceMemberLabel(spaceEntry, memberKey);
-          const label = memberName ? `${spaceEntry.label} (${memberName})` : spaceEntry.label;
-          o.textContent = label;
+          let label;
+          if (isPersonalSpaceType(spaceEntry)) {
+            const firstName = memberName || 'Moi';
+            const pseudo = spaceEntry.pseudo || currentProfile?.pseudo || firstName;
+            label = `${firstName} (${pseudo})`;
+          } else {
+            const gardenName = (spaceEntry.label || '').trim() || memberName || '—';
+            const pseudoLabel = spaceEntry.pseudo ? ` (${spaceEntry.pseudo})` : '';
+            label = `${gardenName}${pseudoLabel}`.trim();
+          }
+          o.textContent = label || '—';
           sel.appendChild(o);
         });
         if (!ordered.includes(spaceId) || !SPACES[spaceId]) spaceId = ordered[0];
         sel.value = spaceId;
-        updateSpaceAccessCodeDisplay();
+        updateInviteGardenPseudo();
       }
-      const selSpace = $("#spaceSel"); selSpace.addEventListener('change', () => { spaceId = selSpace.value; renderCards(); showHome(); updateSpaceAccessCodeDisplay(); });
+      const selSpace = $("#spaceSel"); selSpace.addEventListener('change', () => { spaceId = selSpace.value; renderCards(); showHome(); updateInviteGardenPseudo(); });
       $("#openSpace").onclick = openSpacePage; $("#backFromSpace").onclick = showHome;
 
       /* Modales */
       const mAdd = $("#modalAdd"), mHabit = $("#modalHabit"), mInvite = $("#modalInvite"), mGarden = $("#modalGarden"), mJoin = $("#modalJoin");
       const joinNameInput = $("#joinName");
-      const joinCodeInput = $("#joinCode");
+      const joinPseudoInput = $("#joinPseudo");
       const joinStatus = $("#joinStatus");
       const joinSpaceBtn = $("#joinSpaceBtn");
-      const spaceAccessCodeEl = $("#spaceAccessCode");
-      const regenerateSpaceCodeBtn = $("#regenerateSpaceCodeBtn");
+      const inviteGardenPseudo = $("#inviteGardenPseudo");
       const habitBackBtn = mHabit?.querySelector('.menu-back');
       const closeHabitBtn = $("#closeHabit");
+      const changePseudoBtn = $("#changePseudoBtn");
+      const deleteAccountBtn = $("#deleteAccountBtn");
       let habitModalContext = 'menu';
-      let autoOpenedHabitModalForEmptySpace = false;
-      let lastRenderedSpaceId = null;
       const open = m => m.classList.add('on'), close = m => m.classList.remove('on');
       let spacesInitialized = false;
       let habitWizardStep = 1;
-      const mPrefs = $("#modalPrefs");
+      let pendingGardenPseudo = '';
       const prefsTipsSelect = $("#prefsTipsDisplayMode");
-      const prefsFriendBadgesCheckbox = $("#prefsFriendBadges");
-      const closePrefsBtn = $("#closePrefs");
       function updateHabitModalControls() {
-        const hasHabits = (getSpace()?.ch?.length || 0) > 0;
-        if (habitBackBtn) {
-          habitBackBtn.classList.toggle('hide', habitModalContext !== 'creation');
-        }
         if (closeHabitBtn) {
-          closeHabitBtn.classList.toggle('hide', !hasHabits);
-          closeHabitBtn.disabled = !hasHabits;
+          closeHabitBtn.classList.remove('hide');
+          closeHabitBtn.disabled = false;
         }
       }
       function openHabitFlow(context = 'menu') {
@@ -5933,31 +6459,10 @@
         step1();
         open(mHabit);
       }
-      function maybePromptAddHabitsForEmptySpace() {
-        if (!spaceId) return;
-        if (allowedSpaces.length === 0) return;
-        if (!allowedSpaces.includes(spaceId)) return;
-        if (autoOpenedHabitModalForEmptySpace) return;
-        if (mHabit?.classList.contains('on')) return;
-        openHabitFlow('menu');
-        autoOpenedHabitModalForEmptySpace = true;
-      }
-      spaceAccessCodeEl?.addEventListener('click', () => {
-        if (!spaceAccessCodeEl.value) return;
-        spaceAccessCodeEl.select();
-        copyText(spaceAccessCodeEl.value);
-      });
-      regenerateSpaceCodeBtn?.addEventListener('click', async () => {
-        if (!spaceId || !spaceAccessCodeEl) return;
-        if (!isCurrentSpaceAdmin()) {
-          showToast('Seul le créateur peut régénérer le code.', { type: 'error' });
-          return;
-        }
-        const newCode = generateSpaceAccessCode();
-        SPACES[spaceId].code = newCode;
-        await persistSpaceDoc(spaceId, { code: newCode });
-        spaceAccessCodeEl.value = newCode;
-        showToast('Code d’accès régénéré.', { type: 'success' });
+      inviteGardenPseudo?.addEventListener('click', () => {
+        if (!inviteGardenPseudo.value) return;
+        inviteGardenPseudo.select();
+        copyText(inviteGardenPseudo.value);
       });
       $("#addBtn").onclick = () => { maybeTogglePrivateAdd(true); };
       $("#closeAdd").onclick = () => {
@@ -6013,37 +6518,39 @@
         close(mAdd);
         openInvite();
       };
-      function openInvite() { updateSpaceAccessCodeDisplay(); renderInviteList(); open(mInvite) }
+      function openInvite() { updateInviteGardenPseudo(); renderInviteList(); open(mInvite); }
+      async function updateInviteGardenPseudo() {
+        if (!inviteGardenPseudo) return;
+        const targetSpace = spaceId;
+        if (!targetSpace) {
+          inviteGardenPseudo.value = '';
+          return;
+        }
+        await ensureSpaceHasPseudo(targetSpace);
+        if (spaceId !== targetSpace) return;
+        const sp = getSpace();
+        inviteGardenPseudo.value = sp?.pseudo || '';
+      }
       function openJoinModal() {
         setJoinStatus('', false);
         const defaultName = pendingInviteInfo?.invitedName || getLastMemberName() || currentProfile?.name || '';
         if (joinNameInput) joinNameInput.value = defaultName;
-        if (joinCodeInput) joinCodeInput.value = '';
+        if (joinPseudoInput) joinPseudoInput.value = '';
         setJoinDescription('');
-        lastPreviewedCode = '';
+        lastPreviewedPseudo = '';
         open(mJoin);
       }
-      function openUserPreferences() {
-        if (!mPrefs) return;
+      function syncSpacePreferenceControls() {
         if (prefsTipsSelect) {
           prefsTipsSelect.value = getTipsDisplayMode();
         }
-        if (prefsFriendBadgesCheckbox) {
-          prefsFriendBadgesCheckbox.checked = shouldShowFriendBadges();
-        }
-        open(mPrefs);
       }
       prefsTipsSelect?.addEventListener('change', async () => {
         const mode = prefsTipsSelect.value || 'auto';
         await updateUserTipsDisplayMode(mode);
         renderCards();
       });
-      prefsFriendBadgesCheckbox?.addEventListener('change', async () => {
-        const show = prefsFriendBadgesCheckbox.checked;
-        await updateUserFriendBadgesPreference(show);
-        renderCards();
-      });
-      closePrefsBtn?.addEventListener('click', () => close(mPrefs));
+      syncSpacePreferenceControls();
       function setJoinStatus(message, isError = true) {
         if (!joinStatus) return;
         joinStatus.textContent = message;
@@ -6053,35 +6560,16 @@
         if (!joinSpaceDesc) return;
         joinSpaceDesc.textContent = text || '';
       }
-      let lastPreviewedCode = '';
-      async function previewJoinSpace(code) {
-        if (!code || code.length < 6) {
+      let lastPreviewedPseudo = '';
+      async function previewJoinSpace(pseudo) {
+        if (!pseudo) {
           setJoinDescription('');
           return;
         }
-        lastPreviewedCode = code;
-        const data = await findSpaceByAccessCode(code);
-        if (lastPreviewedCode !== code) return;
+        lastPreviewedPseudo = pseudo;
+        const data = await findSpaceByPseudo(pseudo);
+        if (lastPreviewedPseudo !== pseudo) return;
         setJoinDescription((data?.desc || data?.description || '').trim());
-      }
-      function updateSpaceAccessCodeDisplay() {
-        if (!spaceAccessCodeEl) return;
-        const current = spaceId;
-        const code = SPACES[current]?.code;
-        if (regenerateSpaceCodeBtn) {
-          regenerateSpaceCodeBtn.disabled = !isCurrentSpaceAdmin();
-        }
-        if (code) {
-          spaceAccessCodeEl.value = formatAccessCode(code);
-          return;
-        }
-        spaceAccessCodeEl.value = '—';
-        if (!current) return;
-        ensureSpaceHasCode(current).then(newCode => {
-          if (newCode && spaceId === current) {
-            spaceAccessCodeEl.value = formatAccessCode(newCode);
-          }
-        });
       }
       let pendingAddModalTarget = null;
       const finishPendingAddModal = (target) => {
@@ -6121,19 +6609,16 @@
         if (opt.id === 'joinGarden') {
           requestAddModalTransition('join');
         }
-        if (opt.id === 'menuPrefs') {
-          close(mAdd);
-          openUserPreferences();
-          return;
-        }
       });
       const gardenNameInput = $("#gardenNameInput");
-      const gardenHabitModeSelect = $("#gardenHabitMode");
       const createGardenBtn = $("#createGardenBtn");
       const gardenStatus = $("#gardenStatus");
+      const gardenPseudoInput = $("#gardenPseudoInput");
       const authMessage = $("#authMessage");
       const inviteName = $("#inviteName");
+      const invitePseudoInput = $("#invitePseudo");
       const inviteList = $("#inviteList");
+      const addMemberByPseudoBtn = $("#addMemberByPseudo");
       const authSpaceDesc = $("#authSpaceDesc");
       const joinSpaceDesc = $("#joinSpaceDesc");
       const installAppOpt = $("#installApp");
@@ -6141,13 +6626,14 @@
       const menuInviteFriend = $("#inviteFriend");
       const menuCreateGarden = $("#createGarden");
       const menuLoginOpt = $("#menuLogin");
-      const menuPrefsOpt = $("#menuPrefs");
       const menuLogoutOpt = $("#menuLogout");
       function updateAddModalOptions() {
         const hasSpaces = allowedSpaces.length > 0;
         const isAuthenticated = !!currentProfile?.email;
         const ownedCount = countOwnedGardens(currentProfile);
         const showSupportOptions = hasSpaces;
+        const currentSpace = getSpace();
+        const hideInviteForIndividual = !!currentSpace && isPersonalSpaceType(currentSpace);
         if (menuCreateGarden) {
           const subtitle = menuCreateGarden.querySelector('.subtitle');
           if (subtitle) {
@@ -6158,13 +6644,10 @@
           menuAddHabit.classList.toggle('hide', !showSupportOptions);
         }
         if (menuInviteFriend) {
-          menuInviteFriend.classList.toggle('hide', !showSupportOptions);
+          menuInviteFriend.classList.toggle('hide', !showSupportOptions || hideInviteForIndividual);
         }
         if (menuLoginOpt) {
           menuLoginOpt.classList.toggle('hide', isAuthenticated);
-        }
-        if (menuPrefsOpt) {
-          menuPrefsOpt.classList.toggle('hide', !hasSpaces);
         }
         if (menuLogoutOpt) {
           menuLogoutOpt.classList.toggle('hide', !isAuthenticated);
@@ -6175,32 +6658,123 @@
         if (closeAddBtnLocal) {
           closeAddBtnLocal.classList.toggle('hide', locked);
         }
-        if (locked && addModal && spacesInitialized && !addModal.classList.contains('on')) {
-          open(mAdd);
+      }
+      async function regenerateProfilePseudo({ showNotification = true } = {}) {
+        if (!currentProfile) return null;
+        const candidate = await generateUniquePseudo();
+        if (!candidate) return null;
+        await updateUserPseudo(candidate);
+        if (showNotification) {
+          showToast('Pseudo régénéré.', { type: 'success' });
         }
+        return candidate;
+      }
+      async function ensureProfilePseudo() {
+        if (!currentProfile) return null;
+        if (currentProfile.pseudo) return currentProfile.pseudo;
+        return regenerateProfilePseudo({ showNotification: false });
+      }
+      async function createPersonalSpace() {
+        if (!currentProfile) return;
+        await ensureProfilePseudo();
+        const normalizedEmail = normalizeEmail(currentProfile.email);
+        const ownerId = currentProfile.uid || '';
+        const ownerLabel = (currentProfile.name || userName || 'Moi').trim() || 'Moi';
+        const pseudo = currentProfile.pseudo || ownerLabel;
+        if (ownerId) {
+          const existingSpace = await fetchPersonalSpaceForOwner(ownerId);
+          if (existingSpace) {
+            const existingId = existingSpace.id;
+            SPACES[existingId] = {
+              ...(SPACES[existingId] || {}),
+              ...existingSpace,
+              ch: SPACES[existingId]?.ch || []
+            };
+            spaceId = existingId;
+            userName = ownerLabel;
+            setLastMemberName(ownerLabel);
+            allowedSpaces = [...new Set([...allowedSpaces, existingId])];
+            await Promise.all([
+              ensureSpaceHasPseudo(existingId),
+              loadHabitsForSpace(existingId),
+              loadActivitiesForSpace(existingId)
+            ]);
+            spacesInitialized = true;
+            updSel();
+            renderCards();
+            maybeTogglePrivateAdd();
+            return existingId;
+          }
+        }
+        const id = generateSpaceId();
+        const members = normalizedEmail ? [normalizedEmail] : [];
+        const memberSettings = {};
+        if (normalizedEmail) {
+          memberSettings[normalizeMemberKey(normalizedEmail)] = { name: ownerLabel };
+        }
+        const spaceEntry = {
+          emoji: '👤',
+          label: pseudo,
+          type: 'individual',
+          habitMode: 'libre',
+          ch: [],
+          ownerId: ownerId || null,
+          members,
+          createdAt: new Date(),
+          editorRights: 'admin',
+          memberSettings,
+          pseudo,
+          pseudoNormalized: normalizeSpacePseudo(pseudo),
+          visibility: currentProfile.visibility || DEFAULT_VISIBILITY
+        };
+        SPACES[id] = spaceEntry;
+        spaceId = id;
+        userName = ownerLabel;
+        setLastMemberName(ownerLabel);
+        allowedSpaces = [...new Set([...allowedSpaces, id])];
+        const payload = {
+          ...spaceEntry,
+          createdBy: normalizedEmail || null,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        await persistSpaceDoc(id, payload);
+        await loadHabitsForSpace(id);
+        await loadActivitiesForSpace(id);
+        spacesInitialized = true;
+        updSel();
+        renderCards();
+        maybeTogglePrivateAdd();
+        updateAddModalOptions();
+        showToast('Ton espace individuel est prêt !', { type: 'success' });
+        showHome();
+        openHabitFlow('creation');
       }
       const installPromptBtn = $("#installPromptBtn");
       const installPromptClose = $("#installPromptClose");
       const installPromptHelp = $("#installPromptHelp");
       const generateInviteBtn = $("#generateInvite");
       const deleteSpaceBtn = $("#deleteSpaceBtn");
+      const habitGardenersSinceInput = $("#habitGardenersSince");
+      const habitGardenersBody = $("#habitGardenersBody");
+      const habitGardenersEmpty = $("#habitGardenersEmpty");
       createGardenBtn.onclick = createGarden;
-      joinCodeInput?.addEventListener('input', () => {
-        if (!joinCodeInput) return;
-        const normalized = normalizeAccessCode(joinCodeInput.value);
-        const formatted = formatAccessCode(normalized);
-        if (joinCodeInput.value !== formatted) {
-          joinCodeInput.value = formatted;
+      joinPseudoInput?.addEventListener('input', () => {
+        if (!joinPseudoInput) return;
+        const normalized = normalizeSpacePseudo(joinPseudoInput.value);
+        if (joinPseudoInput.value !== normalized) {
+          joinPseudoInput.value = normalized;
         }
-        if (normalized.length === 6) {
+        if (normalized.length >= 3) {
           previewJoinSpace(normalized);
         } else {
           setJoinDescription('');
         }
       });
-      joinSpaceBtn?.addEventListener('click', joinGardenByCode);
+      joinSpaceBtn?.addEventListener('click', joinGardenByPseudo);
       generateInviteBtn.onclick = generateInviteLink;
+      addMemberByPseudoBtn?.addEventListener('click', addMemberByPseudo);
       deleteSpaceBtn?.addEventListener('click', () => deleteCurrentSpace());
+      deleteAccountBtn?.addEventListener('click', handleAccountDeletion);
       installAppOpt?.addEventListener('click', () => {
         close(mAdd);
         triggerInstallPrompt('manual');
@@ -6213,6 +6787,7 @@
       installPromptHelp?.addEventListener('click', () => {
         showToast('Installer donne un accès rapide sur ton écran d’accueil.', { type: 'info', duration: 5000 });
       });
+      habitGardenersSinceInput?.addEventListener('change', () => renderHabitGardeners());
       updateInstallOptionVisibility();
 
       function updateAuthMessage() {
@@ -6233,12 +6808,35 @@
       }
       refreshPendingInviteInfo().then(updateAuthMessage);
 
-      function openGardenFlow() {
-        if (gardenHabitModeSelect) {
-          gardenHabitModeSelect.value = 'commun';
+      async function refreshGardenPseudoPreview() {
+        if (!gardenStatus) return;
+        gardenStatus.textContent = 'Génération du pseudo du jardin…';
+        try {
+          const candidate = await generateUniqueGardenPseudo();
+          pendingGardenPseudo = candidate || '';
+          if (candidate) {
+            gardenStatus.textContent = `Pseudo du jardin : ${candidate}`;
+            if (gardenPseudoInput) {
+              gardenPseudoInput.value = candidate;
+            }
+          } else {
+            gardenStatus.textContent = 'Impossible de générer un pseudo pour l’instant.';
+          }
+        } catch (err) {
+          console.warn('refreshGardenPseudoPreview', err);
+          pendingGardenPseudo = '';
+          gardenStatus.textContent = 'Impossible de générer un pseudo pour l’instant.';
         }
+      }
+
+      function openGardenFlow() {
         gardenNameInput.value = '';
         gardenStatus.textContent = '';
+        pendingGardenPseudo = '';
+        if (gardenPseudoInput) {
+          gardenPseudoInput.value = '';
+        }
+        refreshGardenPseudoPreview();
         open(mGarden);
       }
 
@@ -6251,8 +6849,7 @@
         }
         const profile = GARDEN_TYPES[0];
         const title = (gardenNameInput.value || profile.label).trim() || profile.label;
-        const habitMode = gardenHabitModeSelect?.value || 'commun';
-        const accessCode = generateSpaceAccessCode();
+        const habitMode = 'commun';
         const id = generateSpaceId();
         const ownerEmail = normalizeEmail(currentProfile?.email || '');
         const ownerId = (currentProfile?.uid || '').trim();
@@ -6268,6 +6865,30 @@
         if (ownerId) {
           memberSettings[normalizeMemberKey(ownerId)] = { name: ownerLabel };
         }
+        let pseudo = '';
+        const requestedPseudoRaw = (gardenPseudoInput?.value || '').trim();
+        if (requestedPseudoRaw) {
+          const sanitizedRequest = normalizeSpacePseudo(requestedPseudoRaw);
+          if (sanitizedRequest) {
+            pseudo = sanitizedRequest;
+            if (gardenPseudoInput) {
+              gardenPseudoInput.value = sanitizedRequest;
+            }
+          }
+        }
+        if (!pseudo) {
+          pseudo = pendingGardenPseudo || await generateUniqueGardenPseudo();
+        }
+        if (!pseudo) {
+          const fallbackBase = normalizeSpacePseudo(title) || 'jardin';
+          pseudo = `${fallbackBase}${Math.floor(Math.random() * 90 + 10)}`;
+        }
+        const pseudoNormalized = normalizeSpacePseudo(pseudo) || pseudo;
+        pendingGardenPseudo = '';
+        if (gardenPseudoInput) {
+          gardenPseudoInput.value = pseudo;
+        }
+
         SPACES[id] = {
           emoji: profile.emoji,
           label: title,
@@ -6279,7 +6900,9 @@
           members: memberList,
           createdAt: new Date(),
           editorRights: 'admin',
-          memberSettings
+          memberSettings,
+          pseudo,
+          pseudoNormalized
         };
         spaceId = id;
         userName = ownerLabel;
@@ -6355,6 +6978,67 @@
         });
       }
 
+      async function findUserProfileByPseudo(pseudo) {
+        if (!HABITU_FIREBASE_DB || !pseudo) return null;
+        const sanitizedPseudo = sanitizePseudo(pseudo);
+        if (!sanitizedPseudo) return null;
+        const normalized = sanitizedPseudo.toLowerCase();
+        const queryBy = async (field, value) => {
+          try {
+            const snapshot = await HABITU_FIREBASE_DB.collection('users')
+              .where(field, '==', value)
+              .limit(1)
+              .get();
+            if (!snapshot || snapshot.empty) return null;
+            const doc = snapshot.docs[0];
+            return { uid: doc.id, ...doc.data() };
+          } catch (err) {
+            console.warn('findUserProfileByPseudo', field, err);
+            return null;
+          }
+        };
+        if (normalized) {
+          const normalizedMatch = await queryBy('pseudoNormalized', normalized);
+          if (normalizedMatch) return normalizedMatch;
+        }
+        return await queryBy('pseudo', sanitizedPseudo);
+      }
+
+      async function addMemberByPseudo() {
+        if (!requireAdmin('ajouter un jardinier')) return;
+        const rawPseudo = (invitePseudoInput?.value || '').trim();
+        if (!rawPseudo) { showToast('Entre le pseudo du jardinier.', { type: 'error' }); return; }
+        if (!spaceId) { showToast('Sélectionne d’abord un jardin.', { type: 'error' }); return; }
+        const sanitizedInput = sanitizePseudo(rawPseudo);
+        if (!sanitizedInput) { showToast('Ce pseudo n’est pas valide.', { type: 'error' }); return; }
+        if (addMemberByPseudoBtn) {
+          addMemberByPseudoBtn.disabled = true;
+        }
+        try {
+          const profile = await findUserProfileByPseudo(sanitizedInput);
+          if (!profile?.email) {
+            showToast('Aucun jardinier trouvé pour ce pseudo.', { type: 'error' });
+            return;
+          }
+          if (isMemberInSpace(spaceId, profile.email) || (profile.uid && isMemberInSpace(spaceId, profile.uid))) {
+            showToast('Ce jardinier fait déjà partie du jardin.', { type: 'info' });
+            return;
+          }
+          await joinSpace(spaceId, profile.email, { name: profile.name || profile.pseudo });
+          showToast('Jardinier ajouté !', { type: 'success' });
+          if (invitePseudoInput) {
+            invitePseudoInput.value = '';
+          }
+        } catch (err) {
+          console.warn('addMemberByPseudo', err);
+          showToast('Impossible d’ajouter ce jardinier pour l’instant.', { type: 'error' });
+        } finally {
+          if (addMemberByPseudoBtn) {
+            addMemberByPseudoBtn.disabled = false;
+          }
+        }
+      }
+
       async function generateInviteLink() {
         if (!requireAdmin('générer une invitation')) return;
         const name = (inviteName.value || '').trim();
@@ -6364,7 +7048,7 @@
           showToast('Ce prénom est déjà utilisé pour une invitation.', { type: 'error' });
           return;
         }
-        await ensureSpaceHasCode(spaceId);
+        await ensureSpaceHasPseudo(spaceId);
         const token = genInviteToken();
         const link = `${inviteBaseUrl()}?invite=${token}`;
         const ownerName = currentProfile?.name || userName || 'Un jardinier';
@@ -6372,7 +7056,7 @@
           ownerName,
           invitedName: name,
           spaceId,
-          spaceCode: SPACES[spaceId]?.code || '',
+          spacePseudo: SPACES[spaceId]?.pseudo || '',
           spaceDesc: (SPACES[spaceId]?.desc || '').trim(),
           gardenLabel: SPACES[spaceId]?.label || 'ton jardin',
           created: Date.now(),
@@ -6385,35 +7069,51 @@
         copyText(link);
       }
 
-      async function findSpaceByAccessCode(code) {
-        if (!HABITU_FIREBASE_DB || !code) return null;
-        try {
-          const normalizedCode = code.toUpperCase();
+      async function findSpaceByPseudo(pseudo) {
+        if (!HABITU_FIREBASE_DB || !pseudo) return null;
+        const normalizedPseudo = normalizeSpacePseudo(pseudo);
+        const queryBy = async (field, value) => {
           const snapshot = await HABITU_FIREBASE_DB.collection('spaces')
-            .where('code', '==', normalizedCode)
+            .where(field, '==', value)
             .limit(1)
             .get();
-          if (snapshot.empty) return null;
-          const doc = snapshot.docs[0];
+          return snapshot.empty ? null : snapshot.docs[0];
+        };
+        try {
+          let doc = normalizedPseudo ? await queryBy('pseudoNormalized', normalizedPseudo) : null;
+          if (!doc) {
+            doc = await queryBy('pseudo', pseudo);
+          }
+          if (!doc) {
+            const fallbackCode = pseudo.toUpperCase();
+            doc = await queryBy('code', fallbackCode);
+          }
+          if (!doc) return null;
           const raw = doc.data() || {};
           const members = Array.isArray(raw.members) ? raw.members : [];
-          return { id: doc.id, ...raw, members, code: normalizedCode };
+          return {
+            id: doc.id,
+            ...raw,
+            members,
+            memberIdByEmail: raw.memberIdByEmail || {},
+            createdAt: timestampToDate(raw.createdAt)
+          };
         } catch (err) {
-          console.warn('findSpaceByAccessCode', err);
+          console.warn('findSpaceByPseudo', err);
           return null;
         }
       }
 
-      async function joinGardenByCode() {
+      async function joinGardenByPseudo() {
         if (!joinSpaceBtn) return;
         const name = (joinNameInput?.value || '').trim();
         if (!name) { setJoinStatus('Entre ton prénom.', true); return; }
-        const code = normalizeAccessCode(joinCodeInput?.value || '');
-        if (code.length !== 6) { setJoinStatus('Code invalide (6 caractères).', true); return; }
+        const pseudo = normalizeSpacePseudo(joinPseudoInput?.value || '');
+        if (!pseudo) { setJoinStatus('Entre le pseudo du jardin.', true); return; }
         joinSpaceBtn.disabled = true;
         try {
-          const spaceData = await findSpaceByAccessCode(code);
-          if (!spaceData) { setJoinStatus('Aucun jardin ne correspond à ce code.', true); return; }
+          const spaceData = await findSpaceByPseudo(pseudo);
+          if (!spaceData) { setJoinStatus('Aucun jardin ne correspond à ce pseudo.', true); return; }
           if (allowedSpaces.includes(spaceData.id)) { setJoinStatus('Tu fais déjà partie de ce jardin.', true); return; }
           SPACES[spaceData.id] = { ...(SPACES[spaceData.id] || {}), ...spaceData, members: spaceData.members || [] };
           if (currentProfile?.email) {
@@ -6424,15 +7124,15 @@
           allowedSpaces = [...new Set([...allowedSpaces, spaceData.id])];
           spaceId = spaceData.id;
           await Promise.all([loadHabitsForSpace(spaceId), loadActivitiesForSpace(spaceId)]);
-          await ensureSpaceHasCode(spaceId);
-          updateSpaceAccessCodeDisplay();
+          await ensureSpaceHasPseudo(spaceId);
+          updateInviteGardenPseudo();
           updAll();
           showHome();
           setJoinStatus('Jardin rejoint !', false);
           setJoinDescription((spaceData.desc || spaceData.description || '').trim());
           close(mJoin);
         } catch (err) {
-          console.warn('joinGardenByCode', err);
+          console.warn('joinGardenByPseudo', err);
           setJoinStatus('Impossible de rejoindre ce jardin pour l’instant.', true);
         } finally {
           joinSpaceBtn.disabled = false;
@@ -6489,10 +7189,6 @@
         habitWizardStep = 1;
         if (typeof renderHabitSuggestions === 'function') {
           renderHabitSuggestions.disablePreselect = false;
-        }
-        const stepBackBtn = $("#habitStepBack");
-        if (stepBackBtn) {
-          stepBackBtn.style.display = 'none';
         }
         if (!LIBRARY_HABITS.length) {
           const empty = document.createElement('div');
@@ -6589,23 +7285,6 @@
         if (titleEl) {
           titleEl.textContent = 'Habitudes suggérées';
         }
-        const headerEl = titleEl?.closest('.sheetHeader');
-        if (headerEl) {
-          let stepBackBtn = headerEl.querySelector('#habitStepBack');
-          if (!stepBackBtn) {
-            stepBackBtn = document.createElement('button');
-            stepBackBtn.type = 'button';
-            stepBackBtn.id = 'habitStepBack';
-            stepBackBtn.className = 'closeX';
-            stepBackBtn.textContent = '←';
-            headerEl.insertBefore(stepBackBtn, titleEl);
-          }
-          stepBackBtn.style.display = 'inline-flex';
-          if (!stepBackBtn.dataset.bound) {
-            stepBackBtn.addEventListener('click', () => step1());
-            stepBackBtn.dataset.bound = '1';
-          }
-        }
         if (step1El) step1El.style.display = 'none';
         root.style.display = 'grid';
         root.innerHTML = '';
@@ -6638,8 +7317,8 @@
         addSelectionBtn.className = 'btn primary habit-actions__add';
         const closeBtn = document.createElement('button');
         closeBtn.type = 'button';
-        closeBtn.className = 'btn secondary';
-        closeBtn.textContent = 'Fermer';
+        closeBtn.className = 'btn primary';
+        closeBtn.textContent = 'Terminer';
         closeBtn.addEventListener('click', () => close(mHabit));
         const controls = document.createElement('div');
         controls.className = 'habit-actions footer-sticky';
@@ -6647,7 +7326,7 @@
         infoWrapper.className = 'habit-actions__info';
         const label = document.createElement('span');
         label.className = 'habit-actions__label';
-        label.textContent = 'Jours :';
+        label.textContent = 'Jours souhaités :';
         const dayWrapper = document.createElement('div');
         dayWrapper.className = 'habit-actions__days';
         const selectedWeekDays = new Set(WEEKDAY_ORDER);
@@ -6801,7 +7480,6 @@
       renderHabitSuggestions.disablePreselect = false;
 
       closeHabitBtn?.addEventListener('click', () => {
-        if ((getSpace()?.ch?.length || 0) === 0) return;
         close(mHabit);
       });
       $("#closeInvite").onclick = () => close(mInvite);
@@ -7031,6 +7709,8 @@
         const postponedHabits = normalizePostponedMap(remoteProfile?.postponedHabits);
         const forgottenHabits = Array.isArray(remoteProfile?.forgottenHabits) ? remoteProfile?.forgottenHabits : [];
         const showFriendBadges = remoteProfile?.showFriendBadges !== false;
+        const resolvedPseudo = remoteProfile?.pseudo || currentProfile?.pseudo || '';
+        const resolvedVisibility = remoteProfile?.visibility || currentProfile?.visibility || DEFAULT_VISIBILITY;
         const profile = {
           uid: user.uid,
           email,
@@ -7040,10 +7720,13 @@
           pinnedHabits,
           postponedHabits,
           forgottenHabits,
-          showFriendBadges
+          showFriendBadges,
+          pseudo: resolvedPseudo,
+          visibility: resolvedVisibility
         };
         persistProfile(profile);
         await persistUserProfile(profile);
+        await ensureProfilePseudo();
         if (!isGuest) {
           await linkGuestSpacesToEmail(email);
           await acceptPendingInvite(email);
@@ -7058,7 +7741,7 @@
           userName = currentProfile?.name || name;
           setLastMemberName(userName);
           updateAddModalOptions();
-          if (allowedSpaces.length === 0) { openGardenFlow(); return; }
+          if (allowedSpaces.length === 0) { await createPersonalSpace(); return; }
           updAll();
           showHome();
         } else {
@@ -7071,6 +7754,7 @@
           } finally {
             hideLoaderOverlay();
           }
+          if (allowedSpaces.length === 0) { await createPersonalSpace(); return; }
           updAll();
           showHome();
         }
@@ -7084,6 +7768,12 @@
         document.querySelectorAll(`#${prefix} .view`).forEach(v => v.classList.remove('active'));
         const target = document.querySelector(`#${prefix} #${(groupAttr === 'data-tab' ? 'tab-' : '')}${key}`);
         if (target) target.classList.add('active');
+        if (prefix === 'detail' && key === 'gardeners') {
+          renderHabitGardeners();
+        }
+        if (prefix === 'space' && key === 'sprefs') {
+          syncSpacePreferenceControls();
+        }
         if (key === 'shistory') { populateSpaceWho?.(); renderSpaceCalendar?.() }
       }
       document.querySelectorAll('#detail .tabs [data-tab]').forEach(btn => { btn.addEventListener('click', () => switchViews(btn, 'data-tab', 'detail')) });
