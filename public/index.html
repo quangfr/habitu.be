@@ -2768,7 +2768,7 @@
     const REPEAT_CONFIGS = {};
 
     /* Utils */
-    const APP_VERSION = '0.0.27';
+    const APP_VERSION = '0.0.28';
     const NEED_EMOJIS = {
       affection: '❤️',
       joy: '😄',
@@ -3238,6 +3238,11 @@
     ];
     const DEFAULT_DURATION = 15;
     const DEFAULT_GARDENER_WINDOW_DAYS = 30;
+    let PERSONAL_ACTIVITY_CACHE = [];
+    let PERSONAL_ACTIVITY_CACHE_DAYS = DEFAULT_GARDENER_WINDOW_DAYS;
+    let PERSONAL_ACTIVITY_LAST_REFRESH = 0;
+    let personalActivityRefreshPromise = null;
+    const PERSONAL_ACTIVITY_REFRESH_INTERVAL_MS = 3 * 60 * 1000;
     const LOADER_ROTATION_MS = 60000;
     const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
     const setLoaderVersion = () => {
@@ -4590,6 +4595,20 @@
         return SPACE_ACTIVITIES[spaceId];
       }
     }
+    function getAllPersonalSpaceIds() {
+      return Object.values(SPACES)
+        .filter(space => space && space.id && isPersonalSpaceType(space))
+        .map(space => space.id);
+    }
+    async function loadPersonalSpaceActivities(days = DEFAULT_GARDENER_WINDOW_DAYS) {
+      const ids = getAllPersonalSpaceIds();
+      await Promise.all(ids.map(id => loadActivitiesForSpace(id, days)));
+      const merged = getMergedPersonalSpaceRecords(days);
+      PERSONAL_ACTIVITY_CACHE = merged;
+      PERSONAL_ACTIVITY_CACHE_DAYS = days;
+      PERSONAL_ACTIVITY_LAST_REFRESH = Date.now();
+      return merged;
+    }
     async function fetchSpaceDoc(spaceId) {
       if (!HABITU_FIREBASE_DB || !spaceId) return null;
       try {
@@ -5163,6 +5182,68 @@
       });
       return Array.from(map.values());
     }
+    function getMergedPersonalSpaceRecords(days = DEFAULT_GARDENER_WINDOW_DAYS) {
+      const since = days ? addDays(curDate(), -days) : null;
+      const ids = getAllPersonalSpaceIds();
+      const dedup = new Map();
+      ids.forEach(spaceId => {
+        const events = getSpaceEvents(spaceId, since);
+        events.forEach(event => {
+          const owner = getOwnerNameFromEvent(event);
+          if (!owner) return;
+          const dayKey = getEventDayKey(event);
+          if (!dayKey) return;
+          const key = `${owner}:${event.habitId}:${dayKey}`;
+          const prev = dedup.get(key);
+          if (!prev || event.recordedAt > prev.recordedAt) {
+            dedup.set(key, { ...event, owner });
+          }
+        });
+      });
+      const merged = Array.from(dedup.values());
+      merged.sort((a, b) => {
+        const aTime = timestampToDate(a.recordedAt)?.getTime() || 0;
+        const bTime = timestampToDate(b.recordedAt)?.getTime() || 0;
+        return bTime - aTime;
+      });
+      return merged;
+    }
+    function getPersonalActivityRecords(days = DEFAULT_GARDENER_WINDOW_DAYS) {
+      if (PERSONAL_ACTIVITY_CACHE_DAYS === days && PERSONAL_ACTIVITY_CACHE.length) {
+        return PERSONAL_ACTIVITY_CACHE;
+      }
+      return getMergedPersonalSpaceRecords(days);
+    }
+    function refreshPersonalActivityCache(days = DEFAULT_GARDENER_WINDOW_DAYS) {
+      const now = Date.now();
+      if (personalActivityRefreshPromise) {
+        return personalActivityRefreshPromise;
+      }
+      if (PERSONAL_ACTIVITY_CACHE.length &&
+        PERSONAL_ACTIVITY_CACHE_DAYS === days &&
+        now - PERSONAL_ACTIVITY_LAST_REFRESH < PERSONAL_ACTIVITY_REFRESH_INTERVAL_MS) {
+        return Promise.resolve(PERSONAL_ACTIVITY_CACHE);
+      }
+      personalActivityRefreshPromise = loadPersonalSpaceActivities(days)
+        .catch(err => {
+          console.warn('refreshPersonalActivityCache', err);
+          return getMergedPersonalSpaceRecords(days);
+        })
+        .finally(() => {
+          personalActivityRefreshPromise = null;
+        });
+      return personalActivityRefreshPromise;
+    }
+    function triggerPersonalActivityRefresh(days = DEFAULT_GARDENER_WINDOW_DAYS) {
+      refreshPersonalActivityCache(days)
+        .then(() => {
+          renderCards();
+          renderSpaceRank();
+        })
+        .catch(() => {
+          renderSpaceRank();
+        });
+    }
     function getSpaceRecords(spaceId, since = null) {
       const events = getSpaceEvents(spaceId, since).filter(ev => ev.type === 'realization');
       const map = new Map();
@@ -5224,6 +5305,8 @@
       }
       const today = curDate();
       today.setHours(0, 0, 0, 0);
+      const personalRecords = getPersonalActivityRecords(DEFAULT_GARDENER_WINDOW_DAYS);
+      const selectedDayKey = dayKeyFromDate(today);
       const viewTipSeed = getDescTipSeed(today);
       const todayKey = dayKeyFromDate(today);
       cleanupPostponedHabits(todayKey);
@@ -5334,11 +5417,19 @@
             .map(r => (r.owner || '').trim())
             .filter(Boolean)
           ));
-          const doneTodayRecords = records.filter(r => (r.state || 0) === 2);
-          const doneTodayCount = doneTodayRecords.length;
-          const gardenerWindowSince = addDays(today, -DEFAULT_GARDENER_WINDOW_DAYS);
-          const gardenerWindowStats = getHabitGardenersStats(it.id, gardenerWindowSince);
-          const windowGardenersCount = gardenerWindowStats.filter(entry => (entry.pastCount || 0) > 0).length;
+          const habitRecords = personalRecords.filter(rec => String(rec.habitId) === String(it.id));
+          const state2Records = habitRecords.filter(rec => (rec.state || 0) === 2);
+          const windowGardeners = new Set(state2Records
+            .map(rec => (rec.owner || '').trim())
+            .filter(Boolean)
+          );
+          const doneTodayOwners = new Set(state2Records
+            .filter(rec => getEventDayKey(rec) === selectedDayKey)
+            .map(rec => (rec.owner || '').trim())
+            .filter(Boolean)
+          );
+          const doneTodayCount = doneTodayOwners.size;
+          const windowGardenersCount = windowGardeners.size;
           gardenerBadge.textContent = `🧑‍🌾${doneTodayCount}/${windowGardenersCount}`;
           gardenerBadge.dataset.habitId = String(it.id);
           gardenerBadge.classList.toggle('gardener-badge--empty', doneTodayCount === 0);
@@ -6161,7 +6252,7 @@
     }
 
     /* ===== Espace ===== */
-    function openSpacePage() { hideAll(); $("#space").classList.add('active'); $("#daysWrap").classList.add('hide'); updSpaceHeader(); renderSpaceRank(); setupSpaceInfo(); populateSpaceWho(); renderSpaceCalendar(); maybeTogglePrivateAdd(); if (typeof window !== 'undefined') { window.scrollTo({ top: 0, behavior: 'auto' }); } }
+    function openSpacePage() { hideAll(); $("#space").classList.add('active'); $("#daysWrap").classList.add('hide'); updSpaceHeader(); renderSpaceRank(); setupSpaceInfo(); populateSpaceWho(); renderSpaceCalendar(); maybeTogglePrivateAdd(); triggerPersonalActivityRefresh(); if (typeof window !== 'undefined') { window.scrollTo({ top: 0, behavior: 'auto' }); } }
     function updSpaceHeader() {
       const sp = getSpace();
       if (sp) {
@@ -6484,48 +6575,41 @@
       root.innerHTML = '';
       if (!spaceId) return;
       const range = resolvePeriodRange(sPeriod);
-      const records = getSpaceRecords(spaceId, range.since);
-      const filtered = range.until ? records.filter(rec => rec.recordedAt <= range.until) : records;
+      const records = getPersonalActivityRecords(DEFAULT_GARDENER_WINDOW_DAYS);
+      const filtered = records.filter(rec => {
+        const recorded = rec.recordedAt;
+        if (!recorded || (rec.state || 0) < 1) return false;
+        if (range.since && recorded < range.since) return false;
+        if (range.until && recorded > range.until) return false;
+        return true;
+      });
+      if (!filtered.length) {
+        const empty = document.createElement('div');
+        empty.className = 'miniInfo';
+        empty.textContent = 'Aucune activité récente pour l’instant.';
+        root.appendChild(empty);
+        renderProfileStats();
+        return;
+      }
       const totals = new Map();
+      const participantLabels = new Set();
       filtered.forEach(rec => {
-        if ((rec.state || 0) >= 1) {
-          totals.set(rec.owner, (totals.get(rec.owner) || 0) + 1);
-        }
+        const owner = (rec.owner || '').trim();
+        if (!owner) return;
+        totals.set(owner, (totals.get(owner) || 0) + 1);
+        participantLabels.add(owner);
       });
-      const sp = getSpace();
-      const memberKeys = new Set();
-      (sp?.members || []).forEach(member => {
-        const normalized = normalizeMemberKey(member);
-        if (normalized) memberKeys.add(normalized);
-      });
-      const currentKey = getCurrentSpaceMemberKey(sp);
-      if (currentKey) memberKeys.add(currentKey);
-      if (!memberKeys.size) memberKeys.add('__current__');
-      const memberLabels = new Map();
-      memberKeys.forEach(key => {
-        const label =
-          getSpaceMemberLabel(sp, key) ||
-          ((key === '__current__' || isCurrentMemberKey(key)) ? 'Moi' : 'Un jardinier');
-        if (label) {
-          memberLabels.set(label, {
-            me: key === currentKey || (!currentKey && key === '__current__')
-          });
-        }
-      });
-      const participantLabels = new Set(memberLabels.keys());
-      totals.forEach((_, ownerLabel) => {
-        if (ownerLabel) participantLabels.add(ownerLabel);
-      });
+      participantLabels.add(getCurrentOwnerLabel());
       const rows = Array.from(participantLabels)
         .map(label => ({
           n: label,
-          me: memberLabels.get(label)?.me || isCurrentUserLabel(label),
+          me: isCurrentUserLabel(label),
           totalCount: totals.get(label) || 0,
           txt: String(totals.get(label) || 0)
         }))
         .filter(row => row.n)
         .sort((a, b) => b.totalCount - a.totalCount);
-      rows.forEach(({ n, totalCount, txt, me, likes, help }) => {
+      rows.forEach(({ n, totalCount, txt, me }) => {
         const row = document.createElement('div');
         row.className = 'row';
         const left = document.createElement('div');
@@ -8040,6 +8124,7 @@
         if (allowedSpaces.length === 0) { await createPersonalSpace(); return; }
         updAll();
         showHome();
+        triggerPersonalActivityRefresh();
       } else {
         hideAuthOverlay();
         updateAddModalOptions();
@@ -8053,6 +8138,7 @@
         if (allowedSpaces.length === 0) { await createPersonalSpace(); return; }
         updAll();
         showHome();
+        triggerPersonalActivityRefresh();
       }
     });
 
