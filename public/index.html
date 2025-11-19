@@ -2988,6 +2988,12 @@
       cardContextMenuEl.style.left = `${safeLeft}px`;
       cardContextMenuEl.style.top = `${safeTop}px`;
       shouldSuppressCardClick = true;
+      if (typeof window !== 'undefined' && window.getSelection) {
+        const selection = window.getSelection();
+        if (selection && !selection.isCollapsed) {
+          selection.removeAllRanges();
+        }
+      }
       setTimeout(() => { shouldSuppressCardClick = false; }, CARD_CONTEXT_LONG_PRESS_MS);
     }
     function attachCardContextHandlers(card, btn, habit) {
