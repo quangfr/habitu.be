@@ -1,23 +1,23 @@
 const LIBRARY_JSON_DATA = [
   {
     "id": 1,
-    "emoji": "🍳",
-    "title": "Préparer un repas sain",
-    "needs": ["nutrition", "safety"],
-    "contexts": ["home", "family"],
-    "frequency": 1,
+    "emoji": "🌱",
+    "title": "Inspirer en ouvrant Habitube",
+    "needs": ["organization", "joy"],
+    "contexts": ["home"],
+    "frequency": 7,
     "target": "individual",
     "tips": [
-      "Remplir la moitié d’assiette de légumes",
-      "Cuire simple : vapeur ou four",
-      "Limiter sauces toutes faites",
-      "Prévoir protéines à chaque repas",
-      "Goûter avant de resaler",
-      "Préparer une portion en plus",
-      "Ranger les restes rapidement",
-      "Boire un verre d’eau avant",
-      "Éviter la télé pendant le repas",
-      "Manger assis, sans se presser"
+      "Ouvrir l’app dès le réveil",
+      "Regarder une seule plante à la fois",
+      "Respirer avant de cliquer",
+      "Choisir une habitude simple d’abord",
+      "Ne pas scroller trop vite",
+      "Fermer l’app après une action",
+      "Revenir dans la journée",
+      "Cocher seulement ce qui est fait",
+      "Garder l’écran propre",
+      "Sourire à la première plante 🌿"
     ]
   },
   {
@@ -482,27 +482,27 @@ const LIBRARY_JSON_DATA = [
       "Remercier le groupe pour le coup de main"
     ]
   },
- {
-  "id": 24,
-  "emoji": "💻",
-  "title": "Trier ses outils numériques",
-  "needs": ["organization", "calm"],
-  "contexts": ["office"],
-  "frequency": 3,
-  "target": "individual",
-  "tips": [
-    "Supprimer les fichiers inutiles",
-    "Classer les documents dans des dossiers clairs",
-    "Renommer les fichiers ambigus",
-    "Vider la corbeille",
-    "Mettre à jour les applis essentielles",
-    "Désinstaller ce que tu n’utilises plus",
-    "Faire un point sur les onglets ouverts",
-    "Sauvegarder un dossier important",
-    "Vérifier l’espace de stockage",
-    "Conserver un écran d’accueil épuré"
-  ]
-},
+  {
+    "id": 24,
+    "emoji": "💻",
+    "title": "Trier ses outils numériques",
+    "needs": ["organization", "calm"],
+    "contexts": ["office"],
+    "frequency": 3,
+    "target": "individual",
+    "tips": [
+      "Supprimer les fichiers inutiles",
+      "Classer les documents dans des dossiers clairs",
+      "Renommer les fichiers ambigus",
+      "Vider la corbeille",
+      "Mettre à jour les applis essentielles",
+      "Désinstaller ce que tu n’utilises plus",
+      "Faire un point sur les onglets ouverts",
+      "Sauvegarder un dossier important",
+      "Vérifier l’espace de stockage",
+      "Conserver un écran d’accueil épuré"
+    ]
+  },
   {
     "id": 25,
     "emoji": "🖋️",
@@ -654,7 +654,7 @@ const LIBRARY_JSON_DATA = [
     "id": 32,
     "emoji": "🧭",
     "title": "Revoir l’agenda",
-    "needs": ["organization", "calm","privacy"],
+    "needs": ["organization", "calm", "privacy"],
     "contexts": ["home", "family"],
     "frequency": 1,
     "target": "individual",
@@ -675,7 +675,7 @@ const LIBRARY_JSON_DATA = [
     "id": 33,
     "emoji": "🗂️",
     "title": "Trier ses documents",
-    "needs": ["organization","privacy"],
+    "needs": ["organization", "privacy"],
     "contexts": ["home"],
     "frequency": 0.5,
     "target": "individual",
@@ -696,7 +696,7 @@ const LIBRARY_JSON_DATA = [
     "id": 34,
     "emoji": "📌",
     "title": "Noter ses rappels",
-    "needs": ["organization", "communication","privacy"],
+    "needs": ["organization", "communication", "privacy"],
     "contexts": ["home", "office"],
     "frequency": 7,
     "target": "individual",
@@ -718,7 +718,7 @@ const LIBRARY_JSON_DATA = [
     "emoji": "💗",
     "title": "Partager une envie",
     "needs": ["expression", "joy"],
-    "contexts": ["home", "office","social"],
+    "contexts": ["home", "office", "social"],
     "frequency": 7,
     "target": "group",
     "tips": [
@@ -738,7 +738,7 @@ const LIBRARY_JSON_DATA = [
     "id": 36,
     "emoji": "💶",
     "title": "Vérifier ses dépenses",
-    "needs": ["organization", "safety","privacy"],
+    "needs": ["organization", "safety", "privacy"],
     "contexts": ["home"],
     "frequency": 0.5,
     "target": "individual",
@@ -759,7 +759,7 @@ const LIBRARY_JSON_DATA = [
     "id": 37,
     "emoji": "👚",
     "title": "Trier ses vêtements",
-    "needs": ["organization", "comfort","privacy"],
+    "needs": ["organization", "comfort", "privacy"],
     "contexts": ["home"],
     "frequency": 0.5,
     "target": "individual",
@@ -823,7 +823,7 @@ const LIBRARY_JSON_DATA = [
     "emoji": "👌",
     "title": "Avoir un élan bienveillant",
     "needs": ["cooperation", "joy"],
-    "contexts": ["home", "family","social"],
+    "contexts": ["home", "family", "social"],
     "frequency": 3,
     "target": "individual",
     "tips": [
@@ -1158,7 +1158,7 @@ const LIBRARY_JSON_DATA = [
     "id": 56,
     "emoji": "🌼",
     "title": "Penser à un bon moment",
-    "needs": ["joy", "calm","privacy"],
+    "needs": ["joy", "calm", "privacy"],
     "contexts": ["home"],
     "frequency": 7,
     "target": "individual",
@@ -1284,7 +1284,7 @@ const LIBRARY_JSON_DATA = [
     "id": 62,
     "emoji": "😴",
     "title": "Faire une sieste courte",
-    "needs": ["sleep", "calm","privacy"],
+    "needs": ["sleep", "calm", "privacy"],
     "contexts": ["home"],
     "frequency": 1,
     "target": "individual",
@@ -1452,7 +1452,7 @@ const LIBRARY_JSON_DATA = [
     "id": 70,
     "emoji": "🤸",
     "title": "Faire un réveil corporel",
-    "needs": ["comfort","privacy"],
+    "needs": ["comfort", "privacy"],
     "contexts": ["home"],
     "frequency": 7,
     "target": "individual",
@@ -1516,7 +1516,7 @@ const LIBRARY_JSON_DATA = [
     "emoji": "👏",
     "title": "Applaudir une réussite",
     "needs": ["joy", "participation"],
-    "contexts": ["home", "office", "school","social"],
+    "contexts": ["home", "office", "school", "social"],
     "frequency": 1,
     "target": "group",
     "tips": [
@@ -1620,7 +1620,7 @@ const LIBRARY_JSON_DATA = [
     "id": 78,
     "emoji": "🎲",
     "title": "Lancer un jeu collectif",
-    "needs": ["joy", "participation","entertainment"],
+    "needs": ["joy", "participation", "entertainment"],
     "contexts": ["home", "social", "school"],
     "frequency": 1,
     "target": "group",
@@ -1866,6 +1866,27 @@ const LIBRARY_JSON_DATA = [
       "Associer ce parfum à un moment calme",
       "Changer de parfum selon les saisons",
       "Observer l’effet sur l’humeur immédiate"
+    ]
+  },
+  {
+    "id": 90,
+    "emoji": "🍳",
+    "title": "Préparer un repas sain",
+    "needs": ["nutrition", "safety"],
+    "contexts": ["home", "family"],
+    "frequency": 1,
+    "target": "individual",
+    "tips": [
+      "Remplir la moitié d’assiette de légumes",
+      "Cuire simple : vapeur ou four",
+      "Limiter sauces toutes faites",
+      "Prévoir protéines à chaque repas",
+      "Goûter avant de resaler",
+      "Préparer une portion en plus",
+      "Ranger les restes rapidement",
+      "Boire un verre d’eau avant",
+      "Éviter la télé pendant le repas",
+      "Manger assis, sans se presser"
     ]
   }
 ];
