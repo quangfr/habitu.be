@@ -731,10 +731,15 @@
       grid-template-columns: 50px minmax(0, 1fr);
       overflow: hidden;
       touch-action: manipulation;
+    }
+
+    .card,
+    .card * {
       user-select: none;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
+      -webkit-touch-callout: none;
     }
 
     .card:active {
@@ -2768,7 +2773,7 @@
     const REPEAT_CONFIGS = {};
 
     /* Utils */
-    const APP_VERSION = '0.0.30';
+    const APP_VERSION = '0.0.31';
     const NEED_EMOJIS = {
       affection: '❤️',
       joy: '😄',
@@ -2892,9 +2897,12 @@
     renderHabitFilterBar();
     let shouldSuppressCardClick = false;
     const CARD_CONTEXT_LONG_PRESS_MS = 360;
+    const CARD_CONTEXT_SCROLL_SAFETY_MS = 480;
+    let ignoreContextMenuScrollUntil = 0;
     function hideCardContextMenu() {
       if (!cardContextMenuEl) return;
       cardContextMenuEl.classList.remove('open');
+      ignoreContextMenuScrollUntil = 0;
     }
     function showCardContextMenu(habit, btn, clientX, clientY) {
       if (!cardContextMenuEl || !habit || !btn) return;
@@ -2961,6 +2969,7 @@
       cardContextMenuEl.style.left = '0px';
       cardContextMenuEl.style.top = '0px';
       cardContextMenuEl.classList.add('open');
+      ignoreContextMenuScrollUntil = Date.now() + CARD_CONTEXT_SCROLL_SAFETY_MS;
       const rect = cardContextMenuEl.getBoundingClientRect();
       const safeLeft = Math.min(Math.max(8, clientX), Math.max(8, window.innerWidth - rect.width - 8));
       const safeTop = Math.min(Math.max(8, clientY), Math.max(8, window.innerHeight - rect.height - 8));
@@ -3018,8 +3027,14 @@
       if (!cardContextMenuEl?.classList.contains('open')) return;
       if (!cardContextMenuEl.contains(event.target)) hideCardContextMenu();
     });
-    window.addEventListener('scroll', hideCardContextMenu);
-    window.addEventListener('resize', hideCardContextMenu);
+    window.addEventListener('scroll', () => {
+      if (Date.now() < ignoreContextMenuScrollUntil) return;
+      hideCardContextMenu();
+    });
+    window.addEventListener('resize', () => {
+      if (Date.now() < ignoreContextMenuScrollUntil) return;
+      hideCardContextMenu();
+    });
     function slugifyTag(text) {
       const base = (text || '').toString();
       const normalized = base.normalize ? base.normalize('NFD') : base;
