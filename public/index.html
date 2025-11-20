@@ -32,7 +32,7 @@
   <div class="loader-overlay hide" id="loaderOverlay">
     <div class="loader-content">
       <div class="loader-title">Habitube.com</div>
-      <div class="loader-emoji" id="loaderEmoji">🌰</div>
+      <div class="loader-emoji" id="loaderEmoji">🌱</div>
       <div class="loader-habit">
         <div class="loader-habit-tags" id="loaderHabitTags"></div>
         <div class="loader-habit-name" id="loaderHabitName">Une habitude</div>
@@ -229,37 +229,82 @@
       </div>
       <div class="tabs">
         <button class="tab active" data-stab="sparams">⚙️ Réglages</button>
-        <button class="tab" data-stab="sprefs">✨ Préférences</button>
+        <button class="tab" data-stab="sprofile">👤 Profil</button>
+        <button class="tab" data-stab="sstats">📊 Stats</button>
       </div>
       <div class="section">
         <div class="view" id="sprofile">
-          <div class="rankHeader">
-            <b>Durée</b>
-            <div class="rank-period">
-              Période:
-              <div class="rank-toggle-group">
-                <button class="btnToggle" id="sBtnP7">7 jours</button>
-                <button class="btnToggle active" id="sBtnP30">30 jours</button>
-                <button class="btnToggle" id="sBtnPAll">Total</button>
+          <div class="space-profile-visual">
+            <div class="score-panel">
+              <div class="score-title">Score hebdo</div>
+              <div class="score-value">28</div>
+              <div class="score-diff positive">+5 par rapport à la semaine dernière</div>
+              <div class="score-bar">
+                <span class="score-fill" style="width: 72%;"></span>
+              </div>
+              <div class="score-note">Objectif : 30 activités validées</div>
+            </div>
+            <div class="needs-panel">
+              <div class="needs-title">Top 3 des besoins</div>
+              <div class="needs-list">
+                <div class="need-pill">
+                  <span class="need-emoji">🗂️</span>
+                  <span class="need-label">Organisation</span>
+                  <span class="need-percentage">82%</span>
+                </div>
+                <div class="need-pill">
+                  <span class="need-emoji">🛋️</span>
+                  <span class="need-label">Confort</span>
+                  <span class="need-percentage">76%</span>
+                </div>
+                <div class="need-pill">
+                  <span class="need-emoji">🍎</span>
+                  <span class="need-label">Nutrition</span>
+                  <span class="need-percentage">71%</span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="rank" id="spaceRank"></div>
-        </div>
-        <div class="view" id="shistory">
-          <div class="calendarWrap">
-            <div class="calTop">
-              <div class="calendar-controls">
-                <button class="calBtn" id="sPrevMonth">←</button>
-                <div id="sMonthLabel" class="month-label"></div>
-                <button class="calBtn" id="sNextMonth">→</button>
-              </div>
-              <div class="calendar-controls">
-                <span class="caption-small">Voir :</span>
-                <select id="sCalWho" class="select select-compact"></select>
-              </div>
+          <div class="space-badges">
+            <h3>Badges de récompense</h3>
+            <div class="badge-grid badge-grid-36">
+              <div class="badge-chip">🌱 Initiateur de routine</div>
+              <div class="badge-chip">💧 Eau du matin</div>
+              <div class="badge-chip">🥗 Assiette gourmande</div>
+              <div class="badge-chip">🧘 Respire tranquille</div>
+              <div class="badge-chip">🧴 Rituel cocon</div>
+              <div class="badge-chip">🧹 Entrée lumineuse</div>
+              <div class="badge-chip">🛁 Bain douceur</div>
+              <div class="badge-chip">🗄️ Bureau clair</div>
+              <div class="badge-chip">🗃️ Étageres rangées</div>
+              <div class="badge-chip">🧺 Lessive fluide</div>
+              <div class="badge-chip">🧻 Stock rassurant</div>
+              <div class="badge-chip">🚌 Départ serein</div>
+              <div class="badge-chip">🛣️ Chemin inventif</div>
+              <div class="badge-chip">🧰 Mini bricoleur</div>
+              <div class="badge-chip">🧭 Planificateur calme</div>
+              <div class="badge-chip">🗂️ Notes alignées</div>
+              <div class="badge-chip">🥣 Matin partagé</div>
+              <div class="badge-chip">🍽️ Solo chef</div>
+              <div class="badge-chip">🪥 Soin impeccable</div>
+              <div class="badge-chip">🍃 Pause nature</div>
+              <div class="badge-chip">🌿 Marche lente</div>
+              <div class="badge-chip">🚽 Toilettes ordonnées</div>
+              <div class="badge-chip">🌟 Sourire généreux</div>
+              <div class="badge-chip">🎉 Humeur contagieuse</div>
+              <div class="badge-chip">💌 Mot doux</div>
+              <div class="badge-chip">🧶 Inclusion tendre</div>
+              <div class="badge-chip">💬 Astuce partage</div>
+              <div class="badge-chip">📞 Voix amie</div>
+              <div class="badge-chip">🧭 Projet accompli</div>
+              <div class="badge-chip">🛌 Repos retrouvé</div>
+              <div class="badge-chip">📘 Lecture quotidienne</div>
+              <div class="badge-chip">🚶‍♀️ Escalier choisi</div>
+              <div class="badge-chip">🎮 Pause joyeuse</div>
+              <div class="badge-chip">🧩 Casse-tête fini</div>
+              <div class="badge-chip">🧿 Veille apaisée</div>
+              <div class="badge-chip">🌈 Regard bienveillant</div>
             </div>
-            <div class="calendar" id="sCal"></div>
           </div>
         </div>
         <div class="view active" id="sparams">
@@ -317,15 +362,6 @@
                 <button class="btn danger" id="quitSpaceBtn">Quitter le jardin</button>
               </div>
             </div>
-            <div class="space-footer">
-              <button class="btn danger hide reduced" id="deleteAccountBtn">Supprimer mon compte</button>
-              <button class="btn primary" id="saveSpaceSettings">Sauvegarder</button>
-            </div>
-            <div class="subtitle" id="spaceSettingsNotice"></div>
-          </div>
-        </div>
-        <div class="view" id="sprefs">
-          <div class="grid">
             <div class="field">
               <label><b>Afficher les astuces</b></label>
               <select id="prefsTipsDisplayMode" class="select">
@@ -334,6 +370,77 @@
                 <option value="non">Non</option>
               </select>
             </div>
+            <div class="space-footer">
+              <button class="btn danger hide reduced" id="deleteAccountBtn">Supprimer mon compte</button>
+              <button class="btn primary" id="saveSpaceSettings">Sauvegarder</button>
+            </div>
+            <div class="subtitle" id="spaceSettingsNotice"></div>
+          </div>
+        </div>
+        <div class="view" id="sstats">
+          <div class="space-stats-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Habitude</th>
+                  <th data-sortable="streak" data-direction="desc">Streak</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-streak="14">
+                  <td><span class="stat-emoji">💧</span><span>Remplir sa gourde d’eau</span></td>
+                  <td>14 jours</td>
+                  <td>62</td>
+                </tr>
+                <tr data-streak="12">
+                  <td><span class="stat-emoji">🥣</span><span>Préparer un petit-déjeuner commun</span></td>
+                  <td>12 jours</td>
+                  <td>58</td>
+                </tr>
+                <tr data-streak="10">
+                  <td><span class="stat-emoji">🤸</span><span>Faire des étirements</span></td>
+                  <td>10 jours</td>
+                  <td>27</td>
+                </tr>
+                <tr data-streak="9">
+                  <td><span class="stat-emoji">🍏</span><span>Manger plus de fruits</span></td>
+                  <td>9 jours</td>
+                  <td>41</td>
+                </tr>
+                <tr data-streak="7">
+                  <td><span class="stat-emoji">⭐</span><span>Se coucher avant 23h</span></td>
+                  <td>7 jours</td>
+                  <td>33</td>
+                </tr>
+                <tr data-streak="6">
+                  <td><span class="stat-emoji">📖</span><span>Lire 10 pages</span></td>
+                  <td>6 jours</td>
+                  <td>21</td>
+                </tr>
+                <tr data-streak="5">
+                  <td><span class="stat-emoji">💌</span><span>Partager une envie</span></td>
+                  <td>5 jours</td>
+                  <td>19</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="view" id="shistory">
+          <div class="calendarWrap">
+            <div class="calTop">
+              <div class="calendar-controls">
+                <button class="calBtn" id="sPrevMonth">←</button>
+                <div id="sMonthLabel" class="month-label"></div>
+                <button class="calBtn" id="sNextMonth">→</button>
+              </div>
+              <div class="calendar-controls">
+                <span class="caption-small">Voir :</span>
+                <select id="sCalWho" class="select select-compact"></select>
+              </div>
+            </div>
+            <div class="calendar" id="sCal"></div>
           </div>
         </div>
       </div>
@@ -550,6 +657,7 @@
 
   <script src="names.js"></script>
   <script src="library.js"></script>
+  <script src="tips.js"></script>
   <script>
     /* ===== Données ===== */
 
@@ -624,7 +732,7 @@
     const REPEAT_CONFIGS = {};
 
     /* Utils */
-    const APP_VERSION = '0.0.36';
+    const APP_VERSION = '0.0.38';
     const NEED_EMOJIS = {
       affection: '❤️',
       joy: '😄',
@@ -639,6 +747,7 @@
       mouvement: '🏃',
       lien: '🔗',
       sens: '🎯',
+      meaning: '🎯',
       energie: '⚡',
       energy: '⚡',
       expression: '🗣️',
@@ -652,6 +761,7 @@
       comfort: '🛋️',
       sleep: '😴',
       sommeil: '😴',
+      rest: '😴',
       entertainment: '🎭',
       cleaning: '🧽',
       cleanliness: '🧼',
@@ -879,11 +989,14 @@
       hygiene: 'Hygiène',
       inclusion: 'Inclusion',
       joy: 'Joie',
+      meaning: 'Sens',
+      movement: 'Mouvement',
       nature: 'Nature',
       nutrition: 'Nutrition',
       organization: 'Organisation',
       participation: 'Participation',
       privacy: 'Intimité',
+      rest: 'Repos',
       safety: 'Sécurité',
       school: 'École',
       sleep: 'Sommeil',
@@ -1104,10 +1217,37 @@
       if (nameEl) nameEl.textContent = info.title || 'Une habitude';
       return info;
     }
+    function getHabitTips(habit) {
+      const normalized = [];
+      if (Array.isArray(habit?.tips)) {
+        habit.tips.forEach(tip => {
+          if (typeof tip === 'string' && tip.trim()) {
+            normalized.push(tip.trim());
+          }
+        });
+      }
+      if (typeof window !== 'undefined' && Array.isArray(window.HABIT_TIPS)) {
+        const habitId = habit?.id ?? habit?.hid ?? habit?.habitId;
+        if (habitId !== undefined && habitId !== null) {
+          const idKey = String(habitId);
+          window.HABIT_TIPS.forEach(entry => {
+            if (!entry || entry.id == null) return;
+            if (String(entry.id) !== idKey) return;
+            const tipText = entry.title;
+            if (typeof tipText === 'string') {
+              const trimmed = tipText.trim();
+              if (trimmed && !normalized.includes(trimmed)) {
+                normalized.push(trimmed);
+              }
+            }
+          });
+        }
+      }
+      return normalized;
+    }
     function pickLoaderTip(seed = '', habit = null) {
       const normalizedSeed = String(seed || getLoaderMinuteSeed());
-      const tips = (Array.isArray(habit?.tips) ? habit.tips.filter(t => typeof t === 'string' && t.trim()) : [])
-        .map(t => t.trim());
+      const tips = getHabitTips(habit);
       const candidates = tips.length ? tips : FALLBACK_LOADER_TIPS;
       if (!candidates.length) {
         return { text: '' };
@@ -1319,7 +1459,7 @@
       return genCode();
     }
     const round15 = m => Math.round(m / 15) * 15;
-    function lvlEmoji(v) { if (v <= 7) return '🌰'; if (v <= 14) return '🌱'; if (v <= 21) return '🍀'; if (v <= 28) return '🌼'; if (v <= 35) return '🌻'; if (v <= 42) return '🌷'; if (v <= 49) return '🌹'; if (v <= 56) return '🪻'; if (v <= 64) return '💐'; return '🎋'; }
+    function lvlEmoji(v) { if (v <= 7) return '🌱'; if (v <= 14) return '🌼'; if (v <= 21) return '🌻'; if (v <= 28) return '🌷'; if (v <= 35) return '🌹'; if (v <= 42) return '🪻'; if (v <= 49) return '💐'; return '🎋'; }
     function names(xs, m = 3) { if (xs.length <= m) return xs.join(', '); const s = xs.slice(0, m).join(', '); return `${s}… et ${xs.length - m} autres`; }
     const INSTALL_PROMPT_STORAGE_KEY = 'habitu-install-prompt-seen';
     const INSTALL_PROMPT_SUPPRESSION_MS = 15 * 24 * 60 * 60 * 1000;
@@ -1698,6 +1838,8 @@
     let pendingInviteInfo = null;
     const HABITU_FIREBASE_DB = window.HABITU_FIREBASE_DB;
     const ACTIVITY_BUFFER_MS = 3e3;
+    const ACTIVITY_SYNC_INTERVAL_MS = 24 * 60 * 60 * 1000;
+    const ACTIVITY_SYNC_STORAGE_KEY = 'habitu-last-activity-sync';
     const IS_LOCAL_FILE_URL = window.location.protocol === 'file:';
     const STORAGE_ALLOW_FIRESTORE_FROM_LOCAL = 'habitu-allow-firestore-local';
     function isFirestoreAllowedLocally() {
@@ -1752,6 +1894,30 @@
     }
     function shouldSyncActivities(profile = currentProfile) {
       return Boolean(shouldWriteToFirestore(profile) && isProfileModeComplet(profile));
+    }
+    function getLastActivitySyncTime() {
+      if (typeof window === 'undefined' || !window.localStorage) return null;
+      try {
+        const stored = window.localStorage.getItem(ACTIVITY_SYNC_STORAGE_KEY);
+        return stored ? Number(stored) : null;
+      } catch (err) {
+        console.warn('getLastActivitySyncTime', err);
+        return null;
+      }
+    }
+    function setLastActivitySyncTime(timestamp = Date.now()) {
+      if (typeof window === 'undefined' || !window.localStorage) return;
+      try {
+        window.localStorage.setItem(ACTIVITY_SYNC_STORAGE_KEY, String(timestamp));
+      } catch (err) {
+        console.warn('setLastActivitySyncTime', err);
+      }
+    }
+    function canSyncActivitiesNow() {
+      if (!shouldSyncActivities()) return false;
+      const lastSync = getLastActivitySyncTime();
+      if (!lastSync) return true;
+      return Date.now() - lastSync >= ACTIVITY_SYNC_INTERVAL_MS;
     }
     function shouldRenderRankings() {
       return isProfileModeComplet();
@@ -2286,8 +2452,19 @@
       return HABITU_FIREBASE_DB.collection('invites').doc(token).delete().catch(e => console.warn('deleteInvite', e));
     }
     function sendActivityToServer(payload) {
-      if (!shouldSyncActivities()) return Promise.resolve();
-      return HABITU_FIREBASE_DB.collection('activities').add(payload).catch(e => console.warn('sendActivity', e));
+      if (!canSyncActivitiesNow()) {
+        console.info('Skipping Firestore activity log because sync window has not elapsed');
+        return Promise.resolve();
+      }
+      return HABITU_FIREBASE_DB.collection('activities').add(payload)
+        .then((docRef) => {
+          setLastActivitySyncTime();
+          return docRef;
+        })
+        .catch(e => {
+          console.warn('sendActivity', e);
+          return Promise.reject(e);
+        });
     }
     function scheduleHabitActivity(habitId, payload) {
       if (!habitId || !payload) return;
@@ -2850,7 +3027,7 @@
     }
     function pickHabitTip(hid, seed = '') {
       const habit = getLibraryHabitById(hid);
-      const tips = (habit?.tips || []).filter(Boolean);
+      const tips = getHabitTips(habit);
       if (!tips.length) {
         return { text: '', index: -1, count: 0, habit };
       }
@@ -3111,7 +3288,7 @@
       return Array.from(map.values());
     }
     /* Emojis & bouton */
-    function currentBigEmoji(btn, tot) { return btn.dataset.override || (tot <= 7 ? '🌰' : tot <= 14 ? '🌱' : tot <= 21 ? '🍀' : tot <= 28 ? '🌼' : tot <= 35 ? '🌻' : tot <= 42 ? '🌷' : tot <= 49 ? '🌹' : tot <= 56 ? '🪻' : tot <= 64 ? '💐' : '🎋'); }
+    function currentBigEmoji(btn, tot) { return btn.dataset.override || (tot <= 7 ? '🌱' : tot <= 14 ? '🍀' : tot <= 21 ? '🌼' : tot <= 28 ? '🌻' : tot <= 35 ? '🌷' : tot <= 42 ? '🌹' : tot <= 49 ? '🪻' : tot <= 56 ? '💐' : tot <= 64 ? '🎋' : '🎋'); }
     function drawBtn(btn) {
       const p = +btn.dataset.plants || 0;
       const tot = p;
@@ -3236,7 +3413,9 @@
           btn.dataset.cid = it.id;
           btn.dataset.habitEmoji = it.emoji || '🌱';
 
-          const windowStart = today;
+          const windowStart = new Date(today);
+          windowStart.setDate(windowStart.getDate() - 27);
+          windowStart.setHours(0, 0, 0, 0);
           const records = getHabitRecords(spaceId, it.id, windowStart);
           const viewRecordedAt = new Date(today);
           let userRecord = records.find(r => isCurrentUserLabel(r.owner)) || null;
@@ -3267,17 +3446,11 @@
             .map(rec => (rec.owner || '').trim())
             .filter(Boolean)
           );
-          const doneTodayOwners = new Set(state2Records
-            .filter(rec => getEventDayKey(rec) === selectedDayKey)
-            .map(rec => (rec.owner || '').trim())
-            .filter(Boolean)
-          );
-          const doneTodayCount = doneTodayOwners.size;
           const windowGardenersCount = windowGardeners.size;
           if (gardenerBadge) {
-            gardenerBadge.textContent = `🧑‍🌾${doneTodayCount}/${windowGardenersCount}`;
+            gardenerBadge.textContent = `🧑‍🌾${windowGardenersCount}`;
             gardenerBadge.dataset.habitId = String(it.id);
-            gardenerBadge.classList.toggle('gardener-badge--empty', doneTodayCount === 0);
+            gardenerBadge.classList.toggle('gardener-badge--empty', windowGardenersCount === 0);
             gardenerBadge.addEventListener('click', (event) => {
               event.stopPropagation();
               openDetail(it.id, btn, 'gardeners');
@@ -4480,21 +4653,30 @@
       renderProfileStats();
     }
     let sPeriod = '30d';
-    $('#sBtnP7').onclick = () => {
-      const btn = $("#sBtnP7");
-      sPeriod = btn?.dataset.period || sPeriod;
-      renderSpaceRank();
-    };
-    $('#sBtnP30').onclick = () => {
-      const btn = $("#sBtnP30");
-      sPeriod = btn?.dataset.period || sPeriod;
-      renderSpaceRank();
-    };
-    $('#sBtnPAll').onclick = () => {
-      const btn = $("#sBtnPAll");
-      sPeriod = btn?.dataset.period || sPeriod;
-      renderSpaceRank();
-    };
+    const sBtnP7 = $("#sBtnP7");
+    if (sBtnP7) {
+      sBtnP7.onclick = () => {
+        const btn = $("#sBtnP7");
+        sPeriod = btn?.dataset.period || sPeriod;
+        renderSpaceRank();
+      };
+    }
+    const sBtnP30 = $("#sBtnP30");
+    if (sBtnP30) {
+      sBtnP30.onclick = () => {
+        const btn = $("#sBtnP30");
+        sPeriod = btn?.dataset.period || sPeriod;
+        renderSpaceRank();
+      };
+    }
+    const sBtnPAll = $("#sBtnPAll");
+    if (sBtnPAll) {
+      sBtnPAll.onclick = () => {
+        const btn = $("#sBtnPAll");
+        sPeriod = btn?.dataset.period || sPeriod;
+        renderSpaceRank();
+      };
+    }
     $('#profilePeriod7').onclick = () => {
       const btn = $("#profilePeriod7");
       profilePeriod = btn?.dataset.period || profilePeriod;
@@ -6139,6 +6321,34 @@
     });
 
     /* Tabs util */
+    let statsSortDirection = 'desc';
+    function sortSpaceStats(direction = 'desc') {
+      const tbody = document.querySelector('#sstats table tbody');
+      if (!tbody) return;
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      const factor = direction === 'asc' ? 1 : -1;
+      rows.sort((a, b) => {
+        const aVal = Number(a.dataset.streak) || 0;
+        const bVal = Number(b.dataset.streak) || 0;
+        return (aVal - bVal) * factor;
+      });
+      rows.forEach(row => tbody.appendChild(row));
+      const header = document.querySelector('#sstats th[data-sortable]');
+      if (header) {
+        header.dataset.direction = direction === 'asc' ? '↑' : '↓';
+      }
+      statsSortDirection = direction;
+    }
+    function setupSpaceStatsSorting() {
+      const header = document.querySelector('#sstats th[data-sortable]');
+      if (!header) return;
+      const toggleDirection = () => {
+        const next = statsSortDirection === 'asc' ? 'desc' : 'asc';
+        sortSpaceStats(next);
+      };
+      header.addEventListener('click', toggleDirection);
+      sortSpaceStats(statsSortDirection);
+    }
     function switchViews(btn, groupAttr, prefix) {
       const key = btn.getAttribute(groupAttr);
       document.querySelectorAll(`.tabs [${groupAttr}]`).forEach(b => b.classList.remove('active'));
@@ -6149,13 +6359,17 @@
       if (prefix === 'detail' && key === 'gardeners') {
         renderHabitGardeners();
       }
-      if (prefix === 'space' && key === 'sprefs') {
+      if (prefix === 'space' && key === 'sparams') {
         syncSpacePreferenceControls();
+      }
+      if (prefix === 'space' && key === 'sstats') {
+        sortSpaceStats(statsSortDirection);
       }
       if (key === 'shistory') { populateSpaceWho?.(); renderSpaceCalendar?.() }
     }
     document.querySelectorAll('#detail .tabs [data-tab]').forEach(btn => { btn.addEventListener('click', () => switchViews(btn, 'data-tab', 'detail')) });
     document.querySelectorAll('#space .tabs [data-stab]').forEach(btn => { btn.addEventListener('click', () => switchViews(btn, 'data-stab', 'space')) });
+    setupSpaceStatsSorting();
     let swRegistration = null;
     let updateRequestInProgress = false;
     async function ensureSwRegistration() {

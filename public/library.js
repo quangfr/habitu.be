@@ -3,1891 +3,1335 @@ const LIBRARY_JSON_DATA = [
     "id": 1,
     "emoji": "🌱",
     "title": "Inspirer en ouvrant Habitube",
-    "needs": ["organization", "joy"],
-    "contexts": ["home"],
+    "needs": [
+      "organization",
+      "joy"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Ouvrir l’app dès le réveil",
-      "Regarder une seule plante à la fois",
-      "Respirer avant de cliquer",
-      "Choisir une habitude simple d’abord",
-      "Ne pas scroller trop vite",
-      "Fermer l’app après une action",
-      "Revenir dans la journée",
-      "Cocher seulement ce qui est fait",
-      "Garder l’écran propre",
-      "Sourire à la première plante 🌿"
-    ]
+    "target": "individual"
   },
   {
     "id": 2,
     "emoji": "🥣",
     "title": "Préparer un petit-déjeuner commun",
-    "needs": ["nutrition", "joy"],
-    "contexts": ["home", "family"],
+    "needs": [
+      "nutrition",
+      "joy"
+    ],
+    "contexts": [
+      "home",
+      "family"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Prévoir un élément sucré et salé",
-      "Mettre tout sur la table avant",
-      "Demander ce que chacun préfère",
-      "Couper des fruits à partager",
-      "Mettre une musique douce",
-      "Allumer une petite lumière chaleureuse",
-      "Éviter les écrans sur la table",
-      "Prévoir du pain déjà tranché",
-      "Préparer la table la veille",
-      "Laisser quelqu’un choisir la boisson"
-    ]
+    "target": "group"
   },
   {
     "id": 3,
     "emoji": "🥪",
     "title": "Préparer une collation saine",
-    "needs": ["nutrition", "joy"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "nutrition",
+      "joy"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 3,
-    "target": "group",
-    "tips": [
-      "Privilégier fruits ou oléagineux",
-      "Éviter biscuits ultra transformés",
-      "Préparer les portions à l’avance",
-      "Utiliser des petits contenants réutilisables",
-      "Mettre la collation à portée de vue",
-      "Prévoir aussi une option salée",
-      "Couper les fruits en morceaux",
-      "Prévoir une carafe d’eau à côté",
-      "Proposer de partager, sans forcer",
-      "Limiter le sucre ajouté"
-    ]
+    "target": "group"
   },
   {
     "id": 4,
     "emoji": "🍵",
     "title": "Préparer une boisson chaude",
-    "needs": ["comfort", "calm"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "comfort",
+      "slowness"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir une tasse dédiée détente",
-      "Respirer l’odeur avant de boire",
-      "S’asseoir pour la déguster",
-      "Poser le téléphone pendant",
-      "Sucrer un peu moins que d’habitude",
-      "Préparer aussi un verre d’eau",
-      "Éviter café en fin de journée",
-      "Préférer infusion le soir",
-      "Tenir la tasse entre les deux mains",
-      "Boire par petites gorgées"
-    ]
+    "target": "individual"
   },
   {
     "id": 5,
     "emoji": "🛒",
     "title": "Préparer sa liste de course",
-    "needs": ["organization", "nutrition"],
-    "contexts": ["home", "family"],
+    "needs": [
+      "organization",
+      "nutrition"
+    ],
+    "contexts": [
+      "home",
+      "family"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Noter au fur et à mesure",
-      "Regrouper par rayon du magasin",
-      "Vérifier frigo et placards avant",
-      "Ajouter un fruit de saison",
-      "Prévoir un repas de secours",
-      "Limiter achats impulsifs sucrés",
-      "Garder une liste modèle récurrente",
-      "Demander une idée à un proche",
-      "Noter ce qui manque vraiment",
-      "Prendre une photo de la liste"
-    ]
+    "target": "individual"
   },
   {
     "id": 6,
     "emoji": "🍎",
     "title": "Manger plus de fruits",
-    "needs": ["nutrition", "comfort"],
-    "contexts": ["home"],
+    "needs": [
+      "nutrition",
+      "comfort"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Laisser les fruits visibles sur la table",
-      "Laver une partie à l’avance",
-      "Préparer une boîte de fruits coupés",
-      "Remplacer un dessert sucré par un fruit",
-      "Ajouter des fruits au petit-déjeuner",
-      "Emporter un fruit dans son sac",
-      "Choisir un fruit apprécié en priorité",
-      "Varier les couleurs de fruits",
-      "Tester un fruit nouveau par semaine",
-      "Manger le fruit avant les biscuits"
-    ]
+    "target": "individual"
   },
   {
     "id": 7,
     "emoji": "💧",
     "title": "Remplir sa gourde d’eau",
-    "needs": ["nutrition", "comfort"],
-    "contexts": ["home"],
+    "needs": [
+      "nutrition",
+      "safety"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Remplir la gourde dès le matin",
-      "La garder toujours à portée de main",
-      "Mettre un rappel sur le téléphone",
-      "Ajouter une tranche de citron si envie",
-      "Vérifier le niveau en milieu de journée",
-      "Finir la gourde avant le dîner",
-      "La poser sur le bureau en évidence",
-      "Rincer la gourde chaque soir",
-      "Utiliser une gourde graduée",
-      "Boire quelques gorgées à chaque pause"
-    ]
+    "target": "individual"
   },
   {
     "id": 8,
     "emoji": "💊",
     "title": "Prendre son traitement",
-    "needs": ["comfort", "safety"],
-    "contexts": ["home"],
+    "needs": [
+      "comfort",
+      "safety"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Lier la prise à une habitude fixe",
-      "Utiliser un pilulier hebdomadaire",
-      "Mettre un rappel sur le téléphone",
-      "Préparer le verre d’eau avant",
-      "Cocher la prise sur un calendrier",
-      "Ranger le traitement toujours au même endroit",
-      "Ne jamais doubler la dose sans avis",
-      "Renouveler l’ordonnance en avance",
-      "Informer un proche si besoin d’aide",
-      "Vérifier l’heure avant de prendre"
-    ]
+    "target": "individual"
   },
   {
     "id": 9,
     "emoji": "🚭",
     "title": "Ne pas fumer aujourd’hui",
-    "needs": ["safety", "calm"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "safety",
+      "calm"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Se donner l’objectif un jour à la fois",
-      "Supprimer briquet et cigarettes visibles",
-      "Boire un verre d’eau en cas d’envie",
-      "Respirer profondément 10 secondes",
-      "Changer de pièce quand l’envie monte",
-      "Prévenir un proche de l’objectif",
-      "Noter l’heure des envies fortes",
-      "Remplacer le geste par un chewing-gum",
-      "Se féliciter à chaque envie traversée",
-      "Préparer une petite récompense le soir"
-    ]
+    "target": "individual"
   },
   {
     "id": 10,
     "emoji": "🛁",
     "title": "Nettoyer la salle de bains",
-    "needs": ["cleanliness", "hygiene"],
-    "contexts": ["home"],
+    "needs": [
+      "cleanliness",
+      "hygiene"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 0.5,
-    "target": "individual",
-    "tips": [
-      "Mettre tout le matériel au même endroit",
-      "Commencer par le lavabo",
-      "Finir par le sol rapidement",
-      "Utiliser un minuteur de 10 minutes",
-      "Nettoyer le miroir en dernier",
-      "Vider les produits presque finis",
-      "Essuyer les éclaboussures immédiatement",
-      "Ranger les produits dans un panier",
-      "Changer la serviette si nécessaire",
-      "Aérer quelques minutes après"
-    ]
+    "target": "individual"
   },
   {
     "id": 11,
     "emoji": "🧴",
     "title": "Faire son soin du jour",
-    "needs": ["hygiene", "comfort"],
-    "contexts": ["home"],
+    "needs": [
+      "hygiene",
+      "comfort"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Garder les produits à vue près du miroir",
-      "Suivre toujours le même ordre",
-      "Utiliser une serviette propre dédiée",
-      "Mettre un petit minuteur doux",
-      "Appliquer doucement, sans se presser",
-      "Respirer calmement pendant le soin",
-      "Jeter les produits périmés régulièrement",
-      "Préparer les produits la veille au soir",
-      "Couper la notification du téléphone",
-      "Se regarder avec bienveillance dans le miroir"
-    ]
+    "target": "individual"
   },
   {
     "id": 12,
     "emoji": "🛀",
     "title": "Prendre un bain chaud",
-    "needs": ["comfort", "calm"],
-    "contexts": ["home"],
+    "needs": [
+      "comfort",
+      "hygiene"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Préparer serviette et pyjama avant",
-      "Mettre l’eau un peu moins chaude que d’habitude",
-      "Limiter le bain à 20 minutes",
-      "Ajouter une lumière douce ou bougie",
-      "Laisser le téléphone hors de la salle de bains",
-      "Mettre une musique relaxante si envie",
-      "Respirer profondément en fermant les yeux",
-      "Ne pas remplir la baignoire complètement",
-      "S’hydrater après le bain",
-      "Aérer la pièce après usage"
-    ]
+    "target": "individual"
   },
   {
     "id": 13,
     "emoji": "🦷",
     "title": "Bien brosser ses dents",
-    "needs": ["hygiene"],
-    "contexts": ["home", "family"],
+    "needs": [
+      "hygiene",
+      "safety"
+    ],
+    "contexts": [
+      "home",
+      "family"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Se brosser au moins deux minutes",
-      "Utiliser un minuteur ou une chanson",
-      "Passer sur toutes les faces de dents",
-      "Changer de brosse tous les trois mois",
-      "Utiliser une petite quantité de dentifrice",
-      "Ne pas rincer trop fort après",
-      "Se brosser avant de se coucher",
-      "Éviter de manger juste après",
-      "Ranger la brosse tête en haut",
-      "Nettoyer le verre à dents régulièrement"
-    ]
+    "target": "individual"
   },
   {
     "id": 14,
     "emoji": "🛌",
     "title": "Changer son linge de lit",
-    "needs": ["cleanliness", "comfort"],
-    "contexts": ["home"],
+    "needs": [
+      "cleanliness",
+      "comfort"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 0.5,
-    "target": "individual",
-    "tips": [
-      "Préparer les draps propres à l’avance",
-      "Aérer la chambre avant de refaire le lit",
-      "Secouer le matelas rapidement",
-      "Changer la taie d’oreiller en priorité",
-      "Plier les anciens draps tout de suite",
-      "Lancer la machine juste après",
-      "Garder un set de draps facile à installer",
-      "Profiter pour enlever la poussière autour",
-      "Vérifier la couette et la housse",
-      "Savourer la sensation de draps frais"
-    ]
+    "target": "individual"
   },
   {
     "id": 15,
     "emoji": "🧹",
     "title": "Nettoyer couloir et entrée",
-    "needs": ["cleanliness", "safety"],
-    "contexts": ["home"],
+    "needs": [
+      "cleanliness",
+      "safety"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Ramasser ce qui traîne d’abord",
-      "Dégager le passage principal",
-      "Secouer tapis et paillasson dehors",
-      "Balayer rapidement les zones clés",
-      "Essuyer les traces au sol visibles",
-      "Ranger chaussures en un seul endroit",
-      "Prévoir un panier pour le courrier",
-      "Mettre un crochet pour les clés",
-      "Allumer la lumière pour vérifier",
-      "Faire en même temps qu’un autre habitant"
-    ]
+    "target": "group"
   },
   {
     "id": 16,
     "emoji": "🍽️",
     "title": "Remettre la cuisine en ordre",
-    "needs": ["cleanliness", "hygiene"],
-    "contexts": ["home"],
+    "needs": [
+      "cleanliness",
+      "cooperation"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 3,
-    "target": "group",
-    "tips": [
-      "Commencer par vider l’évier",
-      "Regrouper la vaisselle sale au même endroit",
-      "Lancer le lave-vaisselle rapidement",
-      "Essuyer les surfaces visibles d’abord",
-      "Ranger les aliments au frigo sans attendre",
-      "Jeter directement les emballages",
-      "Passer un coup de balai express",
-      "Utiliser un minuteur de 10 minutes",
-      "Répartir les tâches entre les habitants",
-      "Finir par un geste agréable (bougie, plante)"
-    ]
+    "target": "group"
   },
   {
     "id": 17,
     "emoji": "🛋️",
     "title": "Ranger le salon",
-    "needs": ["cleanliness", "comfort"],
-    "contexts": ["home"],
+    "needs": [
+      "cleanliness",
+      "comfort"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 3,
-    "target": "group",
-    "tips": [
-      "Commencer par remettre les coussins",
-      "Ramasser tout ce qui n’est pas à sa place",
-      "Prévoir un panier pour les objets divers",
-      "Plier les plaids et couvertures",
-      "Empiler les magazines en petite pile",
-      "Éteindre ou ranger les câbles visibles",
-      "Ouvrir un peu la fenêtre",
-      "Mettre une musique courte motivante",
-      "Limiter le rangement à 10 minutes",
-      "Regarder le résultat une minute en silence"
-    ]
+    "target": "group"
   },
   {
     "id": 18,
     "emoji": "🚽",
     "title": "Nettoyer les toilettes",
-    "needs": ["cleanliness", "hygiene"],
-    "contexts": ["home"],
+    "needs": [
+      "cleanliness",
+      "hygiene"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Préparer gant et produit avant",
-      "Mettre le produit dans la cuvette en premier",
-      "Nettoyer la lunette et autour",
-      "Essuyer la poignée de porte",
-      "Changer ou vérifier le rouleau de papier",
-      "Jeter l’éponge usée si nécessaire",
-      "Laisser agir le produit quelques minutes",
-      "Tirer la chasse après brossage",
-      "Aérer la pièce ensuite",
-      "Se laver les mains soigneusement"
-    ]
+    "target": "individual"
   },
   {
     "id": 19,
     "emoji": "🧻",
     "title": "Vérifier les produits ménages",
-    "needs": ["equipment", "cleanliness"],
-    "contexts": ["home"],
+    "needs": [
+      "equipment",
+      "cleanliness"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 0.5,
-    "target": "group",
-    "tips": [
-      "Regrouper tous les produits au même endroit",
-      "Vérifier ce qui est presque vide",
-      "Noter les recharges dans la liste de courses",
-      "Séparer produits sol et surfaces",
-      "Garder un produit par pièce fréquente",
-      "Vérifier l’état des éponges et chiffons",
-      "Ranger hors de portée des enfants",
-      "Jeter les produits très anciens",
-      "Étiqueter les flacons si besoin",
-      "Prévoir un stock minimal de secours"
-    ]
+    "target": "group"
   },
   {
     "id": 20,
     "emoji": "🛏️",
     "title": "Aérer et ranger la chambre",
-    "needs": ["cleanliness", "comfort"],
-    "contexts": ["home"],
+    "needs": [
+      "cleanliness",
+      "equipment"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Ouvrir la fenêtre au moins 5 minutes",
-      "Secouer rapidement oreiller et couette",
-      "Replacer les vêtements sur cintre ou chaise",
-      "Vider les verres et tasses éventuels",
-      "Éteindre les écrans en quittant la chambre",
-      "Faire un tour visuel rapide de la pièce",
-      "Limiter le rangement à une petite zone",
-      "Ranger les objets au sol en priorité",
-      "Fermer la fenêtre après aération",
-      "Prendre une inspiration profonde avant de sortir"
-    ]
+    "target": "individual"
   },
   {
     "id": 21,
     "emoji": "🪥",
     "title": "Ranger ses affaires de toilette",
-    "needs": ["equipment", "privacy"],
-    "contexts": ["home", "family"],
+    "needs": [
+      "privacy",
+      "hygiene"
+    ],
+    "contexts": [
+      "home",
+      "family"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Définir une trousse ou une boîte personnelle",
-      "Garder le strict nécessaire accessible",
-      "Ranger les produits intimes hors de vue",
-      "Jeter les flacons presque vides",
-      "Regrouper brosse, peigne et accessoires",
-      "Essuyer les flacons collants",
-      "Mettre les petits objets dans un pot",
-      "Vérifier régulièrement dates de péremption",
-      "Reposer chaque objet à sa place après usage",
-      "Prévenir les autres de l’espace réservé"
-    ]
+    "target": "individual"
   },
   {
     "id": 22,
     "emoji": "🗄️",
     "title": "Ranger son bureau",
-    "needs": ["organization", "cleanliness"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "organization",
+      "equipment"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Commencer par vider la surface principale",
-      "Mettre les papiers en une seule pile",
-      "Ranger les stylos dans un pot unique",
-      "Ne garder que l’essentiel sur le bureau",
-      "Essuyer rapidement clavier et souris",
-      "Dégager la zone autour de l’écran",
-      "Trier les post-it inutiles",
-      "Prévoir un tiroir ou boîte “en vrac” limitée",
-      "Limiter le rangement à 10 minutes",
-      "Finir en éteignant l’écran"
-    ]
+    "target": "individual"
   },
   {
     "id": 23,
     "emoji": "🏢",
     "title": "Ranger la salle de réunion",
-    "needs": ["cleanliness", "organization"],
-    "contexts": ["office"],
+    "needs": [
+      "cleanliness",
+      "organization"
+    ],
+    "contexts": [
+      "office"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Demander deux minutes à tout le monde à la fin",
-      "Ramasser gobelets et papiers immédiatement",
-      "Remettre les chaises alignées",
-      "Effacer tableau ou écran partagé",
-      "Ranger câbles et télécommandes au même endroit",
-      "Vérifier qu’aucun objet personnel ne reste",
-      "Jeter les documents inutiles",
-      "Fermer fenêtres et lumières si besoin",
-      "Vérifier la propreté de la table",
-      "Remercier le groupe pour le coup de main"
-    ]
+    "target": "group"
   },
   {
     "id": 24,
     "emoji": "💻",
     "title": "Trier ses outils numériques",
-    "needs": ["organization", "calm"],
-    "contexts": ["office"],
+    "needs": [
+      "organization",
+      "calm"
+    ],
+    "contexts": [
+      "office"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Supprimer les fichiers inutiles",
-      "Classer les documents dans des dossiers clairs",
-      "Renommer les fichiers ambigus",
-      "Vider la corbeille",
-      "Mettre à jour les applis essentielles",
-      "Désinstaller ce que tu n’utilises plus",
-      "Faire un point sur les onglets ouverts",
-      "Sauvegarder un dossier important",
-      "Vérifier l’espace de stockage",
-      "Conserver un écran d’accueil épuré"
-    ]
+    "target": "individual"
   },
   {
     "id": 25,
     "emoji": "🖋️",
     "title": "Vérifier les fournitures de bureau",
-    "needs": ["organization", "equipment"],
-    "contexts": ["office", "school"],
+    "needs": [
+      "equipment",
+      "organization"
+    ],
+    "contexts": [
+      "office",
+      "school"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Lister les fournitures essentielles à vérifier",
-      "Regarder niveau stylos, feuilles, agrafes",
-      "Noter ce qui manque vraiment",
-      "Ranger les fournitures par catégorie",
-      "Mettre ce qui est en surplus au même endroit",
-      "Prévenir la personne en charge des commandes",
-      "Étiqueter rapidement les boîtes",
-      "Supprimer les objets cassés ou inutilisables",
-      "Vérifier l’emplacement pour accès facile",
-      "Planifier une vérification régulière"
-    ]
+    "target": "group"
   },
   {
     "id": 26,
     "emoji": "🗑️",
     "title": "Sortir les poubelles",
-    "needs": ["cleanliness", "cooperation"],
-    "contexts": ["home"],
+    "needs": [
+      "cleanliness",
+      "cooperation"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Choisir un jour fixe pour se rappeler",
-      "Vérifier toutes les pièces avant de descendre",
-      "Bien fermer le sac avant de sortir",
-      "Nettoyer si besoin le fond de la poubelle",
-      "Mettre directement un nouveau sac propre",
-      "Noter la rotation des habitants",
-      "Préparer les sacs de tri à l’avance",
-      "Regarder le calendrier de collecte",
-      "Profiter pour aérer un peu la pièce",
-      "Se remercier mutuellement pour la corvée"
-    ]
+    "target": "group"
   },
   {
     "id": 27,
     "emoji": "♻️",
     "title": "Ramasser et trier les déchets",
-    "needs": ["cleanliness", "organization"],
-    "contexts": ["home", "school"],
+    "needs": [
+      "cleanliness",
+      "equipment"
+    ],
+    "contexts": [
+      "home",
+      "school"
+    ],
     "frequency": 3,
-    "target": "group",
-    "tips": [
-      "Prévoir deux sacs : tri et ordinaire",
-      "Commencer par les zones les plus visibles",
-      "Regarder les consignes de tri locales",
-      "Compresser les emballages volumineux",
-      "Montrer l’exemple sans faire la morale",
-      "Inviter quelqu’un à aider deux minutes",
-      "Ramasser aussi les petits papiers oubliés",
-      "Vider les poubelles de bureau ou de classe",
-      "Laver les mains après le tri",
-      "Remettre les sacs au bon endroit"
-    ]
+    "target": "group"
   },
   {
     "id": 28,
     "emoji": "🗃️",
     "title": "Ranger ses étagères",
-    "needs": ["organization", "privacy"],
-    "contexts": ["home", "office", "social"],
+    "needs": [
+      "organization",
+      "privacy"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "social"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir une seule étagère à la fois",
-      "Mettre de côté ce dont on ne se sert plus",
-      "Grouper les objets par thème",
-      "Mettre les objets importants à hauteur des yeux",
-      "Utiliser une boîte pour les petits éléments",
-      "Étiqueter rapidement les boîtes",
-      "Donner ou recycler ce qui encombre",
-      "Essuyer l’étagère avant de remettre",
-      "Limiter les objets par rangée",
-      "Reculer d’un pas pour apprécier le résultat"
-    ]
+    "target": "individual"
   },
   {
     "id": 29,
     "emoji": "🚌",
     "title": "Préparer son départ",
-    "needs": ["organization", "calm"],
-    "contexts": ["home", "office", "school"],
+    "needs": [
+      "organization",
+      "calm"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "school"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Regrouper clés, téléphone, portefeuille",
-      "Préparer sac ou cartable près de la porte",
-      "Vérifier horaires de transport",
-      "Choisir vêtements et chaussures à l’avance",
-      "Remplir gourde ou bouteille d’eau",
-      "Prendre un petit encas si besoin",
-      "Vérifier les documents importants",
-      "Prévoir dix minutes de marge",
-      "Éteindre lumières et appareils inutiles",
-      "Respirer calmement avant de sortir"
-    ]
+    "target": "individual"
   },
   {
     "id": 30,
     "emoji": "🛣️",
     "title": "Choisir un trajet différent",
-    "needs": ["curiosity", "calm"],
-    "contexts": ["home"],
+    "needs": [
+      "meaning",
+      "calm"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Repérer un itinéraire alternatif simple",
-      "Prévoir un peu plus de temps",
-      "Regarder autour de soi en marchant",
-      "Couper la musique quelques minutes",
-      "Chercher un nouveau détail agréable",
-      "Tester un chemin plus calme",
-      "Éviter les rues trop bruyantes",
-      "Noter mentalement ce qui change",
-      "Revenir au trajet habituel si stressant",
-      "Garder l’expérience comme un jeu"
-    ]
+    "target": "individual"
   },
   {
     "id": 31,
     "emoji": "🧰",
     "title": "Réparer un petit souci",
-    "needs": ["equipment", "safety"],
-    "contexts": ["home"],
+    "needs": [
+      "equipment",
+      "safety"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 0.5,
-    "target": "individual",
-    "tips": [
-      "Choisir un seul problème à la fois",
-      "Préparer l’outil nécessaire avant de commencer",
-      "Regarder un tutoriel court si besoin",
-      "Couper l’électricité ou l’eau si nécessaire",
-      "Tester la réparation aussitôt faite",
-      "Noter si un professionnel doit intervenir",
-      "Ranger les outils juste après",
-      "Ne pas forcer si ça résiste",
-      "Prévenir les autres habitants du changement",
-      "Se féliciter de l’amélioration"
-    ]
+    "target": "individual"
   },
   {
     "id": 32,
     "emoji": "🧭",
     "title": "Revoir l’agenda",
-    "needs": ["organization", "calm", "privacy"],
-    "contexts": ["home", "family"],
+    "needs": [
+      "organization",
+      "privacy"
+    ],
+    "contexts": [
+      "home",
+      "family"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "S’asseoir dans un endroit calme",
-      "Ouvrir agenda papier ou numérique",
-      "Vérifier les rendez-vous du lendemain",
-      "Annuler ce qui n’est plus utile",
-      "Prévoir un temps pour les imprévus",
-      "Bloquer des moments de pause",
-      "Noter une seule priorité par jour",
-      "Informer les personnes concernées",
-      "Fermer l’agenda en respirant calmement",
-      "Ne pas surcharger la semaine"
-    ]
+    "target": "individual"
   },
   {
     "id": 33,
     "emoji": "🗂️",
     "title": "Trier ses documents",
-    "needs": ["organization", "privacy"],
-    "contexts": ["home"],
+    "needs": [
+      "organization",
+      "privacy"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 0.5,
-    "target": "individual",
-    "tips": [
-      "Prévoir une pile garder, jeter, à traiter",
-      "Commencer par les papiers les plus récents",
-      "Créer trois catégories maximum",
-      "Utiliser une pochette par thème",
-      "Jeter les doublons évidents",
-      "Prendre une photo des documents à archiver",
-      "Ne pas tout faire d’un coup",
-      "Inscrire l’année sur les pochettes",
-      "Ranger les papiers sensibles hors vue",
-      "Arrêter dès que la fatigue monte"
-    ]
+    "target": "individual"
   },
   {
     "id": 34,
     "emoji": "📌",
     "title": "Noter ses rappels",
-    "needs": ["organization", "communication", "privacy"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "organization",
+      "communication"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Utiliser un seul endroit pour les rappels",
-      "Écrire court et concret",
-      "Mettre une date quand c’est possible",
-      "Limiter le nombre de rappels simultanés",
-      "Supprimer ceux déjà faits",
-      "Regarder la liste au même moment chaque jour",
-      "Utiliser une couleur pour les urgences",
-      "Éviter de tout garder “pour plus tard”",
-      "Ne pas multiplier les applis de rappel",
-      "Mettre au-dessus les trois plus importants"
-    ]
+    "target": "individual"
   },
   {
     "id": 35,
     "emoji": "💗",
     "title": "Partager une envie",
-    "needs": ["expression", "joy"],
-    "contexts": ["home", "office", "social"],
+    "needs": [
+      "expression",
+      "joy"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "social"
+    ],
     "frequency": 7,
-    "target": "group",
-    "tips": [
-      "Formuler l’envie simplement",
-      "Commencer par “Ça me ferait plaisir de…”",
-      "Accepter que l’autre puisse dire non",
-      "Proposer une alternative possible",
-      "Choisir un moment calme pour le dire",
-      "Regarder la personne en parlant",
-      "Éviter les reproches cachés dedans",
-      "Écouter aussi les envies des autres",
-      "Noter les envies communes pour plus tard",
-      "Remercier quand l’envie est entendue"
-    ]
+    "target": "group"
   },
   {
     "id": 36,
     "emoji": "💶",
     "title": "Vérifier ses dépenses",
-    "needs": ["organization", "safety", "privacy"],
-    "contexts": ["home"],
+    "needs": [
+      "organization",
+      "safety"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 0.5,
-    "target": "individual",
-    "tips": [
-      "Choisir un moment où l’on est reposé",
-      "Ouvrir l’appli bancaire ou carnet",
-      "Regarder seulement la période récente",
-      "Repérer les abonnements oubliés",
-      "Noter une dépense à réduire",
-      "Classer les dépenses par grandes catégories",
-      "Ne pas se juger pendant la vérification",
-      "Prévoir un petit budget plaisir réaliste",
-      "Mettre à jour un tableau simple si besoin",
-      "Fermer l’appli en respirant profondément"
-    ]
+    "target": "individual"
   },
   {
     "id": 37,
     "emoji": "👚",
     "title": "Trier ses vêtements",
-    "needs": ["organization", "comfort", "privacy"],
-    "contexts": ["home"],
+    "needs": [
+      "comfort",
+      "privacy"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 0.5,
-    "target": "individual",
-    "tips": [
-      "Choisir un tiroir ou une pile à la fois",
-      "Créer trois tas : garder, donner, recycler",
-      "Essayer un vêtement si doute",
-      "Se demander si on l’a porté cette année",
-      "Garder les vêtements confortables en priorité",
-      "Mettre à part ceux à réparer",
-      "Plier immédiatement ce qui reste",
-      "Prévoir un sac dédié pour les dons",
-      "Ne pas garder par culpabilité",
-      "Écouter son corps plus que la taille"
-    ]
+    "target": "individual"
   },
   {
     "id": 38,
     "emoji": "🧺",
     "title": "Lancer une machine",
-    "needs": ["cleanliness", "organization"],
-    "contexts": ["home"],
+    "needs": [
+      "organization",
+      "slowness"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Regrouper le linge dans un seul panier",
-      "Vérifier les poches rapidement",
-      "Trier au moins clair et foncé",
-      "Choisir un programme habituel pour aller vite",
-      "Ne pas surcharger le tambour",
-      "Ajouter une serviette si machine presque vide",
-      "Prévoir où faire sécher après",
-      "Lancer la machine à un moment où l’on est là",
-      "Mettre un minuteur approximatif",
-      "Sortir le linge dès la fin du programme"
-    ]
+    "target": "individual"
   },
   {
     "id": 39,
     "emoji": "🌦️",
     "title": "Partager son humeur",
-    "needs": ["expression", "communication"],
-    "contexts": ["home", "family"],
+    "needs": [
+      "expression",
+      "communication"
+    ],
+    "contexts": [
+      "home",
+      "family"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir un mot simple pour l’humeur",
-      "Parler en “je” plutôt qu’en “tu”",
-      "Dire si l’on veut juste être écouté",
-      "Choisir un moment sans urgence",
-      "Prévenir si on ne veut pas de conseil",
-      "Écouter en retour l’humeur de l’autre",
-      "Utiliser l’image météo si c’est plus simple",
-      "Accepter que l’humeur évolue",
-      "Rester concret sur la journée",
-      "Remercier pour l’écoute"
-    ]
+    "target": "individual"
   },
   {
     "id": 40,
     "emoji": "👌",
     "title": "Avoir un élan bienveillant",
-    "needs": ["cooperation", "joy"],
-    "contexts": ["home", "family", "social"],
+    "needs": [
+      "cooperation",
+      "joy"
+    ],
+    "contexts": [
+      "home",
+      "family",
+      "social"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Repérer une petite occasion d’aider",
-      "Agir sans attendre de retour",
-      "Choisir un geste simple et faisable",
-      "Rester discret si la personne est pudique",
-      "Adapter à l’énergie du jour",
-      "Proposer avant d’imposer l’aide",
-      "Garder le geste léger, sans lourdeur",
-      "Se rappeler que le non est possible",
-      "Se féliciter intérieurement du geste",
-      "Varier les formes de bienveillance"
-    ]
+    "target": "individual"
   },
   {
     "id": 41,
     "emoji": "🗣️",
     "title": "Partager une astuce productive",
-    "needs": ["communication", "cooperation"],
-    "contexts": ["office", "school", "social"],
+    "needs": [
+      "communication",
+      "entertainment"
+    ],
+    "contexts": [
+      "office",
+      "school",
+      "social"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir une astuce testée soi-même",
-      "Expliquer en une ou deux phrases",
-      "Montrer rapidement si possible",
-      "Adapter le niveau de détail à la personne",
-      "Proposer, sans imposer la méthode",
-      "Donner un exemple concret d’utilisation",
-      "Inviter l’autre à partager aussi une astuce",
-      "Envoyer un petit message récap si utile",
-      "Choisir un moment calme pour en parler",
-      "Rester ouvert aux questions"
-    ]
+    "target": "individual"
   },
   {
     "id": 42,
     "emoji": "📞",
     "title": "Contacter un proche",
-    "needs": ["communication", "joy"],
-    "contexts": ["home"],
+    "needs": [
+      "communication",
+      "slowness"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Commencer par un message simple",
-      "Proposer un moment pour échanger",
-      "Dire directement que l’on pense à la personne",
-      "Ne pas attendre une longue conversation",
-      "Envoyer une photo ou un emoji si plus facile",
-      "Accepter que l’autre réponde plus tard",
-      "Rester soi-même dans le ton",
-      "Éviter de parler uniquement des soucis",
-      "Rappeler un bon souvenir commun",
-      "Se remercier d’avoir fait le premier pas"
-    ]
+    "target": "individual"
   },
   {
     "id": 43,
     "emoji": "🤝",
     "title": "Manger avec sa famille",
-    "needs": ["joy", "inclusion"],
-    "contexts": ["home", "social"],
+    "needs": [
+      "joy",
+      "inclusion"
+    ],
+    "contexts": [
+      "home",
+      "social"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Choisir un repas sans urgence après",
-      "Poser les écrans loin de la table",
-      "Prévoir un sujet léger à partager",
-      "Proposer à chacun de raconter un petit moment",
-      "Servir au moins un plat apprécié de tous",
-      "S’asseoir vraiment ensemble avant de commencer",
-      "Prendre le temps de se regarder",
-      "Écouter sans forcément répondre tout de suite",
-      "Remercier pour le repas préparé",
-      "Prolonger de quelques minutes si l’ambiance est bonne"
-    ]
+    "target": "individual"
   },
   {
     "id": 44,
     "emoji": "🧡",
     "title": "Remonter le moral à un ami",
-    "needs": ["communication", "inclusion"],
-    "contexts": ["home", "office", "school"],
+    "needs": [
+      "communication",
+      "inclusion"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "school"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Demander d’abord s’il ou elle veut parler",
-      "Écouter sans interrompre",
-      "Valider ce que la personne ressent",
-      "Éviter les phrases “il faut que…”",
-      "Proposer une petite action concrète",
-      "Rappeler une qualité sincère de la personne",
-      "Offrir sa présence même en silence",
-      "Envoyer un message après la conversation",
-      "Ne pas minimiser la difficulté",
-      "Soutenir sans vouloir tout résoudre"
-    ]
+    "target": "individual"
   },
   {
     "id": 45,
     "emoji": "😊",
     "title": "Sourire à un inconnu",
-    "needs": ["joy", "inclusion"],
-    "contexts": ["home"],
+    "needs": [
+      "joy",
+      "inclusion"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Choisir un moment où l’on se sent assez en sécurité",
-      "Croiser le regard brièvement",
-      "Sourire simplement, sans insister",
-      "Ne rien attendre en retour",
-      "Commencer par les personnes du voisinage",
-      "Tester dans des lieux rassurants",
-      "Garder les écouteurs à volume bas",
-      "Respecter les signaux de malaise éventuels",
-      "Se rappeler que le geste est déjà suffisant",
-      "Garder le sourire aussi pour soi"
-    ]
+    "target": "individual"
   },
   {
     "id": 46,
     "emoji": "🤗",
     "title": "Faire un câlin",
-    "needs": ["joy", "comfort"],
-    "contexts": ["home", "family"],
+    "needs": [
+      "comfort",
+      "inclusion"
+    ],
+    "contexts": [
+      "home",
+      "family"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Demander l’accord clairement",
-      "Ouvrir les bras avant de s’approcher",
-      "Adapter la durée à l’autre",
-      "Respirer calmement pendant le câlin",
-      "Relâcher doucement, pas brusquement",
-      "Respecter un refus sans insister",
-      "Proposer un autre geste si besoin",
-      "Ne pas parler si la personne préfère le silence",
-      "Se concentrer sur la chaleur du contact",
-      "Remercier pour le câlin partagé"
-    ]
+    "target": "individual"
   },
   {
     "id": 47,
     "emoji": "💞",
     "title": "Dire un merci précis",
-    "needs": ["joy", "expression"],
-    "contexts": ["home", "family", "office"],
+    "needs": [
+      "expression",
+      "participation"
+    ],
+    "contexts": [
+      "home",
+      "family",
+      "office"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Nommer l’action pour laquelle on remercie",
-      "Dire le merci à la personne directement",
-      "Regarder dans les yeux si possible",
-      "Parler avec un ton sincère",
-      "Éviter les “merci mais…”",
-      "Expliquer en quoi cela a aidé",
-      "Remercier aussi pour les petites choses",
-      "Varier la façon de dire merci",
-      "Envoyer un message de remerciement après coup",
-      "Se laisser toucher par ce qu’on reçoit"
-    ]
+    "target": "individual"
   },
   {
     "id": 48,
     "emoji": "💌",
     "title": "Laisser un mot doux",
-    "needs": ["expression", "joy"],
-    "contexts": ["home", "family"],
+    "needs": [
+      "expression",
+      "privacy"
+    ],
+    "contexts": [
+      "home",
+      "family"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Choisir un endroit où la personne passera",
-      "Écrire quelques mots seulement",
-      "Utiliser le prénom ou un surnom affectueux",
-      "Mentionner un détail positif récent",
-      "Ajouter un petit dessin ou emoji",
-      "Rester simple plutôt que trop parfait",
-      "Éviter les reproches cachés dedans",
-      "Ne pas attendre forcément de réponse",
-      "Garder une carte ou un carnet dédié",
-      "Observer plus tard la réaction en silence"
-    ]
+    "target": "individual"
   },
   {
     "id": 49,
     "emoji": "👏",
     "title": "Encourager quelqu’un",
-    "needs": ["communication", "joy"],
-    "contexts": ["home", "office", "school"],
+    "needs": [
+      "participation",
+      "joy"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "school"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Nommer ce que la personne fait bien",
-      "Parler au présent plutôt qu’au passé",
-      "Éviter les comparaisons avec d’autres",
-      "Rester concret dans le compliment",
-      "Sourire en même temps que l’on parle",
-      "Ne pas ajouter de critique juste après",
-      "Envoyer un message d’encouragement avant un événement",
-      "Reconnaître aussi les efforts, pas seulement les résultats",
-      "Demander comment mieux soutenir",
-      "Rester authentique et simple"
-    ]
+    "target": "individual"
   },
   {
     "id": 50,
     "emoji": "🙌",
     "title": "Valoriser une bonne idée",
-    "needs": ["communication", "participation"],
-    "contexts": ["office", "school", "social"],
+    "needs": [
+      "communication",
+      "participation"
+    ],
+    "contexts": [
+      "office",
+      "school",
+      "social"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Dire clairement que l’idée est intéressante",
-      "Nommer la personne qui l’a proposée",
-      "Reformuler l’idée avec ses mots",
-      "Proposer de la noter quelque part",
-      "Demander comment la mettre en pratique",
-      "Soutenir l’idée même si elle est imparfaite",
-      "Inviter les autres à réagir avec bienveillance",
-      "Éviter de s’approprier l’idée",
-      "Remercier pour le partage",
-      "Revenir plus tard sur l’idée pour la faire vivre"
-    ]
+    "target": "individual"
   },
   {
     "id": 51,
     "emoji": "🎁",
     "title": "Offrir un petit cadeau",
-    "needs": ["joy", "cooperation"],
-    "contexts": ["home", "office", "school"],
+    "needs": [
+      "cooperation",
+      "expression"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "school"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir quelque chose de simple et utile",
-      "Penser à un détail que la personne aime",
-      "Ajouter un petit mot si possible",
-      "Offrir sans attendre de cadeau en retour",
-      "Respecter la pudeur de la personne",
-      "Privilégier une attention plutôt qu’un objet cher",
-      "Adapter au contexte (bureau, maison, classe)",
-      "Proposer aussi un cadeau non matériel",
-      "Vérifier que le cadeau ne met pas mal à l’aise",
-      "Profiter du sourire au moment de l’offrir"
-    ]
+    "target": "individual"
   },
   {
     "id": 52,
     "emoji": "🧶",
     "title": "Inclure une personne isolée",
-    "needs": ["inclusion", "joy"],
-    "contexts": ["school", "social", "office"],
+    "needs": [
+      "inclusion",
+      "cooperation"
+    ],
+    "contexts": [
+      "school",
+      "social",
+      "office"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Repérer quelqu’un souvent à l’écart",
-      "S’asseoir à côté sans forcer la discussion",
-      "Proposer de rejoindre une activité simple",
-      "Poser une question ouverte et douce",
-      "Respecter si la personne préfère observer",
-      "Lui présenter une autre personne accueillante",
-      "Éviter de la mettre au centre d’un coup",
-      "Inviter régulièrement, même si elle refuse parfois",
-      "Montrer que sa présence compte",
-      "Remercier discrètement quand elle participe"
-    ]
+    "target": "group"
   },
   {
     "id": 53,
     "emoji": "💡",
     "title": "Proposer son aide",
-    "needs": ["cooperation", "participation"],
-    "contexts": ["school", "office", "social"],
+    "needs": [
+      "cooperation",
+      "participation"
+    ],
+    "contexts": [
+      "school",
+      "office",
+      "social"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Demander “Tu veux un coup de main ?”",
-      "Dire clairement ce qu’on peut faire",
-      "Accepter un refus sans insister",
-      "Adapter l’aide à ses propres limites",
-      "Rester disponible sans se sacrifier",
-      "S’entendre sur qui fait quoi",
-      "Proposer un temps court d’aide",
-      "Vérifier après si tout est ok",
-      "Remercier pour la confiance donnée",
-      "Noter ce que cela apporte aussi pour soi"
-    ]
+    "target": "individual"
   },
   {
     "id": 54,
     "emoji": "💆‍♀️",
     "title": "Offrir un massage court",
-    "needs": ["comfort", "joy"],
-    "contexts": ["home", "social"],
+    "needs": [
+      "comfort",
+      "expression"
+    ],
+    "contexts": [
+      "home",
+      "social"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Demander explicitement l’accord avant",
-      "Choisir une zone neutre (épaules, nuque)",
-      "Limiter à quelques minutes seulement",
-      "Observer les réactions de l’autre",
-      "Arrêter dès que la personne le souhaite",
-      "Prévenir si l’on n’est pas professionnel",
-      "Utiliser des gestes doux et lents",
-      "Garder un ton calme pendant",
-      "Proposer un verre d’eau après",
-      "Remercier pour la confiance"
-    ]
+    "target": "individual"
   },
   {
     "id": 55,
     "emoji": "🤐",
     "title": "Éviter un gros mot",
-    "needs": ["communication", "calm"],
-    "contexts": ["home", "school"],
+    "needs": [
+      "communication",
+      "calm"
+    ],
+    "contexts": [
+      "home",
+      "school"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Repérer les situations où ça sort facilement",
-      "Remplacer par un mot neutre ou drôle",
-      "Inspirer profondément avant de répondre",
-      "Compter jusqu’à trois dans sa tête",
-      "S’éloigner quelques secondes si possible",
-      "Rappeler qu’on veut protéger l’ambiance",
-      "S’excuser si le mot est déjà sorti",
-      "Noter les progrès sur la semaine",
-      "Demander soutien d’un proche si besoin",
-      "Se féliciter à chaque fois qu’on retient"
-    ]
+    "target": "individual"
   },
   {
     "id": 56,
     "emoji": "🌼",
     "title": "Penser à un bon moment",
-    "needs": ["joy", "calm", "privacy"],
-    "contexts": ["home"],
+    "needs": [
+      "joy",
+      "privacy"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Fermer les yeux quelques instants",
-      "Choisir un souvenir simple et doux",
-      "Revivre une scène précise",
-      "Se rappeler les sensations du corps",
-      "Respirer calmement pendant la pensée",
-      "Laisser venir un sourire intérieur",
-      "Revenir doucement au présent",
-      "Choisir un souvenir différent chaque jour",
-      "Ne pas forcer si rien ne vient",
-      "Noter parfois ces moments dans un carnet"
-    ]
+    "target": "individual"
   },
   {
     "id": 57,
     "emoji": "🧠",
     "title": "Se rappeler un souvenir doux",
-    "needs": ["joy", "calm"],
-    "contexts": ["home"],
+    "needs": [
+      "joy",
+      "privacy"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "S’installer dans une position confortable",
-      "Choisir un souvenir où l’on se sentait bien",
-      "Regarder les détails comme dans un film",
-      "Se rappeler une odeur ou un son",
-      "Sentir la détente dans le corps",
-      "Accepter que des émotions arrivent",
-      "Rester quelques secondes dans ce souvenir",
-      "Laisser revenir le présent doucement",
-      "Utiliser ce souvenir avant de dormir",
-      "Garder un sourire intérieur en souvenir"
-    ]
+    "target": "individual"
   },
   {
     "id": 58,
     "emoji": "🧘",
     "title": "Créer une soirée détente",
-    "needs": ["calm", "slowness"],
-    "contexts": ["home", "family"],
+    "needs": [
+      "calm",
+      "slowness"
+    ],
+    "contexts": [
+      "home",
+      "family"
+    ],
     "frequency": 0.5,
-    "target": "group",
-    "tips": [
-      "Prévenir les autres en avance",
-      "Choisir une heure de début réaliste",
-      "Réduire les lumières et les écrans",
-      "Proposer une activité calme simple",
-      "Prévoir une boisson chaude ou fraîche",
-      "Accepter que chacun participe à sa façon",
-      "Éviter les sujets de tension ce soir-là",
-      "Limiter les notifications pendant la soirée",
-      "Clore la soirée avec un petit rituel",
-      "Remercier le groupe pour ce temps"
-    ]
+    "target": "group"
   },
   {
     "id": 59,
     "emoji": "🌙",
     "title": "Se coucher avant 23h",
-    "needs": ["sleep", "calm"],
-    "contexts": ["home"],
+    "needs": [
+      "rest",
+      "calm"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Fixer une heure pour éteindre les écrans",
-      "Préparer la chambre une demi-heure avant",
-      "Mettre un rappel 30 minutes avant 23h",
-      "Faire un geste calme juste avant le coucher",
-      "Éviter les boissons excitantes le soir",
-      "Choisir une heure de réveil cohérente",
-      "Ne pas viser la perfection tous les soirs",
-      "S’autoriser à aller au lit même sans être épuisé",
-      "Ritualiser un petit geste répétitif (lumière, rideau)",
-      "Observer l’effet sur l’humeur le lendemain"
-    ]
+    "target": "individual"
   },
   {
     "id": 60,
     "emoji": "📵",
     "title": "Couper les écrans après 21h",
-    "needs": ["calm", "slowness"],
-    "contexts": ["home"],
+    "needs": [
+      "slowness",
+      "rest"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir trois soirs dans la semaine au départ",
-      "Mettre le téléphone dans une autre pièce",
-      "Utiliser un réveil non téléphonique si possible",
-      "Prévenir ses proches de cette habitude",
-      "Prévoir une activité alternative agréable",
-      "Désactiver les notifications avant 21h",
-      "Baisser la luminosité progressive en soirée",
-      "Tester le mode avion pour la nuit",
-      "Repérer comment le sommeil évolue",
-      "Se féliciter pour chaque soirée réussie"
-    ]
+    "target": "individual"
   },
   {
     "id": 61,
     "emoji": "🕯️",
     "title": "Créer une ambiance douce",
-    "needs": ["calm", "comfort"],
-    "contexts": ["home"],
+    "needs": [
+      "nature",
+      "slowness"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Baisser la lumière principale",
-      "Allumer une lampe douce ou une bougie",
-      "Mettre une musique calme à faible volume",
-      "Ranger deux ou trois objets visibles",
-      "Ouvrir la fenêtre quelques minutes",
-      "Choisir une odeur agréable si on aime",
-      "Couper les sons agressifs de fond",
-      "S’asseoir quelques instants pour ressentir",
-      "Éviter de lancer une grosse tâche juste après",
-      "Garder cette ambiance pour un moment précis"
-    ]
+    "target": "individual"
   },
   {
     "id": 62,
     "emoji": "😴",
     "title": "Faire une sieste courte",
-    "needs": ["sleep", "calm", "privacy"],
-    "contexts": ["home"],
+    "needs": [
+      "rest",
+      "calm"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Mettre un réveil 15 à 25 minutes",
-      "S’allonger si possible ou s’asseoir confortablement",
-      "Fermer les yeux même si on ne dort pas",
-      "Couper les notifications pendant ce temps",
-      "Prévenir les personnes autour",
-      "Éviter la sieste trop tardive",
-      "Accepter que réfléchir calmement compte aussi",
-      "Se lever doucement au réveil",
-      "Boire un verre d’eau après",
-      "Observer l’effet sur la suite de la journée"
-    ]
+    "target": "individual"
   },
   {
     "id": 63,
     "emoji": "🌬️",
     "title": "Respirer lentement 2 min",
-    "needs": ["calm"],
-    "contexts": ["home", "office", "school"],
+    "needs": [
+      "slowness",
+      "rest"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "school"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "S’asseoir ou se tenir debout stable",
-      "Inspire par le nez en comptant jusqu’à quatre",
-      "Expirer plus longtemps que l’inspiration",
-      "Poser une main sur le ventre",
-      "Fermer doucement les yeux si possible",
-      "Faire au moins cinq respirations complètes",
-      "Se concentrer sur l’air qui entre et sort",
-      "Accepter que l’esprit vagabonde",
-      "Revenir doucement à ce qu’on faisait",
-      "Réutiliser ce geste en cas de stress"
-    ]
+    "target": "individual"
   },
   {
     "id": 64,
     "emoji": "🧘",
     "title": "S’asseoir 2 min en silence",
-    "needs": ["calm", "slowness"],
-    "contexts": ["home", "office", "school"],
+    "needs": [
+      "calm",
+      "slowness"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "school"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Choisir un endroit où l’on ne sera pas interrompu",
-      "Regarder un point fixe ou fermer les yeux",
-      "Poser les pieds bien au sol",
-      "Laisser venir les pensées sans les suivre",
-      "Écouter les bruits sans les juger",
-      "Se focaliser sur le contact du corps avec le siège",
-      "Utiliser un minuteur discret",
-      "Ne pas chercher à “bien faire”",
-      "Se lever doucement à la fin",
-      "Reprendre une action simple ensuite"
-    ]
+    "target": "individual"
   },
   {
     "id": 65,
     "emoji": "👀",
     "title": "Admirer le paysage 30 sec",
-    "needs": ["calm", "nature"],
-    "contexts": ["home"],
+    "needs": [
+      "nature",
+      "rest"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Se rapprocher d’une fenêtre ou sortir",
-      "Chercher trois détails agréables à regarder",
-      "Observer le ciel, les arbres, les toits",
-      "Regarder les mouvements lents autour",
-      "Respirer calmement pendant l’observation",
-      "Éteindre quelques secondes les écrans",
-      "Changer légèrement de point de vue",
-      "Remarquer les couleurs présentes",
-      "Imaginer prendre une photo mentale",
-      "Ramener cette image quand le stress monte"
-    ]
+    "target": "individual"
   },
   {
     "id": 66,
     "emoji": "🌿",
     "title": "Prendre l’air 5 min",
-    "needs": ["calm", "nature"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "nature",
+      "movement"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Sortir même juste devant le bâtiment",
-      "Inspirer plus profondément que d’habitude",
-      "Regarder le ciel ou un arbre",
-      "Sentir la température sur la peau",
-      "S’éloigner un peu des écrans",
-      "Marcher lentement quelques pas",
-      "Écouter les bruits extérieurs",
-      "Laisser les épaules se détendre",
-      "Fixer un point agréable une seconde",
-      "Revenir en notant l’effet sur le corps"
-    ]
+    "target": "individual"
   },
   {
     "id": 67,
     "emoji": "🌳",
     "title": "Se balader dans la nature",
-    "needs": ["nature", "calm"],
-    "contexts": ["social"],
+    "needs": [
+      "nature",
+      "rest"
+    ],
+    "contexts": [
+      "social"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Choisir un lieu accessible facilement",
-      "Prévenir si l’on part seul",
-      "Couper ou baisser le son du téléphone",
-      "Marcher à un rythme confortable",
-      "Toucher un arbre ou une plante si on aime",
-      "Regarder les textures au sol",
-      "Respirer en rythme avec les pas",
-      "Écouter les sons naturels autour",
-      "Rester au moins un quart d’heure si possible",
-      "Repérer un endroit où revenir plus tard"
-    ]
+    "target": "individual"
   },
   {
     "id": 68,
     "emoji": "🕊️",
     "title": "Apaiser l’ambiance du groupe",
-    "needs": ["calm", "participation"],
-    "contexts": ["school", "office", "social"],
+    "needs": [
+      "calm",
+      "participation"
+    ],
+    "contexts": [
+      "school",
+      "office",
+      "social"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Baisser légèrement le volume de sa voix",
-      "Proposer une courte pause",
-      "Nommer calmement la tension ressentie",
-      "Rappeler l’objectif commun",
-      "Inviter chacun à parler à tour de rôle",
-      "Réorienter vers un sujet plus neutre si besoin",
-      "Utiliser l’humour léger sans se moquer",
-      "Soutenir la personne la plus fragile",
-      "Proposer une action concrète simple",
-      "Remercier le groupe quand la tension baisse"
-    ]
+    "target": "group"
   },
   {
     "id": 69,
     "emoji": "🫂",
     "title": "Veiller au besoin du groupe",
-    "needs": ["inclusion", "cooperation"],
-    "contexts": ["school", "office", "social"],
+    "needs": [
+      "inclusion",
+      "cooperation"
+    ],
+    "contexts": [
+      "school",
+      "office",
+      "social"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Observer qui semble fatigué ou à l’écart",
-      "Demander “De quoi on a besoin là ?”",
-      "Proposer une petite pause collective",
-      "Vérifier que tout le monde comprend la consigne",
-      "Adapter le rythme si tout le monde sature",
-      "Donner la parole aux plus discrets",
-      "Rappeler les règles de respect si besoin",
-      "Proposer de redistribuer les tâches",
-      "Noter brièvement les besoins exprimés",
-      "Revenir plus tard sur ce qui a été entendu"
-    ]
+    "target": "group"
   },
   {
     "id": 70,
     "emoji": "🤸",
     "title": "Faire un réveil corporel",
-    "needs": ["comfort", "privacy"],
-    "contexts": ["home"],
+    "needs": [
+      "movement",
+      "comfort"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Commencer par bouger doucement la nuque",
-      "Rouler les épaules en avant et en arrière",
-      "Étendre les bras vers le ciel",
-      "Plier et déplier les genoux",
-      "Étirer le dos sans forcer",
-      "Bouger les poignets et les chevilles",
-      "Respirer plus profondément pendant les mouvements",
-      "Faire le tout en deux ou trois minutes",
-      "S’arrêter si douleur",
-      "Noter la sensation de réveil après"
-    ]
+    "target": "individual"
   },
   {
     "id": 71,
     "emoji": "💪",
     "title": "Faire 30 min d’exercice",
-    "needs": ["comfort"],
-    "contexts": ["home"],
+    "needs": [
+      "movement",
+      "comfort"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir une activité que l’on supporte vraiment",
-      "Préparer tenue et chaussures en avance",
-      "Mettre un minuteur de 30 minutes",
-      "Commencer doucement les cinq premières minutes",
-      "Boire un peu d’eau avant et après",
-      "Écouter son corps, adapter l’intensité",
-      "Finir par quelques étirements simples",
-      "Noter l’exercice réalisé quelque part",
-      "Se féliciter même si ce n’est pas parfait",
-      "Prévoir déjà le prochain créneau"
-    ]
+    "target": "individual"
   },
   {
     "id": 72,
     "emoji": "🤸‍♂️",
     "title": "Faire des étirements",
-    "needs": ["comfort"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "movement",
+      "comfort"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir deux ou trois zones à étirer",
-      "Étirer sans douleur, juste tension douce",
-      "Maintenir chaque étirement 15 à 20 secondes",
-      "Respirer calmement pendant le mouvement",
-      "Éviter les gestes brusques",
-      "S’arrêter si vertige ou douleur vive",
-      "Utiliser une chaise ou un mur si besoin d’appui",
-      "Étendre surtout après une période assise",
-      "Ne pas chercher la performance",
-      "Ressentir la détente après chaque étirement"
-    ]
+    "target": "individual"
   },
   {
     "id": 73,
     "emoji": "👏",
     "title": "Applaudir une réussite",
-    "needs": ["joy", "participation"],
-    "contexts": ["home", "office", "school", "social"],
+    "needs": [
+      "joy",
+      "participation"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "school",
+      "social"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Repérer les petits succès, pas seulement les grands",
-      "Proposer spontanément un mini applaudissement",
-      "Nommer ce qu’on applaudit",
-      "Inviter tout le monde à participer",
-      "Garder le moment court et joyeux",
-      "Inclure aussi les réussites collectives",
-      "Éviter de comparer entre personnes",
-      "Applaudir même les progrès partiels",
-      "Regarder la personne en applaudissant",
-      "Continuer la journée sur cette note positive"
-    ]
+    "target": "group"
   },
   {
     "id": 74,
     "emoji": "📸",
     "title": "Photographier un beau détail",
-    "needs": ["expression", "curiosity"],
-    "contexts": ["home"],
+    "needs": [
+      "nature",
+      "expression"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Chercher un petit détail agréable autour",
-      "Changer d’angle pour regarder autrement",
-      "Se rapprocher pour voir la texture",
-      "Prendre une seule photo, pas dix",
-      "Regarder la photo avant de la ranger",
-      "Créer un album “petites beautés du quotidien”",
-      "Partage la photo seulement si tu veux",
-      "Ne pas chercher la photo parfaite",
-      "Faire cet exercice surtout les jours gris",
-      "Reparcourir ces photos plus tard pour se ressourcer"
-    ]
+    "target": "individual"
   },
   {
     "id": 75,
     "emoji": "🎧",
     "title": "Mettre une musique calme",
-    "needs": ["joy", "calm"],
-    "contexts": ["home"],
+    "needs": [
+      "nature",
+      "calm"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Préparer une petite playlist douceur",
-      "Baisser le volume pour ne pas saturer",
-      "Choisir une musique sans paroles si besoin",
-      "Écouter en faisant une activité simple",
-      "Éviter de scroller en même temps",
-      "Fermer les yeux quelques instants",
-      "Repérer ce que la musique change en soi",
-      "Couper doucement la musique ensuite",
-      "Garder une chanson douce “référence”",
-      "Utiliser cette musique dans une routine du soir"
-    ]
+    "target": "individual"
   },
   {
     "id": 76,
     "emoji": "🎶",
     "title": "Fredonner une chanson",
-    "needs": ["joy", "expression"],
-    "contexts": ["home", "social"],
+    "needs": [
+      "expression",
+      "entertainment"
+    ],
+    "contexts": [
+      "home",
+      "social"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Choisir un air spontané",
-      "Ne pas chercher à bien chanter",
-      "Commencer tout bas si on est pudique",
-      "Fredonner en rangeant ou en cuisinant",
-      "Sentir la vibration dans la poitrine",
-      "Sourire en même temps si possible",
-      "Changer de chanson selon l’humeur",
-      "Utiliser un souvenir musical agréable",
-      "Inviter quelqu’un à fredonner avec soi",
-      "Couper si l’on dérange les autres"
-    ]
+    "target": "individual"
   },
   {
     "id": 77,
     "emoji": "🎮",
     "title": "Regarder une comédie",
-    "needs": ["joy", "entertainment"],
-    "contexts": ["home"],
+    "needs": [
+      "joy",
+      "entertainment"
+    ],
+    "contexts": [
+      "home"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Choisir une comédie pas trop lourde",
-      "Prévoir le temps de visionnage complet",
-      "Couper les notifications pendant le film",
-      "S’installer confortablement avant de lancer",
-      "Regarder vraiment, sans scroller en parallèle",
-      "Partager le moment avec quelqu’un si possible",
-      "S’autoriser à rire à voix haute",
-      "Arrêter si le contenu ne fait pas du bien",
-      "Noter les répliques qui font sourire",
-      "Observer l’humeur après la séance"
-    ]
+    "target": "individual"
   },
   {
     "id": 78,
     "emoji": "🎲",
     "title": "Lancer un jeu collectif",
-    "needs": ["joy", "participation", "entertainment"],
-    "contexts": ["home", "social", "school"],
+    "needs": [
+      "entertainment",
+      "participation"
+    ],
+    "contexts": [
+      "home",
+      "social",
+      "school"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Choisir un jeu simple à expliquer",
-      "Adapter la durée au temps disponible",
-      "Vérifier que tout le monde est ok pour jouer",
-      "Rappeler que le but est de s’amuser",
-      "Éviter les jeux trop compétitifs si ambiance fragile",
-      "Proposer un rôle simple aux plus timides",
-      "Prévoir une fin claire au jeu",
-      "Changer de jeu si tout le monde décroche",
-      "Remercier pour le moment partagé",
-      "Demander quel jeu chacun aimerait tester ensuite"
-    ]
+    "target": "group"
   },
   {
     "id": 79,
     "emoji": "🧩",
     "title": "Résoudre une énigme",
-    "needs": ["curiosity", "entertainment"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "meaning",
+      "entertainment"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir une énigme à sa portée",
-      "Se donner un temps limité pour chercher",
-      "Noter les pistes qui viennent",
-      "Accepter de ne pas trouver immédiatement",
-      "Demander un indice plutôt que la solution",
-      "Faire une pause si on bloque",
-      "Partager la solution avec quelqu’un",
-      "Apprécier le chemin plus que la réponse",
-      "Varier les types d’énigmes",
-      "Garder celles qu’on aime pour les proposer aux autres"
-    ]
+    "target": "individual"
   },
   {
     "id": 80,
     "emoji": "🖼️",
     "title": "Faire une sortie culturelle",
-    "needs": ["joy", "curiosity"],
-    "contexts": ["social"],
+    "needs": [
+      "joy",
+      "meaning"
+    ],
+    "contexts": [
+      "social"
+    ],
     "frequency": 0.5,
-    "target": "individual",
-    "tips": [
-      "Choisir un lieu accessible en transport",
-      "Inviter quelqu’un qui pourrait apprécier",
-      "Se renseigner sur les horaires avant",
-      "Repérer une exposition ou activité précise",
-      "Arriver avec quelques minutes d’avance",
-      "Prendre le temps de lire au moins un cartel",
-      "Observer ce que l’on ressent face aux œuvres",
-      "Échanger à la sortie sur ce qu’on a préféré",
-      "Garder un souvenir (billet, photo, note)",
-      "Noter une idée de prochaine sortie"
-    ]
+    "target": "individual"
   },
   {
     "id": 81,
     "emoji": "✍️",
     "title": "Écrire 3 lignes",
-    "needs": ["expression", "calm"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "privacy",
+      "expression"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Choisir un carnet ou une application dédiée",
-      "Écrire sans viser la beauté du texte",
-      "Noter juste ce qui vient en tête",
-      "Limiter à trois lignes pour rester léger",
-      "Ne pas relire tout de suite",
-      "Écrire au même moment de la journée",
-      "Parler de soi à la première personne",
-      "Accepter les fautes, ne pas corriger",
-      "Fermer le carnet symboliquement après",
-      "Relire après quelques semaines si envie"
-    ]
+    "target": "individual"
   },
   {
     "id": 82,
     "emoji": "🖼️",
     "title": "Ajouter une touche déco",
-    "needs": ["comfort", "joy"],
-    "contexts": ["home", "office", "social"],
+    "needs": [
+      "comfort",
+      "joy"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "social"
+    ],
     "frequency": 1,
-    "target": "group",
-    "tips": [
-      "Choisir un petit élément discret",
-      "Demander l’avis des personnes concernées",
-      "Utiliser ce que l’on a déjà si possible",
-      "Placer la déco à un endroit visible",
-      "Éviter de surcharger l’espace",
-      "Adapter au style du lieu",
-      "Préférer quelque chose facile à enlever",
-      "Observer l’ambiance après le changement",
-      "Changer de temps en temps la décoration",
-      "Respecter les sensibilités de chacun"
-    ]
+    "target": "group"
   },
   {
     "id": 83,
     "emoji": "🪜",
     "title": "Prendre les escaliers",
-    "needs": ["comfort", "movement"],
-    "contexts": ["office", "school", "social"],
+    "needs": [
+      "movement",
+      "comfort"
+    ],
+    "contexts": [
+      "office",
+      "school",
+      "social"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Prévoir quelques minutes de marge",
-      "Commencer par un ou deux étages seulement",
-      "Monter à son rythme sans se comparer",
-      "Tenir la rampe si besoin",
-      "Respirer calmement pendant la montée",
-      "Mettre une petite récompense symbolique à l’arrivée",
-      "Alterner escaliers et ascenseur au début",
-      "Écouter son corps si essoufflement important",
-      "Noter la progression sur la semaine",
-      "Se féliciter à chaque fois qu’on choisit les escaliers"
-    ]
+    "target": "individual"
   },
   {
     "id": 84,
     "emoji": "📘",
     "title": "Lire 10 pages",
-    "needs": ["calm", "curiosity"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "rest",
+      "meaning"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir un livre vraiment attirant",
-      "Poser le téléphone dans une autre pièce",
-      "S’installer dans un coin confortable",
-      "Lire sans obligation de finir le chapitre",
-      "Mettre un signet pour marquer l’arrêt",
-      "Autoriser la relecture d’un passage",
-      "Ne pas se juger si l’on décroche",
-      "Changer de livre si le plaisir n’est plus là",
-      "Lire quelques minutes avant de dormir",
-      "Observer ce que la lecture change dans la tête"
-    ]
+    "target": "individual"
   },
   {
     "id": 85,
     "emoji": "🔧",
     "title": "Faire du bricolage",
-    "needs": ["equipment", "participation", "joy"],
-    "contexts": ["home", "social"],
+    "needs": [
+      "equipment",
+      "joy"
+    ],
+    "contexts": [
+      "home",
+      "social"
+    ],
     "frequency": 0.5,
-    "target": "individual",
-    "tips": [
-      "Commencer par un projet très simple",
-      "Préparer le matériel avant de se lancer",
-      "Protéger la zone de travail",
-      "Lire ou regarder un tutoriel rapide",
-      "Se donner un temps limité pour la séance",
-      "Accepter l’imperfection du résultat",
-      "Demander de l’aide si ça bloque",
-      "Ranger les outils juste après",
-      "Prendre une photo du avant/après",
-      "Noter ce que ce bricolage apporte concrètement"
-    ]
+    "target": "individual"
   },
   {
     "id": 86,
     "emoji": "🕺",
     "title": "Danser 30 secondes",
-    "needs": ["joy", "movement"],
-    "contexts": ["home", "social"],
+    "needs": [
+      "movement",
+      "joy"
+    ],
+    "contexts": [
+      "home",
+      "social"
+    ],
     "frequency": 7,
-    "target": "individual",
-    "tips": [
-      "Mettre une chanson qui donne envie de bouger",
-      "Se laisser guider par le corps",
-      "Danser même si on ne sait pas danser",
-      "Fermer la porte si on est pudique",
-      "Bouger surtout le haut du corps si limité",
-      "Sourire volontairement en même temps",
-      "Arrêter avant d’être essoufflé",
-      "Proposer à quelqu’un de danser avec soi",
-      "Réutiliser ce geste en cas de coup de mou",
-      "Noter l’humeur avant et après"
-    ]
+    "target": "individual"
   },
   {
     "id": 87,
     "emoji": "📻",
     "title": "Écouter un podcast",
-    "needs": ["curiosity", "calm"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "rest",
+      "meaning"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir un épisode pas trop long",
-      "Télécharger à l’avance si possible",
-      "Écouter en faisant une tâche simple",
-      "Éviter de multiplier les podcasts en parallèle",
-      "Mettre en pause pour noter une idée importante",
-      "Changer d’émission si le ton ne convient pas",
-      "Écouter à vitesse normale au moins parfois",
-      "Arrêter si cela excite trop au lieu d’apaiser",
-      "Partager un épisode marquant avec un proche",
-      "Limiter le nombre d’épisodes par jour"
-    ]
+    "target": "individual"
   },
   {
     "id": 88,
     "emoji": "🤣",
     "title": "Apporter une touche d’humour",
-    "needs": ["joy", "communication"],
-    "contexts": ["home", "office", "school", "social"],
+    "needs": [
+      "communication",
+      "entertainment"
+    ],
+    "contexts": [
+      "home",
+      "office",
+      "school",
+      "social"
+    ],
     "frequency": 3,
-    "target": "group",
-    "tips": [
-      "Privilégier l’auto-dérision plutôt que les autres",
-      "Adapter l’humour au contexte",
-      "Éviter les sujets sensibles ou blessants",
-      "Observer la réaction du groupe",
-      "S’arrêter si quelqu’un semble mal à l’aise",
-      "Utiliser une image drôle ou un gif léger",
-      "Raconter une petite anecdote bienveillante",
-      "Garder l’intention de détendre, pas de briller",
-      "Accepter si la blague ne prend pas",
-      "Laisser aussi la place à l’humour des autres"
-    ]
+    "target": "group"
   },
   {
     "id": 89,
     "emoji": "🌸",
     "title": "Sentir un parfum agréable",
-    "needs": ["calm", "sense"],
-    "contexts": ["home", "office"],
+    "needs": [
+      "calm",
+      "meaning"
+    ],
+    "contexts": [
+      "home",
+      "office"
+    ],
     "frequency": 3,
-    "target": "individual",
-    "tips": [
-      "Choisir un parfum qui rassure",
-      "Fermer les yeux une seconde en inspirant",
-      "Inspirer doucement par le nez",
-      "Repérer les notes principales (fleur, bois, fruit)",
-      "Éviter les parfums trop forts en intérieur",
-      "Ne pas en abuser sur soi pour les autres",
-      "Garder un objet légèrement parfumé à portée",
-      "Associer ce parfum à un moment calme",
-      "Changer de parfum selon les saisons",
-      "Observer l’effet sur l’humeur immédiate"
-    ]
+    "target": "individual"
   },
   {
     "id": 90,
     "emoji": "🍳",
     "title": "Préparer un repas sain",
-    "needs": ["nutrition", "safety"],
-    "contexts": ["home", "family"],
+    "needs": [
+      "nutrition",
+      "safety"
+    ],
+    "contexts": [
+      "home",
+      "family"
+    ],
     "frequency": 1,
-    "target": "individual",
-    "tips": [
-      "Remplir la moitié d’assiette de légumes",
-      "Cuire simple : vapeur ou four",
-      "Limiter sauces toutes faites",
-      "Prévoir protéines à chaque repas",
-      "Goûter avant de resaler",
-      "Préparer une portion en plus",
-      "Ranger les restes rapidement",
-      "Boire un verre d’eau avant",
-      "Éviter la télé pendant le repas",
-      "Manger assis, sans se presser"
-    ]
+    "target": "individual"
   }
 ];
 
